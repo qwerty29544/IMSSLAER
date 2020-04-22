@@ -1,3 +1,4 @@
+# ПРоверка на пуш из линукса
 # Вспомогательная функция для ортисовки графиков --------------------------
 
 .getYmult <- function() {
@@ -16,6 +17,23 @@
 
 # Функция отрисовки окружности --------------------------------------------
 
+#' Title
+#'
+#' @param x 
+#' @param y 
+#' @param radius 
+#' @param nv 
+#' @param border 
+#' @param col 
+#' @param lty 
+#' @param density 
+#' @param angle 
+#' @param lwd 
+#'
+#' @return
+#' @export
+#'
+#' @examples
 .circle <- function(x, y, radius, nv = 100, border = NULL,
                     col = NA, lty = 1, density = NULL, angle = 45, lwd = 0.5) {
     ymult <- .getYmult()
