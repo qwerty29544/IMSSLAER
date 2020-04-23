@@ -1,6 +1,10 @@
-# ПРоверка на пуш из линукса
 # Вспомогательная функция для ортисовки графиков --------------------------
 
+#' Title
+#'
+#' @return
+#'
+#' @examples
 .getYmult <- function() {
     if (grDevices::dev.cur() == 1) {
         base::warning("No graphics device open.")
@@ -31,7 +35,6 @@
 #' @param lwd 
 #'
 #' @return
-#' @export
 #'
 #' @examples
 .circle <- function(x, y, radius, nv = 100, border = NULL,
@@ -45,7 +48,7 @@
         xv <- cos(angles) * radius[circle] + x
         yv <- sin(angles) * radius[circle] * ymult + y
         graphics::polygon(xv, yv, border = border, col = col[circle], lty = lty,
-                density = density, angle = angle, lwd = lwd)
+                          density = density, angle = angle, lwd = lwd)
     }
     invisible(list(x = xv, y = yv))
 }
@@ -53,6 +56,16 @@
 
 # Отрисовка комплексной плоскости -----------------------------------------
 
+#' Title
+#'
+#' @param lambs 
+#' @param mu 
+#' @param R 
+#' @param fileName 
+#'
+#' @return
+#'
+#' @examples
 .drawComplex <- function(lambs, mu, R, fileName = "complexPlot") {
     stopifnot(is.complex(lambs) || is.numeric(lambs))
     stopifnot(is.complex(mu) || is.numeric(mu))
@@ -105,6 +118,14 @@
 
 # Нахождение радиуса такого круга -----------------------------------------
 
+#' Title
+#'
+#' @param z1 
+#' @param z2 
+#'
+#' @return
+#'
+#' @examples
 .R2 <- function(z1, z2) {
     stopifnot(is.numeric(z1) || is.complex(z1))
     stopifnot(is.numeric(z2) || is.complex(z2))
@@ -114,6 +135,15 @@
 
 # Нахождение центра окружности по 3 точкам --------------------------------
 
+#' Title
+#'
+#' @param z1 
+#' @param z2 
+#' @param z3 
+#'
+#' @return
+#'
+#' @examples
 .mu3 <- function(z1, z2, z3) {
     stopifnot(is.numeric(z1) || is.complex(z1))
     stopifnot(is.numeric(z2) || is.complex(z2))
@@ -124,6 +154,14 @@
 
 # Нахождение радиуса окружности по 3 точкам и центру ----------------------
 
+#' Title
+#'
+#' @param mu 
+#' @param z 
+#'
+#' @return
+#'
+#' @examples
 .R3 <- function(mu, z) {
     stopifnot(is.numeric(mu) || is.complex(mu))
     stopifnot(is.numeric(z) || is.complex(z))
@@ -133,6 +171,16 @@
 
 # Функция перебора точек спектра ------------------------------------------
 
+#' Title
+#'
+#' @param mu 
+#' @param R 
+#' @param n 
+#' @param lambs 
+#'
+#' @return
+#'
+#' @examples
 .FlagsCalc <- function(mu, R, n, lambs) {
     Flags <- matrix(FALSE, nrow = length(R), ncol = n + 1)
     for (j in 1:length(R)) {
@@ -146,6 +194,16 @@
 
 # Нахождение мю по входным значениям краёв спектра оператора --------------
 
+#' Title
+#'
+#' @param lambs 
+#' @param draw 
+#' @param path 
+#'
+#' @return
+#' @export
+#'
+#' @examples
 muFind <- function(lambs, draw = TRUE, path = "complexPlot") {
     # Проверка типа переменной - вектора
     stopifnot(is.numeric(lambs) || is.complex(lambs))
@@ -171,7 +229,7 @@ muFind <- function(lambs, draw = TRUE, path = "complexPlot") {
         Rflash <- c(Rflash, R)
     }
     if (n >= 3) {
-
+        
         for (i in (1:(n - 1))) {
             for (j in ((i + 1):n)) {
                 mu <- .mu2(lambs[i], lambs[j])
@@ -182,7 +240,7 @@ muFind <- function(lambs, draw = TRUE, path = "complexPlot") {
                 Rflash <- c(Rflash, R)
             }
         }
-
+        
         for (i in (1:(n - 2))) {
             for (j in ((i + 1):(n - 1))) {
                 for (k in ((j + 1):n)) {
@@ -205,6 +263,18 @@ muFind <- function(lambs, draw = TRUE, path = "complexPlot") {
 
 # muFind.File -------------------------------------------------------------
 
+#' Title
+#'
+#' @param input.file 
+#' @param output.file 
+#' @param out 
+#' @param draw 
+#' @param plot.file 
+#'
+#' @return
+#' @export
+#'
+#' @examples
 muFind.File <- function(input.file = "complexNumbeRS", output.file = "results", out = T,
                         draw = TRUE, plot.file = "complexPlot") {
     stopifnot(is.logical(draw), is.character(input.file), is.character(output.file), is.character(plot.file),
@@ -234,7 +304,7 @@ muFind.File <- function(input.file = "complexNumbeRS", output.file = "results", 
         Rflash <- c(Rflash, R)
     }
     if (n >= 3) {
-
+        
         for (i in (1:(n - 1))) {
             for (j in ((i + 1):n)) {
                 mu <- .mu2(lambs[i], lambs[j])
@@ -245,7 +315,7 @@ muFind.File <- function(input.file = "complexNumbeRS", output.file = "results", 
                 Rflash <- c(Rflash, R)
             }
         }
-
+        
         for (i in (1:(n - 2))) {
             for (j in ((i + 1):(n - 1))) {
                 for (k in ((j + 1):n)) {
@@ -267,74 +337,20 @@ muFind.File <- function(input.file = "complexNumbeRS", output.file = "results", 
     if (out) write.table(results, file = output.file, quote = FALSE)
     return(mu)
 }
-
-
-# muFindIter --------------------------------------------------------------
-
-
-# GDM ---------------------------------------------------------------------
+# GMSI --------------------------------------------------------------------
 
 #' Title
 #'
 #' @param A 
 #' @param f 
 #' @param u 
+#' @param mu 
 #' @param eps 
 #'
 #' @return
 #' @export
 #'
 #' @examples
-GDM <- function(A, f, u, eps = 10e-4) {
-    stopifnot(is.numeric(A), is.matrix(A), is.numeric(f), is.numeric(u), is.numeric(eps))
-    dimA <- dim(A)[1]
-    # Проверка на n >= 2
-    if (dimA[1] < 2) {
-        stop("Operator must have dim >= 2")
-    }
-    # Проверка на размерность матрицы оператора
-    if (dim(A)[1] != dim(A)[2]) {
-        stop("Operator must be quadratic")
-    }
-
-    repeat {
-        r <- A %*% u - f
-        u <- u - ((t(t(A) %*% r) %*% (t(A) %*% r))/(t(A %*% t(A) %*% r) %*% (A %*% t(A) %*% r)))[1,1] * (t(A) %*% r)
-        if ((sqrt(t(A %*% u - f) %*% (A %*% u - f))) / (sqrt(t(f) %*% f)) < eps) break
-    }
-    return(u)
-}
-
-
-# GDM история -------------------------------------------------------------
-
-GDM.history <- function(A, f, u, eps = 10e-4) {
-    stopifnot(is.numeric(A), is.matrix(A), is.numeric(f), is.numeric(u), is.numeric(eps))
-    dimA <- dim(A)[1]
-    # Проверка на n >= 2
-    if (dimA[1] < 2) {
-        stop("Operator must have dim >= 2")
-    }
-    # Проверка на размерность матрицы оператора
-    if (dim(A)[1] != dim(A)[2]) {
-        stop("Operator must be quadratic")
-    }
-    i <- 0
-    u.hist <- matrix(u, nrow = dimA)
-    t1 <- Sys.time()
-    repeat {
-        r <- A %*% u - f
-        u <- u - ((t(t(A) %*% r) %*% (t(A) %*% r))/(t(A %*% t(A) %*% r) %*% (A %*% t(A) %*% r)))[1,1] * (t(A) %*% r)
-        u.hist <- cbind(u.hist, u)
-        i <- i + 10
-        if ((sqrt(t(A %*% u - f) %*% (A %*% u - f))) / (sqrt(t(f) %*% f)) < eps) break
-    }
-    t2 <- Sys.time()
-    return(list(num.iter = i, var = u, var.hist = u.hist, systime.iter = difftime(t2, t1, units = "secs")[[1]]))
-}
-
-# GMSI --------------------------------------------------------------------
-
 GMSI <- function(A, f, u, mu, eps = 10e-4) {
     stopifnot(is.matrix(A),
               is.numeric(A) || is.complex(A),
@@ -363,6 +379,18 @@ GMSI <- function(A, f, u, mu, eps = 10e-4) {
 
 # GMSI.mu -----------------------------------------------------------------
 
+#' Title
+#'
+#' @param A 
+#' @param f 
+#' @param u 
+#' @param lambs 
+#' @param eps 
+#'
+#' @return
+#' @export
+#'
+#' @examples
 GMSI.mu <- function(A, f, u, lambs, eps = 10e-4) {
     stopifnot(is.matrix(A),
               is.numeric(A) || is.complex(A),
@@ -389,8 +417,24 @@ GMSI.mu <- function(A, f, u, lambs, eps = 10e-4) {
     return(u)
 }
 
-# GMSI.mu -----------------------------------------------------------------
+# GMSI.mu.file -----------------------------------------------------------------
 
+#' Title
+#'
+#' @param A 
+#' @param f 
+#' @param u 
+#' @param input.file 
+#' @param out 
+#' @param output.file 
+#' @param draw 
+#' @param plot.file 
+#' @param eps 
+#'
+#' @return
+#' @export
+#'
+#' @examples
 GMSI.mu.file <- function(A, f, u, input.file = "complexNumbeRS", out = F,
                          output.file = "results", draw = F, plot.file = "complexPlot", eps = 10e-4) {
     stopifnot(is.matrix(A),
@@ -421,6 +465,18 @@ GMSI.mu.file <- function(A, f, u, input.file = "complexNumbeRS", out = F,
 
 # История по GMSI ---------------------------------------------------------
 
+#' Title
+#'
+#' @param A 
+#' @param f 
+#' @param u 
+#' @param mu 
+#' @param eps 
+#'
+#' @return
+#' @export
+#'
+#' @examples
 GMSI.history <- function(A, f, u, mu, eps = 10e-4) {
     stopifnot(is.matrix(A),
               is.numeric(A) || is.complex(A),
@@ -441,7 +497,7 @@ GMSI.history <- function(A, f, u, mu, eps = 10e-4) {
     # Итерации
     i <- 0 # начало итераций
     u.hist <- matrix(u, nrow = dimA)
-
+    
     t1 <- Sys.time()
     repeat {
         u <- u - (1/mu) * (A %*% u - f)
@@ -453,6 +509,22 @@ GMSI.history <- function(A, f, u, mu, eps = 10e-4) {
     return(list(num.iter = i, var = u, var.hist = u.hist, systime.iter = difftime(t2, t1, units = "secs")[[1]]))
 }
 
+
+# GMSI.mu.history ---------------------------------------------------------
+
+
+#' Title
+#'
+#' @param A 
+#' @param f 
+#' @param u 
+#' @param lambs 
+#' @param eps 
+#'
+#' @return
+#' @export
+#'
+#' @examples
 GMSI.mu.history <- function(A, f, u, lambs, eps = 10e-4) {
     stopifnot(is.matrix(A),
               is.numeric(A) || is.complex(A),
@@ -485,6 +557,25 @@ GMSI.mu.history <- function(A, f, u, lambs, eps = 10e-4) {
     return(list(num.iter = i, var = u, var.hist = u.hist, systime.iter = difftime(t2, t1, units = "secs")[[1]]))
 }
 
+# GMSI.mu.file.history ----------------------------------------------------
+
+
+#' Title
+#'
+#' @param A 
+#' @param f 
+#' @param u 
+#' @param input.file 
+#' @param out 
+#' @param output.file 
+#' @param draw 
+#' @param plot.file 
+#' @param eps 
+#'
+#' @return
+#' @export
+#'
+#' @examples
 GMSI.mu.file.history <- function(A, f, u, input.file = "complexNumbeRS", out = F,
                                  output.file = "results", draw = F, plot.file = "complexPlot", eps = 10e-4) {
     stopifnot(is.matrix(A),
@@ -517,219 +608,3 @@ GMSI.mu.file.history <- function(A, f, u, input.file = "complexNumbeRS", out = F
     t2 <- Sys.time()
     return(list(num.iter = i, var = u, var.hist = u.hist, systime.iter = difftime(t2, t1, units = "secs")[[1]]))
 }
-
-
-# SIM ---------------------------------------------------------------------
-
-SIM <- function(A, f, u, eps = 10e-4) {
-    stopifnot(is.matrix(A), is.numeric(A) || is.complex(A), is.numeric(f), is.numeric(u), is.numeric(eps))
-    dimA <- dim(A)[1]
-    # Проверка на n >= 2
-    if (dimA[1] < 2) {
-        stop("Operator must have dim >= 2")
-    }
-    # Проверка на размерность матрицы оператора
-    if (dim(A)[1] != dim(A)[2]) {
-        stop("Operator must be quadratic")
-    }
-    B <- diag(1, nrow = dimA, ncol = dimA) - A
-    repeat {
-        u <- B %*% u + f
-        if ((sqrt(t(A %*% u - f) %*% (A %*% u - f))) / (sqrt(t(f) %*% f)) < eps) break
-    }
-    return(u)
-}
-
-
-# SIM история -------------------------------------------------------------
-
-SIM.history <- function(A, f, u, eps = 10e-4) {
-    stopifnot(is.matrix(A), is.numeric(A) || is.complex(A), is.numeric(f), is.numeric(u), is.numeric(eps))
-    dimA <- dim(A)[1]
-    # Проверка на n >= 2
-    if (dimA[1] < 2) {
-        stop("Operator must have dim >= 2")
-    }
-    # Проверка на размерность матрицы оператора
-    if (dim(A)[1] != dim(A)[2]) {
-        stop("Operator must be quadratic")
-    }
-    i <- 0
-    u.hist <- matrix(u, nrow = dimA)
-    t1 <- Sys.time()
-    B <- diag(1, nrow = dimA, ncol = dimA) - A
-    repeat {
-        u <- B %*% u + f
-        i <- i + 1
-        u.hist <- cbind(u.hist, u)
-        if ((sqrt(t(A %*% u - f) %*% (A %*% u - f))) / (sqrt(t(f) %*% f)) < eps) break
-    }
-    t2 <- Sys.time()
-    return(list(num.iter = i, var = u, var.hist = u.hist, systime.iter = difftime(t2, t1, units = "secs")[[1]]))
-}
-
-
-# Jacobi ------------------------------------------------------------------
-
-Jacobi <- function(A, f, u, eps = 10e-4) {
-    stopifnot(is.matrix(A), is.numeric(A)  || is.complex(A), is.numeric(f), is.numeric(u), is.numeric(eps))
-    dimA <- dim(A)[1]
-    # Проверка на n >= 2
-    if (dimA[1] < 2) stop("Operator must have dim >= 2")
-    # Проверка на размерность матрицы оператора
-    if (dim(A)[1] != dim(A)[2]) stop("Operator must be quadratic")
-    # Проверка диагонального преобладания
-    if (!identical(diag(A), apply(A, 1, max))) stop("Operator must have a diagonal priority!")
-    repeat {
-        TempX <- f
-        for (i in 1:dimA) {
-            for (g in 1:dimA) {
-                if (i != g) {
-                    TempX[i] <-  TempX[i] - A[i, g] * u[g]
-                }
-            }
-        }
-        TempX <- TempX / diag(A)
-        norm <- max(abs(u - TempX))
-        u <- TempX
-        if (norm < eps) break
-    }
-    return(u)
-}
-
-
-# Jacobi история ----------------------------------------------------------
-
-Jacobi.history <- function(A, f, u, eps = 10e-4) {
-    stopifnot(is.matrix(A), is.numeric(A) || is.complex(A), is.numeric(f), is.numeric(u), is.numeric(eps))
-    dimA <- dim(A)[1]
-    # Проверка на n >= 2
-    if (dimA[1] < 2) {
-        stop("Operator must have dim >= 2")
-
-    }
-    # Проверка на размерность матрицы оператора
-    if (dim(A)[1] != dim(A)[2]) {
-        stop("Operator must be quadratic")
-
-    }
-    # Проверка диагонального преобладания
-    if (!all.equal(diag(A), apply(A, 1, max))) {
-        stop("Operator must have a diagonal priority!")
-
-    }
-    iter <- 0
-    u.hist <- matrix(u ,nrow = length(u))
-    t1 <- Sys.time()
-    repeat {
-        TempX <- f
-        for (i in 1:dimA) {
-            for (g in 1:dimA) {
-                if (i != g) {
-                    TempX[i] <-  TempX[i] - A[i, g] * u[g]
-                }
-            }
-        }
-        TempX <- TempX / diag(A)
-        norm <- max(abs(u - TempX))
-        u <- TempX
-        iter <- iter + 1
-        u.hist <- cbind(u.hist, u)
-        if (norm < eps) break
-
-    }
-    t2 <- Sys.time()
-    return(list(num.iter = iter, var = u, var.hist = u.hist, systime.iter = difftime(t2, t1, units = "secs")[[1]]))
-}
-
-
-# IMRES -------------------------------------------------------------------
-
-IMRES <- function(A, f, u, eps = 10e-4) {
-    stopifnot(is.matrix(A), is.numeric(A) || is.complex(A), is.numeric(f), is.numeric(u), is.numeric(eps))
-    if (dim(A)[1] < 2) stop("Linear operator has dim less than 2x2")
-    if (dim(A)[1] != dim(A)[2]) stop("Operator must be a quadratic")
-    h <- A %*% u - f
-    if ((1 - ((t(h) %*%  (A %*% h))^2 / ((t(h) %*% h) * (t(A %*% h) %*% (A %*% h))))) < 0)
-        stop("q >= 1, method is growing")
-    repeat {
-        ut <- u
-        h <- A %*% u - f
-        tau <- (t(h) %*% (A %*% h)) / (t(A %*% h) %*% (A %*% h))
-        u <- u - tau[1,1] * h
-        if (max(abs(u - ut)) < eps) break
-    }
-    return(u)
-}
-
-
-# IMRES история -----------------------------------------------------------
-
-IMRES.history <- function(A, f, u, eps = 10e-4) {
-    stopifnot(is.matrix(A), is.numeric(A) || is.complex(A), is.numeric(f), is.numeric(u), is.numeric(eps))
-    if (dim(A)[1] < 2) stop("Linear operator has dim less than 2x2")
-    if (dim(A)[1] != dim(A)[2]) stop("Operator must be a quadratic")
-    h <- A %*% u - f
-    if ((1 - ((t(h) %*%  (A %*% h))^2 / ((t(h) %*% h) * (t(A %*% h) %*% (A %*% h))))) < 0)
-        stop("q >= 1, method is growing")
-    i <- 0
-    u.hist <- matrix(u, nrow = dim(A)[1])
-    t1 <- Sys.time()
-    repeat {
-        ut <- u
-        h <- A %*% u - f
-        tau <- (t(h) %*% (A %*% h)) / (t(A %*% h) %*% (A %*% h))
-        u <- u - tau[1,1] * h
-        i <- i + 1
-        u.hist <- cbind(u.hist, u)
-        if (max(abs(u - ut)) < eps) break
-    }
-    t2 <- Sys.time()
-    return(list(num.iter = i, var = u, var.hist = u.hist, systime.iter = difftime(t2, t1, units = "secs")[[1]]))
-}
-
-
-
-# Итерации Чебышев ---------------------------------------------------------------
-
-Chebishev <- function(A, f, u, lambs, layers, eps = 10e-4) {
-    stopifnot(is.numeric(A), is.matrix(A), is.numeric(f), is.numeric(u),
-              is.numeric(lambs), is.integer(layers), is.numeric(eps))
-    if (dim(A)[1] < 2) stop("Linear operator has dim less than 2x2")
-    if (dim(A)[1] != dim(A)[2]) stop("Operator must be a quadratic")
-    mu <- (max(lambs) + min(lambs))/2 + ((max(lambs) - min(lambs))/2) * cos(((2*(1:layers) - 1)*pi)/(2*layers))
-    repeat {
-        for (iter in (1:layers)) {
-            u <- u - (1/mu[iter]) * (A %*% u - f)
-        }
-        if (((sqrt(t(A %*% u - f) %*% (A %*% u - f))) / (sqrt(t(f) %*% f)))[1,1] < eps) break
-    }
-    return(u)
-}
-
-# История Чебышев ---------------------------------------------------------------
-
-Chebishev.history <- function(A, f, u, lambs, layers, eps = 10e-4) {
-    stopifnot(is.numeric(A), is.matrix(A), is.numeric(f), is.numeric(u),
-              is.numeric(lambs), is.integer(layers), is.numeric(eps))
-    if (dim(A)[1] < 2) stop("Linear operator has dim less than 2x2")
-    if (dim(A)[1] != dim(A)[2]) stop("Operator must be a quadratic")
-    mu <- (max(lambs) + min(lambs))/2 + ((max(lambs) - min(lambs))/2) * cos(((2*(1:layers) - 1)*pi)/(2*layers))
-    i <- 0
-    num.layers <- 0
-    u.hist <- matrix(u, nrow = length(u))
-    t1 <- Sys.time()
-    repeat {
-        num.layers <- num.layers + 1
-        for (iter in (1:layers)) {
-            u <- u - (1/mu[iter]) * (A %*% u - f)
-            u.hist <- cbind(u.hist, u)
-            i <- i + 1
-        }
-        if (((sqrt(t(A %*% u - f) %*% (A %*% u - f))) / (sqrt(t(f) %*% f)))[1,1] < eps) break
-    }
-    t2 <- Sys.time()
-    return(list(num.iter = i, num.layers = num.layers, var = u, var.hist = u.hist, systime.iter = difftime(t2, t1, units = "secs")[[1]]))
-}
-
-
