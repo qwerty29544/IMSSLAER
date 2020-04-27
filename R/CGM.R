@@ -1,3 +1,6 @@
+# Метод является неустойчивым, необходимо сверху ограничивать число итераций
+# Также со всеми методами проделать, обязательно
+
 # Conjugate gradient method -----------------------------------------------
 #' Title
 #'
@@ -23,12 +26,11 @@ CGM <- function(A, f, u, eps = 0.00001) {
     # Проверка на размерность матрицы оператора
     if (dim(A)[1] != dim(A)[2]) stop("Operator must be quadratic")
     
-    um <- u
-    r <- f - A %*% um
+    r <- f - A %*% u
     z <- r
-    repeat{
+    repeat {
         alpha = (t(r) %*% r) / (t(A %*% z) %*% z)
-        um = um + alpha[1,1] * z
+        u = u + alpha[1,1] * z
         r1 = r - alpha[1,1] * (A %*% z)
         beta <- (t(r1) %*% r1) / (t(r) %*% r)
         z = r1 + beta[1,1] * z
@@ -36,7 +38,7 @@ CGM <- function(A, f, u, eps = 0.00001) {
         r = r1
         rm(r1)
     }
-    return(um)
+    return(u)
 }
 
 
