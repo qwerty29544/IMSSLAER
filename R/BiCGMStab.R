@@ -5,7 +5,7 @@
 
 
 # Устойчивый алгоритм, итерации проверять не нужно
-BiCGMStab <- function(A, f, u, eps = 0.0000001) {
+BiCGMStab <- function(A, f, u, eps = 0.00001) {
     stopifnot(is.matrix(A), is.numeric(A) || is.complex(A), is.numeric(f), is.numeric(u), is.numeric(eps))
     
     dimA <- dim(A)[1]
@@ -29,7 +29,7 @@ BiCGMStab <- function(A, f, u, eps = 0.0000001) {
         alpha <- (rho1 / (t(rtild) %*% v)[1, 1])
         s <- rho - alpha * v
         t1 <- (A %*% s)
-        omega <- ((t(t1) %*% s) / (t(t1) %*% t1))[1, 1]
+        omega <- ((Conj(t(t1)) %*% s) / (Conj(t(t1)) %*% t1))[1, 1]
         u <- u + omega * s + alpha * p
         r <- s - omega * t1
         if (sqrt(t(r) %*% r)/sqrt(t(f) %*% f) < eps) break
@@ -38,6 +38,10 @@ BiCGMStab <- function(A, f, u, eps = 0.0000001) {
     
     return(u)
 }
+
+
+# Testing -----------------------------------------------------------------
+
 
 A <- diag(rnorm(25), nrow = 5, ncol = 5)
 f <- rnorm(5)
