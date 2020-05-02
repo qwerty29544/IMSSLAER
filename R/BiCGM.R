@@ -120,6 +120,3 @@ u <- rnorm(5)
 
 BiCGM.history(A, f, u)
 solve(A) %*% f
-
-
-IMSSLAE::
