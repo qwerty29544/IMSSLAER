@@ -8,6 +8,7 @@
 #' @param f - bias - numeric or complex vector (вектор свободных членов вещественный или комплексный)
 #' @param u - initial approximation of an unknown vector - numeric or complex vector (начальное приближение неизвестного вектора - вещественный или комплексный вектор)
 #' @param eps - accuracy of calculation of the desired vector - numeric (точность вычисления искомого вектора - вещественная)
+#' @param iterations - the upper limit on the number of iterations when the method diverges (ограничение сверху на число итераций при расхождении метода)
 #'
 #' @return u - unknown vector in some approximation (неизвестный вектор в некотором приближении)
 #' @export
@@ -23,16 +24,29 @@
 #' u <- rnorm(4) + 1i * rnorm(4)
 #' result <- SIM(A = A, u = u, f = f, eps = 10e-4)
 #' print(result)
-SIM <- function(A, f, u, eps = 10e-4) {
+SIM <- function(A, f, u, eps = 10e-4, iterations = 10000) {
     # Проверка на N >= 2 - размерность
     # Все размерности совпадают
     # Все типы данных соответствуют ограничениям
-    stopifnot(is.matrix(A), is.numeric(A) || is.complex(A), is.numeric(f) || is.complex(f), is.numeric(u) || is.complex(u), is.numeric(eps), nrow(A) == ncol(A), ncol(A) == length(f), length(f) == length(u), ncol(A) >= 2)
+    stopifnot(is.matrix(A), 
+              is.numeric(A) || is.complex(A), 
+              is.numeric(f) || is.complex(f), 
+              is.numeric(u) || is.complex(u), 
+              is.numeric(eps), 
+              nrow(A) == ncol(A), ncol(A) == length(f), length(f) == length(u), 
+              ncol(A) >= 2, 
+              length(eps) == 1)
     dimA <- dim(A)[1]
     B <- diag(1, nrow = dimA, ncol = dimA) - A
+    i <- 0
     repeat {
         u <- B %*% u + f
+        i <- i + 1
         if (abs((sqrt(t(A %*% u - f) %*% (A %*% u - f))) / (sqrt(t(f) %*% f))) < eps) break
+        if (i > iterations) {
+            message("Iterations of the method may not come close to the final result / allowed number of iterations is exceeded / check the spectrum of operator A: sigma(A) must be less than 1")
+            break
+        }
     }
     return(u)
 }
@@ -49,6 +63,7 @@ SIM <- function(A, f, u, eps = 10e-4) {
 #' @param f - bias - numeric or complex vector (вектор свободных членов вещественный или комплексный)
 #' @param u - initial approximation of an unknown vector - numeric or complex vector (начальное приближение неизвестного вектора - вещественный или комплексный вектор)
 #' @param eps - accuracy of calculation of the desired vector - numeric (точность вычисления искомого вектора - вещественная)
+#' @param iterations - the upper limit on the number of iterations when the method diverges (ограничение сверху на число итераций при расхождении метода)
 #'
 #' @return result - list: 
 #' num.iter - number of iterations (число итераций); 
@@ -68,11 +83,18 @@ SIM <- function(A, f, u, eps = 10e-4) {
 #' u <- rnorm(4) + 1i * rnorm(4)
 #' result <- SIM.history(A = A, u = u, f = f, eps = 10e-4)
 #' print(result)
-SIM.history <- function(A, f, u, eps = 10e-4) {
+SIM.history <- function(A, f, u, eps = 10e-4, iterations = 10000) {
     # Проверка на N >= 2 - размерность
     # Все размерности совпадают
     # Все типы данных соответствуют ограничениям
-    stopifnot(is.matrix(A), is.numeric(A) || is.complex(A), is.numeric(f) || is.complex(f), is.numeric(u) || is.complex(u), is.numeric(eps), nrow(A) == ncol(A), ncol(A) == length(f), length(f) == length(u), ncol(A) >= 2)
+    stopifnot(is.matrix(A), 
+              is.numeric(A) || is.complex(A), 
+              is.numeric(f) || is.complex(f), 
+              is.numeric(u) || is.complex(u), 
+              is.numeric(eps), 
+              nrow(A) == ncol(A), ncol(A) == length(f), length(f) == length(u), 
+              ncol(A) >= 2, 
+              length(eps) == 1)
     dimA <- dim(A)[1]
     i <- 0
     u.hist <- matrix(u, nrow = dimA)
@@ -83,6 +105,10 @@ SIM.history <- function(A, f, u, eps = 10e-4) {
         i <- i + 1
         u.hist <- cbind(u.hist, u)
         if (abs((sqrt(t(A %*% u - f) %*% (A %*% u - f))) / (sqrt(t(f) %*% f))) < eps) break
+        if (i > iterations) {
+            message("Iterations of the method may not come close to the final result / allowed number of iterations is exceeded / check the spectrum of operator A: sigma(A) must be less than 1")
+            break   
+        }
     }
     t2 <- Sys.time()
     return(list(num.iter = i, var = u, var.hist = u.hist, systime.iter = difftime(t2, t1, units = "secs")[[1]]))

@@ -1,4 +1,4 @@
 library(testthat)
-library(IMSSLAE)
+library(IMSSLAER)
 
-test_check("IMSSLAE")
+test_check("IMSSLAER")
