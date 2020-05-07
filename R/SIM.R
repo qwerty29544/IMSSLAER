@@ -2,11 +2,11 @@
 
 #' Simple iteration method 
 #' (Метод простой итерации)
-#' @description An iterative method for solving systems of linear algebraic equations by an iterative method. The method is based on the operation of reducing the operator equation to an iterative form, in which, when the matrix is multiplied by a vector, the unknown vector u approaches the real desired solution, in form: Au = f. A significant limitation of this method is the need for strict inequality for the spectrum of the operator in order to converge the method: sigma(A) < 1
-#' (Итерационный метод решения систем линейных алгебраических уравнений итерационным методом. В основе метода лежит операция приведения операторного уравнения к итерационной форме, в которой при умножении матрицы на вектор происходит приближение неизвестного вектора u к реальному искомому решению, в форме: Au = f. Существенным ограничением данного метода является необходимость строгого неравенства для спектра оператора в целях сходимости метода: sigma(A) < 1)
-#' @param A - the original matrix of the operator equation - numeric or complex (исходная матрица операторного уравнения - вещественная или комплексная)
-#' @param f - bias - numeric or complex (вектор свободных членов вещественный или комплексный)
-#' @param u - initial approximation of an unknown vector - numeric or complex (начальное приближение неизвестного вектора - вещественное или комплексное)
+#' @description A stationary iterative method for solving systems of linear algebraic equations. The method is based on the operation of reducing the operator equation to an iterative form, in which, when the matrix is multiplied by a vector, the unknown vector u approaches the real desired solution, in form: Au = f. A significant limitation of this method is the need for strict inequality for the spectrum of the operator in order to converge the method: sigma(A) < 1
+#' (Стационарный итерационный метод решения систем линейных алгебраических уравнений. В основе метода лежит операция приведения операторного уравнения к итерационной форме, в которой при умножении матрицы на вектор происходит приближение неизвестного вектора u к реальному искомому решению, в форме: Au = f. Существенным ограничением данного метода является необходимость строгого неравенства для спектра оператора в целях сходимости метода: sigma(A) < 1)
+#' @param A - the original matrix of the operator equation - numeric or complex matrix (исходная матрица операторного уравнения - вещественная или комплексная)
+#' @param f - bias - numeric or complex vector (вектор свободных членов вещественный или комплексный)
+#' @param u - initial approximation of an unknown vector - numeric or complex vector (начальное приближение неизвестного вектора - вещественный или комплексный вектор)
 #' @param eps - accuracy of calculation of the desired vector - numeric (точность вычисления искомого вектора - вещественная)
 #'
 #' @return u - unknown vector in some approximation (неизвестный вектор в некотором приближении)
@@ -24,12 +24,12 @@
 #' result <- SIM(A = A, u = u, f = f, eps = 10e-4)
 #' print(result)
 SIM <- function(A, f, u, eps = 10e-4) {
+    # Проверка на N >= 2 - размерность
+    # Все размерности совпадают
+    # Все типы данных соответствуют ограничениям
     stopifnot(is.matrix(A), is.numeric(A) || is.complex(A), is.numeric(f) || is.complex(f), is.numeric(u) || is.complex(u), is.numeric(eps), nrow(A) == ncol(A), ncol(A) == length(f), length(f) == length(u), ncol(A) >= 2)
-    
     dimA <- dim(A)[1]
-    
     B <- diag(1, nrow = dimA, ncol = dimA) - A
-    
     repeat {
         u <- B %*% u + f
         if (abs((sqrt(t(A %*% u - f) %*% (A %*% u - f))) / (sqrt(t(f) %*% f))) < eps) break
@@ -37,18 +37,17 @@ SIM <- function(A, f, u, eps = 10e-4) {
     return(u)
 }
 
-
 # simple iterations method history -------------------------------------------------------------
 
 #' Simple iteration method history
 #' (Метод простой итерации)
-#' @description An iterative method for solving systems of linear algebraic equations by an iterative method. The method is based on the operation of reducing the operator equation to an iterative form, in which, when the matrix is multiplied by a vector, the unknown vector u approaches the real desired solution, in form: Au = f. A significant limitation of this method is the need for strict inequality for the spectrum of the operator in order to converge the method: sigma(A) < 1
-#' (Итерационный метод решения систем линейных алгебраических уравнений итерационным методом. В основе метода лежит операция приведения операторного уравнения к итерационной форме, в которой при умножении матрицы на вектор происходит приближение неизвестного вектора u к реальному искомому решению, в форме: Au = f. Существенным ограничением данного метода является необходимость строгого неравенства для спектра оператора в целях сходимости метода: sigma(A) < 1)
+#' @description A stationary iterative method for solving systems of linear algebraic equations. The method is based on the operation of reducing the operator equation to an iterative form, in which, when the matrix is multiplied by a vector, the unknown vector u approaches the real desired solution, in form: Au = f. A significant limitation of this method is the need for strict inequality for the spectrum of the operator in order to converge the method: sigma(A) < 1
+#' (Стационарный итерационный метод решения систем линейных алгебраических уравнений. В основе метода лежит операция приведения операторного уравнения к итерационной форме, в которой при умножении матрицы на вектор происходит приближение неизвестного вектора u к реальному искомому решению, в форме: Au = f. Существенным ограничением данного метода является необходимость строгого неравенства для спектра оператора в целях сходимости метода: sigma(A) < 1)
 #' @details This method is necessary to preserve the history of sequential calculation of an unknown vector in order to visualize the convergence of the method 
 #' (Данный метод необходим для сохранения истории последовательного вычисления неизвестного вектора с целью визуализации сходимости метода)
-#' @param A - the original matrix of the operator equation - numeric or complex (исходная матрица операторного уравнения - вещественная или комплексная)
-#' @param f - bias - numeric or complex (вектор свободных членов вещественный или комплексный)
-#' @param u - initial approximation of an unknown vector - numeric or complex (начальное приближение неизвестного вектора - вещественное или комплексное)
+#' @param A - the original matrix of the operator equation - numeric or complex matrix (исходная матрица операторного уравнения - вещественная или комплексная)
+#' @param f - bias - numeric or complex vector (вектор свободных членов вещественный или комплексный)
+#' @param u - initial approximation of an unknown vector - numeric or complex vector (начальное приближение неизвестного вектора - вещественный или комплексный вектор)
 #' @param eps - accuracy of calculation of the desired vector - numeric (точность вычисления искомого вектора - вещественная)
 #'
 #' @return result - list: 
@@ -70,16 +69,11 @@ SIM <- function(A, f, u, eps = 10e-4) {
 #' result <- SIM.history(A = A, u = u, f = f, eps = 10e-4)
 #' print(result)
 SIM.history <- function(A, f, u, eps = 10e-4) {
-    stopifnot(is.matrix(A), is.numeric(A) || is.complex(A), is.numeric(f) || is.complex(f), is.numeric(u) || is.complex(u), is.numeric(eps))
+    # Проверка на N >= 2 - размерность
+    # Все размерности совпадают
+    # Все типы данных соответствуют ограничениям
+    stopifnot(is.matrix(A), is.numeric(A) || is.complex(A), is.numeric(f) || is.complex(f), is.numeric(u) || is.complex(u), is.numeric(eps), nrow(A) == ncol(A), ncol(A) == length(f), length(f) == length(u), ncol(A) >= 2)
     dimA <- dim(A)[1]
-    # Проверка на n >= 2
-    if (dimA[1] < 2) {
-        stop("Operator must have dim >= 2")
-    }
-    # Проверка на размерность матрицы оператора
-    if (dim(A)[1] != dim(A)[2]) {
-        stop("Operator must be quadratic")
-    }
     i <- 0
     u.hist <- matrix(u, nrow = dimA)
     t1 <- Sys.time()
