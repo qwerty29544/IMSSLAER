@@ -2,22 +2,26 @@
 % Please edit documentation in R/BiCGM.R
 \name{BiCGM}
 \alias{BiCGM}
-\title{Title}
+\title{Biconjugate gradient method [BiCGM]
+(Метод бисопряженных градиентов)}
 \usage{
-BiCGM(A, f, u, eps = 1e-06)
+BiCGM(A, f, u, eps = 0.001, iterations = 10000)
 }
 \arguments{
-\item{A}{}
+\item{A}{- the original matrix of the operator equation - numeric or complex matrix (исходная матрица операторного уравнения - вещественная или комплексная)}
 
-\item{f}{}
+\item{f}{- bias - numeric or complex vector (вектор свободных членов вещественный или комплексный)}
 
-\item{u}{}
+\item{u}{- initial approximation of an unknown vector - numeric or complex vector (начальное приближение неизвестного вектора - вещественный или комплексный вектор)}
 
-\item{eps}{}
+\item{eps}{- accuracy of calculation of the desired vector - numeric (точность вычисления искомого вектора - вещественная)}
+
+\item{iterations}{- the upper limit on the number of iterations when the method diverges (ограничение сверху на число итераций при расхождении метода)}
 }
 \value{
-
+u - unknown vector in some approximation (неизвестный вектор в некотором приближении)
 }
 \description{
-Title
+Non-stationary iterative numerical method for solving SLAEs of the Krylov type. It is a generalization of the conjugate gradient method.
+(Нестационарный итерационный численный метод решения СЛАУ крыловского типа. Является обобщением метода сопряжённых градиентов.)
 }

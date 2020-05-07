@@ -1,68 +1,70 @@
-
 # Biconjugate gradient method, BiCGM --------------------------------------
-
 # https://ru.wikipedia.org/wiki/%D0%9C%D0%B5%D1%82%D0%BE%D0%B4_%D0%B1%D0%B8%D1%81%D0%BE%D0%BF%D1%80%D1%8F%D0%B6%D1%91%D0%BD%D0%BD%D1%8B%D1%85_%D0%B3%D1%80%D0%B0%D0%B4%D0%B8%D0%B5%D0%BD%D1%82%D0%BE%D0%B2
-
-# Алгоритм для действительных матриц
-#' Title
+# Данный алгоритм предназначен только для действительных матриц
+# 
+#' Biconjugate gradient method [BiCGM]
+#' (Метод бисопряженных градиентов)
+#' @description Non-stationary iterative numerical method for solving SLAEs of the Krylov type. It is a generalization of the conjugate gradient method.
+#' (Нестационарный итерационный численный метод решения СЛАУ крыловского типа. Является обобщением метода сопряжённых градиентов.)
+#' @param A - the original matrix of the operator equation - numeric or complex matrix (исходная матрица операторного уравнения - вещественная или комплексная)
+#' @param f - bias - numeric or complex vector (вектор свободных членов вещественный или комплексный)
+#' @param u - initial approximation of an unknown vector - numeric or complex vector (начальное приближение неизвестного вектора - вещественный или комплексный вектор)
+#' @param eps - accuracy of calculation of the desired vector - numeric (точность вычисления искомого вектора - вещественная)
+#' @param iterations - the upper limit on the number of iterations when the method diverges (ограничение сверху на число итераций при расхождении метода)
 #'
-#' @param A 
-#' @param f 
-#' @param u 
-#' @param eps 
-#'
-#' @return
+#' @return u - unknown vector in some approximation (неизвестный вектор в некотором приближении)
 #' @export
 #'
 #' @examples
-BiCGM <- function(A, f, u, eps = 0.000001) {
-    
-    stopifnot(is.matrix(A), is.numeric(A) || is.complex(A), is.numeric(f), is.numeric(u), is.numeric(eps))
-    
-    dimA <- dim(A)[1]
-    
-    # Проверка на n >= 2
-    if (dimA[1] < 2) stop("Operator must have dim >= 2")
-    
-    # Проверка на размерность матрицы оператора
-    if (dim(A)[1] != dim(A)[2]) stop("Operator must be quadratic")
-    
+BiCGM <- function(A, f, u, eps = 10e-04, iterations = 10000) {
+    stopifnot(is.matrix(A), 
+              is.numeric(A), 
+              is.numeric(f) || is.complex(f), 
+              is.numeric(u) || is.complex(u), 
+              is.numeric(eps), length(eps) == 1, is.atomic(eps), 
+              nrow(A) == ncol(A), ncol(A) == length(f), length(f) == length(u), 
+              ncol(A) >= 2, 
+              is.numeric(iterations), length(iterations) == 1, is.atomic(iterations))
     r <- f - A %*% u
     p <- r
     z <- r
     s <- r
-    
+    i <- 0
     repeat {
-        alpha <- ((t(p) %*% r) / (t(s) %*% (A %*% z)))[1, 1]
+        alpha <- ((t(p) %*% Conj(r)) / (t(s) %*% Conj(A %*% z)))[1, 1]
         u <- u + alpha * z
+        i <- i + 1
         r1 <- r - alpha * (A %*% z)
         p1 <- p - alpha * (t(A) %*% s)
-        beta <- ((t(p1) %*% r1) / (t(p) %*% r))[1, 1]
+        beta <- ((t(p1) %*% Conj(r1)) / (t(p) %*% Conj(r)))[1, 1]
         z <- r1 + beta * z
         s <- p1 + beta * s
-        if ((sqrt(t(r1) %*% r1) / sqrt(t(f) %*% f) < eps) & (sqrt(t(p1) %*% p1) / sqrt(t(f) %*% f) < eps)) break
+        if (abs((sqrt(t(A %*% u - f) %*% Conj(A %*% u - f))) / (sqrt(t(f) %*% Conj(f)))) < eps) break
+        if (i > iterations) {
+            message("Iterations of the method may not come close to the final result / allowed number of iterations is exceeded")
+            break
+        }
         r <- r1
         p <- p1
         rm(r1)
         rm(p1)
     }
-    
     return(u)
-
 }
-
-
 
 # BiCGM.history -----------------------------------------------------------
 
-#' Title
-#' 
+#' Biconjugate gradient method [BiCGM]
+#' (Метод бисопряженных градиентов)
+#' @description Non-stationary iterative numerical method for solving SLAEs of the Krylov type. It is a generalization of the conjugate gradient method.
+#' (Нестационарный итерационный численный метод решения СЛАУ крыловского типа. Является обобщением метода сопряжённых градиентов.)
 #' @details This method is necessary to preserve the history of sequential calculation of an unknown vector in order to visualize the convergence of the method 
 #' (Данный метод необходим для сохранения истории последовательного вычисления неизвестного вектора с целью визуализации сходимости метода)
-#' @param A 
-#' @param f 
-#' @param u 
-#' @param eps 
+#' @param A - the original matrix of the operator equation - numeric or complex matrix (исходная матрица операторного уравнения - вещественная или комплексная)
+#' @param f - bias - numeric or complex vector (вектор свободных членов вещественный или комплексный)
+#' @param u - initial approximation of an unknown vector - numeric or complex vector (начальное приближение неизвестного вектора - вещественный или комплексный вектор)
+#' @param eps - accuracy of calculation of the desired vector - numeric (точность вычисления искомого вектора - вещественная)
+#' @param iterations - the upper limit on the number of iterations when the method diverges (ограничение сверху на число итераций при расхождении метода)
 #'
 #' @return result - list: 
 #' num.iter - number of iterations (число итераций); 
@@ -72,19 +74,18 @@ BiCGM <- function(A, f, u, eps = 0.000001) {
 #' @export
 #'
 #' @examples
-BiCGM.history <- function(A, f, u, eps = 0.0000001) {
-    stopifnot(is.matrix(A), is.numeric(A) || is.complex(A), is.numeric(f), is.numeric(u), is.numeric(eps))
-    
-    dimA <- dim(A)[1]
-    
-    # Проверка на n >= 2
-    if (dimA[1] < 2) stop("Operator must have dim >= 2")
-    
-    # Проверка на размерность матрицы оператора
-    if (dim(A)[1] != dim(A)[2]) stop("Operator must be quadratic")
+BiCGM.history <- function(A, f, u, eps = 10e-04, iterations = 10000) {
+    stopifnot(is.matrix(A), 
+              is.numeric(A), 
+              is.numeric(f) || is.complex(f), 
+              is.numeric(u) || is.complex(u), 
+              is.numeric(eps), length(eps) == 1, is.atomic(eps), 
+              nrow(A) == ncol(A), ncol(A) == length(f), length(f) == length(u), 
+              ncol(A) >= 2, 
+              is.numeric(iterations), length(iterations) == 1, is.atomic(iterations))
     
     i <- 0
-    u.hist <- matrix(u, nrow = dimA)
+    u.hist <- matrix(u, nrow = nrow(A))
     t1 <- Sys.time()
     
     r <- f - A %*% u
@@ -93,18 +94,22 @@ BiCGM.history <- function(A, f, u, eps = 0.0000001) {
     s <- r
     
     repeat {
-        alpha <- ((t(p) %*% r) / (t(s) %*% (A %*% z)))[1, 1]
+        alpha <- ((t(p) %*% Conj(r)) / (t(s) %*% Conj(A %*% z)))[1, 1]
         u <- u + alpha * z
+        i <- i + 1
+        u.hist <- cbind(u.hist, u)
         r1 <- r - alpha * (A %*% z)
         p1 <- p - alpha * (t(A) %*% s)
-        beta <- ((t(p1) %*% r1) / (t(p) %*% r))[1, 1]
-        
-        i <- i + 3
-        u.hist <- cbind(u.hist, u)
-        
+        beta <- ((t(p1) %*% Conj(r1)) / (t(p) %*% Conj(r)))[1, 1]
         z <- r1 + beta * z
         s <- p1 + beta * s
-        if ((sqrt(t(r1) %*% r1) / sqrt(t(f) %*% f) < eps) & (sqrt(t(p1) %*% p1) / sqrt(t(f) %*% f) < eps)) break
+    
+        if (abs((sqrt(t(A %*% u - f) %*% Conj(A %*% u - f))) / (sqrt(t(f) %*% Conj(f)))) < eps) break
+        if (i > iterations) {
+            message("Iterations of the method may not come close to the final result / allowed number of iterations is exceeded")
+            break
+        }
+        
         r <- r1
         p <- p1
         rm(r1)
@@ -115,14 +120,3 @@ BiCGM.history <- function(A, f, u, eps = 0.0000001) {
     return(list(num.iter = i, var = u, var.hist = u.hist, systime.iter = difftime(t2, t1, units = "secs")[[1]]))
 
 }
-
-
-# testing -----------------------------------------------------------------
-
-
-A <- diag(rnorm(25), nrow = 5, ncol = 5)
-f <- rnorm(5)
-u <- rnorm(5)
-
-BiCGM.history(A, f, u)
-solve(A) %*% f
