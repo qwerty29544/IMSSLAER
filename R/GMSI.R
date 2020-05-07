@@ -398,15 +398,12 @@ GMSI.mu <- function(A, f, u, lambs, eps = 10e-4) {
               is.numeric(u) || is.complex(u),
               is.numeric(eps),
               is.complex(lambs) || is.numeric(lambs))
+    stopifnot((nrow(A) == ncol(A)) & (ncol(A) == length(f)) & (length(f) == length(u)))
     # Получение размерности матрицы А
     dimA <- dim(A)[1]
     # Проверка на n >= 2
     if (dimA[1] < 2) {
         stop("Operator must have dim >= 2")
-    }
-    # Проверка на размерность матрицы оператора
-    if (dim(A)[1] != dim(A)[2]) {
-        stop("Operator must be quadratic")
     }
     # Итерации
     mu <- muFind(lambs = lambs, draw = F)[1]
@@ -467,13 +464,19 @@ GMSI.mu.file <- function(A, f, u, input.file = "complexNumbeRS", out = F,
 
 #' Title
 #'
+#'@details This method is necessary to preserve the history of sequential calculation of an unknown vector in order to visualize the convergence of the method 
+#' (Данный метод необходим для сохранения истории последовательного вычисления неизвестного вектора с целью визуализации сходимости метода)
 #' @param A 
 #' @param f 
 #' @param u 
 #' @param mu 
 #' @param eps 
 #'
-#' @return
+#' @return result - list: 
+#' num.iter - number of iterations (число итераций); 
+#' var - unknown vector result (результат вычисления неизвестного вектора); 
+#' var.hist - history of computing an unknown vector (история вычисления неизвестного вектора); 
+#' systime.iter - system time calculation (системное время вычисления); 
 #' @export
 #'
 #' @examples
@@ -515,13 +518,19 @@ GMSI.history <- function(A, f, u, mu, eps = 10e-4) {
 
 #' Title
 #'
+#' @details This method is necessary to preserve the history of sequential calculation of an unknown vector in order to visualize the convergence of the method 
+#' (Данный метод необходим для сохранения истории последовательного вычисления неизвестного вектора с целью визуализации сходимости метода)
 #' @param A 
 #' @param f 
 #' @param u 
 #' @param lambs 
 #' @param eps 
 #'
-#' @return
+#' @return result - list: 
+#' num.iter - number of iterations (число итераций); 
+#' var - unknown vector result (результат вычисления неизвестного вектора); 
+#' var.hist - history of computing an unknown vector (история вычисления неизвестного вектора); 
+#' systime.iter - system time calculation (системное время вычисления); 
 #' @export
 #'
 #' @examples
@@ -561,7 +570,9 @@ GMSI.mu.history <- function(A, f, u, lambs, eps = 10e-4) {
 
 
 #' Title
-#'
+#' 
+#' @details This method is necessary to preserve the history of sequential calculation of an unknown vector in order to visualize the convergence of the method 
+#' (Данный метод необходим для сохранения истории последовательного вычисления неизвестного вектора с целью визуализации сходимости метода)
 #' @param A 
 #' @param f 
 #' @param u 
@@ -572,7 +583,11 @@ GMSI.mu.history <- function(A, f, u, lambs, eps = 10e-4) {
 #' @param plot.file 
 #' @param eps 
 #'
-#' @return
+#' @return result - list: 
+#' num.iter - number of iterations (число итераций); 
+#' var - unknown vector result (результат вычисления неизвестного вектора); 
+#' var.hist - history of computing an unknown vector (история вычисления неизвестного вектора); 
+#' systime.iter - system time calculation (системное время вычисления); 
 #' @export
 #'
 #' @examples

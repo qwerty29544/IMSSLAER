@@ -2,10 +2,12 @@
 
 #' Title
 #'
-#' @param A 
-#' @param f 
-#' @param u 
-#' @param eps 
+#' @param A - the original matrix of the operator equation (исходная матрица операторного уравнения)
+#' @param f - bias (вектор свободных членов)
+#' @param u - initial approximation of an unknown vector (начальное приближение неизвестного вектора)
+#' @param eps - accuracy of calculation of the desired vector (точность вычисления искомого вектора)
+#'
+#' @return u - unknown vector in some approximation (неизвестный вектор в некотором приближении)
 #'
 #' @return
 #' @export
@@ -36,12 +38,18 @@ GDM <- function(A, f, u, eps = 10e-4) {
 
 #' Title
 #'
-#' @param A 
-#' @param f 
-#' @param u 
-#' @param eps 
+#' @details This method is necessary to preserve the history of sequential calculation of an unknown vector in order to visualize the convergence of the method 
+#' (Данный метод необходим для сохранения истории последовательного вычисления неизвестного вектора с целью визуализации сходимости метода)
+#' @param A - the original matrix of the operator equation (исходная матрица операторного уравнения)
+#' @param f - bias (вектор свободных членов)
+#' @param u - initial approximation of an unknown vector (начальное приближение неизвестного вектора)
+#' @param eps - accuracy of calculation of the desired vector (точность вычисления искомого вектора) 
 #'
-#' @return
+#' @return result - list: 
+#' num.iter - number of iterations (число итераций); 
+#' var - unknown vector result (результат вычисления неизвестного вектора); 
+#' var.hist - history of computing an unknown vector (история вычисления неизвестного вектора); 
+#' systime.iter - system time calculation (системное время вычисления); 
 #' @export
 #'
 #' @examples

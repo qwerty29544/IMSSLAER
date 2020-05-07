@@ -7,16 +7,16 @@
 IMRES(A, f, u, eps = 0.001)
 }
 \arguments{
-\item{A}{}
+\item{A}{- the original matrix of the operator equation (исходная матрица операторного уравнения)}
 
-\item{f}{}
+\item{f}{- bias (вектор свободных членов)}
 
-\item{u}{}
+\item{u}{- initial approximation of an unknown vector (начальное приближение неизвестного вектора)}
 
-\item{eps}{}
+\item{eps}{- accuracy of calculation of the desired vector (точность вычисления искомого вектора)}
 }
 \value{
-
+u - unknown vector in some approximation (неизвестный вектор в некотором приближении)
 }
 \description{
 Title

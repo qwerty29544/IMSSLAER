@@ -2,22 +2,37 @@
 % Please edit documentation in R/SIM.R
 \name{SIM}
 \alias{SIM}
-\title{Title}
+\title{Simple iteration method 
+(Метод простой итерации)}
 \usage{
 SIM(A, f, u, eps = 0.001)
 }
 \arguments{
-\item{A}{}
+\item{A}{- the original matrix of the operator equation - numeric or complex (исходная матрица операторного уравнения - вещественная или комплексная)}
 
-\item{f}{}
+\item{f}{- bias - numeric or complex (вектор свободных членов вещественный или комплексный)}
 
-\item{u}{}
+\item{u}{- initial approximation of an unknown vector - numeric or complex (начальное приближение неизвестного вектора - вещественное или комплексное)}
 
-\item{eps}{}
+\item{eps}{- accuracy of calculation of the desired vector - numeric (точность вычисления искомого вектора - вещественная)}
 }
 \value{
-
+u - unknown vector in some approximation (неизвестный вектор в некотором приближении)
 }
 \description{
-Title
+An iterative method for solving systems of linear algebraic equations by an iterative method. The method is based on the operation of reducing the operator equation to an iterative form, in which, when the matrix is multiplied by a vector, the unknown vector u approaches the real desired solution, in form: Au = f. A significant limitation of this method is the need for strict inequality for the spectrum of the operator in order to converge the method: sigma(A) < 1
+(Итерационный метод решения систем линейных алгебраических уравнений итерационным методом. В основе метода лежит операция приведения операторного уравнения к итерационной форме, в которой при умножении матрицы на вектор происходит приближение неизвестного вектора u к реальному искомому решению, в форме: Au = f. Существенным ограничением данного метода является необходимость строгого неравенства для спектра оператора в целях сходимости метода: sigma(A) < 1)
+}
+\examples{
+A <- diag(c(0.3, 0.4, 0.5), nrow = 3, ncol = 3)
+f <- rnorm(3)
+u <- rnorm(3)
+result <- SIM(A = A, u = u, f = f, eps = 10e-4)
+print(result)
+
+A <- diag(c(0.5, 0.6 + 0.3i, 0.8, 0.2), nrow = 4, ncol = 4)
+f <- rnorm(4) + 1i * rnorm(4)
+u <- rnorm(4) + 1i * rnorm(4)
+result <- SIM(A = A, u = u, f = f, eps = 10e-4)
+print(result)
 }

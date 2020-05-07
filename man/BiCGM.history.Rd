@@ -16,8 +16,16 @@ BiCGM.history(A, f, u, eps = 1e-07)
 \item{eps}{}
 }
 \value{
-
+result - list: 
+num.iter - number of iterations (число итераций); 
+var - unknown vector result (результат вычисления неизвестного вектора); 
+var.hist - history of computing an unknown vector (история вычисления неизвестного вектора); 
+systime.iter - system time calculation (системное время вычисления);
 }
 \description{
 Title
+}
+\details{
+This method is necessary to preserve the history of sequential calculation of an unknown vector in order to visualize the convergence of the method 
+(Данный метод необходим для сохранения истории последовательного вычисления неизвестного вектора с целью визуализации сходимости метода)
 }

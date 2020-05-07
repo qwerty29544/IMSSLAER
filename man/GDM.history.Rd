@@ -7,17 +7,25 @@
 GDM.history(A, f, u, eps = 0.001)
 }
 \arguments{
-\item{A}{}
+\item{A}{- the original matrix of the operator equation (исходная матрица операторного уравнения)}
 
-\item{f}{}
+\item{f}{- bias (вектор свободных членов)}
 
-\item{u}{}
+\item{u}{- initial approximation of an unknown vector (начальное приближение неизвестного вектора)}
 
-\item{eps}{}
+\item{eps}{- accuracy of calculation of the desired vector (точность вычисления искомого вектора)}
 }
 \value{
-
+result - list: 
+num.iter - number of iterations (число итераций); 
+var - unknown vector result (результат вычисления неизвестного вектора); 
+var.hist - history of computing an unknown vector (история вычисления неизвестного вектора); 
+systime.iter - system time calculation (системное время вычисления);
 }
 \description{
 Title
+}
+\details{
+This method is necessary to preserve the history of sequential calculation of an unknown vector in order to visualize the convergence of the method 
+(Данный метод необходим для сохранения истории последовательного вычисления неизвестного вектора с целью визуализации сходимости метода)
 }

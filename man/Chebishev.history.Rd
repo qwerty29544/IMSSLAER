@@ -20,8 +20,17 @@ Chebishev.history(A, f, u, lambs, layers, eps = 0.001)
 \item{eps}{}
 }
 \value{
-
+result - list: 
+num.iter - number of iterations (число итераций); 
+num.layers - number of layers used (число использованных слоёв); 
+var - unknown vector result (результат вычисления неизвестного вектора); 
+var.hist - history of computing an unknown vector (история вычисления неизвестного вектора); 
+systime.iter - system time calculation (системное время вычисления);
 }
 \description{
 Title
+}
+\details{
+This method is necessary to preserve the history of sequential calculation of an unknown vector in order to visualize the convergence of the method 
+(Данный метод необходим для сохранения истории последовательного вычисления неизвестного вектора с целью визуализации сходимости метода)
 }
