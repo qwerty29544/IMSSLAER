@@ -39,7 +39,7 @@ CGM <- function(A, f, u, eps = 10e-04, iterations = 10000) {
         i <- i + 1
         if (abs((sqrt(t(A %*% u - f) %*% Conj(A %*% u - f))) / (sqrt(t(f) %*% Conj(f)))) < eps) break
         if (i > iterations) {
-            message("Iterations of the method may not come close to the final result / allowed number of iterations is exceeded / check the spectrum of operator A: sigma(A) must be less than 1")
+            message("Iterations of the method may not come close to the final result / allowed number of iterations is exceeded")
             break
         }
         r = r1
@@ -100,7 +100,7 @@ CGM.history <- function(A, f, u, eps = 10e-04, iterations = 10000) {
         i <- i + 1
         if (abs((sqrt(t(A %*% u - f) %*% Conj(A %*% u - f))) / (sqrt(t(f) %*% Conj(f)))) < eps) break
         if (i > iterations) {
-            message("Iterations of the method may not come close to the final result / allowed number of iterations is exceeded / check the spectrum of operator A: sigma(A) must be less than 1")
+            message("Iterations of the method may not come close to the final result / allowed number of iterations is exceeded")
             break
         }
         r = r1
