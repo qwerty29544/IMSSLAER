@@ -2,22 +2,33 @@
 % Please edit documentation in R/CGM.R
 \name{CGM}
 \alias{CGM}
-\title{Title}
+\title{Conjugate gradient method [CGM]
+(Метод сопряженных градиентов)}
 \usage{
-CGM(A, f, u, eps = 1e-05)
+CGM(A, f, u, eps = 0.001, iterations = 10000)
 }
 \arguments{
-\item{A}{- the original matrix of the operator equation (исходная матрица операторного уравнения)}
+\item{A}{- the original matrix of the operator equation - numeric or complex matrix (исходная матрица операторного уравнения - вещественная или комплексная)}
 
-\item{f}{- bias (вектор свободных членов)}
+\item{f}{- bias - numeric or complex vector (вектор свободных членов вещественный или комплексный)}
 
-\item{u}{- initial approximation of an unknown vector (начальное приближение неизвестного вектора)}
+\item{u}{- initial approximation of an unknown vector - numeric or complex vector (начальное приближение неизвестного вектора - вещественный или комплексный вектор)}
 
-\item{eps}{- accuracy of calculation of the desired vector (точность вычисления искомого вектора)}
+\item{eps}{- accuracy of calculation of the desired vector - numeric (точность вычисления искомого вектора - вещественная)}
+
+\item{iterations}{- the upper limit on the number of iterations when the method diverges (ограничение сверху на число итераций при расхождении метода)}
 }
 \value{
 u - unknown vector in some approximation (неизвестный вектор в некотором приближении)
 }
 \description{
-Title
+A numerical method for solving systems of linear algebraic equations is an unsteady iterative method of the Krylov type. 
+(Численный метод решения систем линейных алгебраических уравнений, является нестационарным итерационным методом Крыловского типа.)
+}
+\examples{
+A <- diag(rnorm(5, 20) + 1i * rnorm(5, 9), nrow = 5, ncol = 5)
+u <- rnorm(5, 12)
+f <- rnorm(5, 17)
+solve(A) \%*\% f - CGM(A, f, u, iterations = 10000)
+all.equal(solve(A) \%*\% f, CGM(A, f, u, iterations = 10000))
 }

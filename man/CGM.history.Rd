@@ -2,18 +2,21 @@
 % Please edit documentation in R/CGM.R
 \name{CGM.history}
 \alias{CGM.history}
-\title{Title}
+\title{Conjugate gradient method history [CGM.history]
+(Метод сопряженных градиентов)}
 \usage{
-CGM.history(A, f, u, eps = 1e-05)
+CGM.history(A, f, u, eps = 0.001, iterations = 10000)
 }
 \arguments{
-\item{A}{- the original matrix of the operator equation (исходная матрица операторного уравнения)}
+\item{A}{- the original matrix of the operator equation - numeric or complex matrix (исходная матрица операторного уравнения - вещественная или комплексная)}
 
-\item{f}{- bias (вектор свободных членов)}
+\item{f}{- bias - numeric or complex vector (вектор свободных членов вещественный или комплексный)}
 
-\item{u}{- initial approximation of an unknown vector (начальное приближение неизвестного вектора)}
+\item{u}{- initial approximation of an unknown vector - numeric or complex vector (начальное приближение неизвестного вектора - вещественный или комплексный вектор)}
 
-\item{eps}{- accuracy of calculation of the desired vector (точность вычисления искомого вектора)}
+\item{eps}{- accuracy of calculation of the desired vector - numeric (точность вычисления искомого вектора - вещественная)}
+
+\item{iterations}{- the upper limit on the number of iterations when the method diverges (ограничение сверху на число итераций при расхождении метода)}
 }
 \value{
 result - list: 
@@ -23,9 +26,16 @@ var.hist - history of computing an unknown vector (история вычисле
 systime.iter - system time calculation (системное время вычисления);
 }
 \description{
-Title
+A numerical method for solving systems of linear algebraic equations is an unsteady iterative method of the Krylov type. 
+(Численный метод решения систем линейных алгебраических уравнений, является нестационарным итерационным методом Крыловского типа.)
 }
 \details{
 This method is necessary to preserve the history of sequential calculation of an unknown vector in order to visualize the convergence of the method 
 (Данный метод необходим для сохранения истории последовательного вычисления неизвестного вектора с целью визуализации сходимости метода)
+}
+\examples{
+A <- diag(rnorm(5, 20) + 1i * rnorm(5, 9), nrow = 5, ncol = 5)
+u <- rnorm(5, 12)
+f <- rnorm(5, 17)
+CGM.history(A, f, u, eps = 0.00001, iterations = 10000)
 }

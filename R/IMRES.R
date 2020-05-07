@@ -62,7 +62,7 @@ IMRES <- function(A, f, u, eps = 10e-4, iterations = 10000) {
 
 # IMRES history -----------------------------------------------------------
 
-#' An iteration minimal residual algorithm [IMRES]
+#' An iteration minimal residual algorithm history [IMRES.history]
 #' (Итерационный метод минимальных невязок)
 #' @description Non-stationary method for solving systems of linear algebraic equations. The essence of the method is to search at each iteration of the iterative parameter by the projection method. This method is a special case of the generalized minimal residual algorithm (GMRES) with the Krylov subspace of the first degree.
 #' (Нестационарный метод решения систем линейных алгебраических уравнений. Суть метода состоит в поиске на каждой итерации итерационного параметра проекционным методом. Данный метод является частным случаем обобщенного метода минимальных невязок с подпространством Крылова первой степени.)

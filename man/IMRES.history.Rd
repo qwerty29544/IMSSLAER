@@ -2,7 +2,7 @@
 % Please edit documentation in R/IMRES.R
 \name{IMRES.history}
 \alias{IMRES.history}
-\title{An iteration minimal residual algorithm [IMRES]
+\title{An iteration minimal residual algorithm history [IMRES.history]
 (Итерационный метод минимальных невязок)}
 \usage{
 IMRES.history(A, f, u, eps = 0.001, iterations = 10000)
@@ -48,4 +48,6 @@ uC <- rnorm(Reductor + 1) + 1i * rnorm(Reductor + 1)
 result <- IMRES.history(AC, fC, uC, eps = 10e-5)
 print(result)
 all.equal(solve(AC) \%*\% fC, result$var) 
+M <- matrix(rnorm((Reductor + 1) ^ 2), nrow = Reductor + 1, ncol = Reductor + 1)
+print(IMRES.history(M, fC, uN, eps = 10e-6, iterations = 10000))
 }

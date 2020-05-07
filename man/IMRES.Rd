@@ -40,4 +40,7 @@ uC <- rnorm(Reductor + 1) + 1i * rnorm(Reductor + 1)
 result <- IMRES(AC, fC, uC, eps = 10e-5)
 print(result)
 all.equal(solve(AC) \%*\% fC, result) 
+
+M <- matrix(rnorm((Reductor + 1) ^ 2), nrow = Reductor + 1, ncol = Reductor + 1)
+print(IMRES(M, fC, uN, eps = 10e-6, iterations = 10000))
 }
