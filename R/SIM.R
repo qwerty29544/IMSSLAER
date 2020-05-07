@@ -32,17 +32,17 @@ SIM <- function(A, f, u, eps = 10e-4, iterations = 10000) {
               is.numeric(A) || is.complex(A), 
               is.numeric(f) || is.complex(f), 
               is.numeric(u) || is.complex(u), 
-              is.numeric(eps), 
+              is.numeric(eps), length(eps) == 1, is.atomic(eps), 
               nrow(A) == ncol(A), ncol(A) == length(f), length(f) == length(u), 
               ncol(A) >= 2, 
-              length(eps) == 1)
+              is.numeric(iterations), length(iterations) == 1, is.atomic(iterations))
     dimA <- dim(A)[1]
     B <- diag(1, nrow = dimA, ncol = dimA) - A
     i <- 0
     repeat {
         u <- B %*% u + f
         i <- i + 1
-        if (abs((sqrt(t(A %*% u - f) %*% (A %*% u - f))) / (sqrt(t(f) %*% f))) < eps) break
+        if (abs((sqrt(t(A %*% u - f) %*% Conj(A %*% u - f))) / (sqrt(t(f) %*% Conj(f)))) < eps) break
         if (i > iterations) {
             message("Iterations of the method may not come close to the final result / allowed number of iterations is exceeded / check the spectrum of operator A: sigma(A) must be less than 1")
             break
@@ -91,10 +91,10 @@ SIM.history <- function(A, f, u, eps = 10e-4, iterations = 10000) {
               is.numeric(A) || is.complex(A), 
               is.numeric(f) || is.complex(f), 
               is.numeric(u) || is.complex(u), 
-              is.numeric(eps), 
+              is.numeric(eps), length(eps) == 1, is.atomic(eps), 
               nrow(A) == ncol(A), ncol(A) == length(f), length(f) == length(u), 
               ncol(A) >= 2, 
-              length(eps) == 1)
+              is.numeric(iterations), length(iterations) == 1, is.atomic(iterations))
     dimA <- dim(A)[1]
     i <- 0
     u.hist <- matrix(u, nrow = dimA)
@@ -104,7 +104,7 @@ SIM.history <- function(A, f, u, eps = 10e-4, iterations = 10000) {
         u <- B %*% u + f
         i <- i + 1
         u.hist <- cbind(u.hist, u)
-        if (abs((sqrt(t(A %*% u - f) %*% (A %*% u - f))) / (sqrt(t(f) %*% f))) < eps) break
+        if (abs((sqrt(t(A %*% u - f) %*% Conj(A %*% u - f))) / (sqrt(t(f) %*% Conj(f)))) < eps) break
         if (i > iterations) {
             message("Iterations of the method may not come close to the final result / allowed number of iterations is exceeded / check the spectrum of operator A: sigma(A) must be less than 1")
             break   

@@ -12,32 +12,61 @@ eps <- c(10e-3, 10e-4, 10e-5, 10e-6, 10e-7, 10e-8, 10e-9)
 
 # testing and checking ----------------------------------------------------
 
+# testthat::test_that("Accuracy and numeric/complex type check", {
+#     for (e in eps) {
+#         # N/N/N
+#         result <- SIM(A = AN, f = fN, u = uN, eps = e)
+#         testthat::expect_true(abs((sqrt(t(AN %*% result - fN) %*% (AN %*% result - fN)))/(sqrt(t(fN) %*% fN))) < e)
+#         # N/N/C
+#         result <- SIM(A = AN, f = fN, u = uC, eps = e)
+#         testthat::expect_true(abs((sqrt(t(AN %*% result - fN) %*% (AN %*% result - fN)))/(sqrt(t(fN) %*% fN))) < e)
+#         # N/C/N
+#         result <- SIM(A = AN, f = fC, u = uN, eps = e)
+#         testthat::expect_true(abs((sqrt(t(AN %*% result - fC) %*% (AN %*% result - fC)))/(sqrt(t(fC) %*% fC))) < e)
+#         # C/N/N
+#         result <- SIM(A = AC, f = fN, u = uN, eps = e)
+#         testthat::expect_true(abs((sqrt(t(AC %*% result - fN) %*% (AC %*% result - fN)))/(sqrt(t(fN) %*% fN))) < e)
+#         # C/C/N
+#         result <- SIM(A = AC, f = fC, u = uN, eps = e)
+#         testthat::expect_true(abs((sqrt(t(AC %*% result - fC) %*% (AC %*% result - fC)))/(sqrt(t(fC) %*% fC))) < e)
+#         # C/N/C
+#         result <- SIM(A = AC, f = fN, u = uC, eps = e)
+#         testthat::expect_true(abs((sqrt(t(AC %*% result - fN) %*% (AC %*% result - fN)))/(sqrt(t(fN) %*% fN))) < e)
+#         # N/C/C
+#         result <- SIM(A = AN, f = fC, u = uC, eps = e)
+#         testthat::expect_true(abs((sqrt(t(AN %*% result - fC) %*% (AN %*% result - fC)))/(sqrt(t(fC) %*% fC))) < e)
+#         # C/C/C
+#         result <- SIM(A = AC, f = fC, u = uC, eps = e)
+#         testthat::expect_true(abs((sqrt(t(AC %*% result - fC) %*% (AC %*% result - fC)))/(sqrt(t(fC) %*% fC))) < e)
+#     }
+# })
+
 testthat::test_that("Accuracy and numeric/complex type check", {
     for (e in eps) {
         # N/N/N
         result <- SIM(A = AN, f = fN, u = uN, eps = e)
-        testthat::expect_true(abs((sqrt(t(AN %*% result - fN) %*% (AN %*% result - fN)))/(sqrt(t(fN) %*% fN))) < e)
+        testthat::expect_true(abs((sqrt(t(AN %*% result - fN) %*% Conj(AN %*% result - fN)))/(sqrt(t(fN) %*% Conj(fN)))) < e)
         # N/N/C
         result <- SIM(A = AN, f = fN, u = uC, eps = e)
-        testthat::expect_true(abs((sqrt(t(AN %*% result - fN) %*% (AN %*% result - fN)))/(sqrt(t(fN) %*% fN))) < e)
+        testthat::expect_true(abs((sqrt(t(AN %*% result - fN) %*% Conj(AN %*% result - fN)))/(sqrt(t(fN) %*% Conj(fN)))) < e)
         # N/C/N
         result <- SIM(A = AN, f = fC, u = uN, eps = e)
-        testthat::expect_true(abs((sqrt(t(AN %*% result - fC) %*% (AN %*% result - fC)))/(sqrt(t(fC) %*% fC))) < e)
+        testthat::expect_true(abs((sqrt(t(AN %*% result - fC) %*% Conj(AN %*% result - fC)))/(sqrt(t(fC) %*% Conj(fC)))) < e)
         # C/N/N
         result <- SIM(A = AC, f = fN, u = uN, eps = e)
-        testthat::expect_true(abs((sqrt(t(AC %*% result - fN) %*% (AC %*% result - fN)))/(sqrt(t(fN) %*% fN))) < e)
+        testthat::expect_true(abs((sqrt(t(AC %*% result - fN) %*% Conj(AC %*% result - fN)))/(sqrt(t(fN) %*% Conj(fN)))) < e)
         # C/C/N
         result <- SIM(A = AC, f = fC, u = uN, eps = e)
-        testthat::expect_true(abs((sqrt(t(AC %*% result - fC) %*% (AC %*% result - fC)))/(sqrt(t(fC) %*% fC))) < e)
+        testthat::expect_true(abs((sqrt(t(AC %*% result - fC) %*% Conj(AC %*% result - fC)))/(sqrt(t(fC) %*% Conj(fC)))) < e)
         # C/N/C
         result <- SIM(A = AC, f = fN, u = uC, eps = e)
-        testthat::expect_true(abs((sqrt(t(AC %*% result - fN) %*% (AC %*% result - fN)))/(sqrt(t(fN) %*% fN))) < e)
+        testthat::expect_true(abs((sqrt(t(AC %*% result - fN) %*% Conj(AC %*% result - fN)))/(sqrt(t(fN) %*% Conj(fN)))) < e)
         # N/C/C
         result <- SIM(A = AN, f = fC, u = uC, eps = e)
-        testthat::expect_true(abs((sqrt(t(AN %*% result - fC) %*% (AN %*% result - fC)))/(sqrt(t(fC) %*% fC))) < e)
+        testthat::expect_true(abs((sqrt(t(AN %*% result - fC) %*% Conj(AN %*% result - fC)))/(sqrt(t(fC) %*% Conj(fC)))) < e)
         # C/C/C
         result <- SIM(A = AC, f = fC, u = uC, eps = e)
-        testthat::expect_true(abs((sqrt(t(AC %*% result - fC) %*% (AC %*% result - fC)))/(sqrt(t(fC) %*% fC))) < e)
+        testthat::expect_true(abs((sqrt(t(AC %*% result - fC) %*% Conj(AC %*% result - fC)))/(sqrt(t(fC) %*% Conj(fC)))) < e)
     }
 })
 
@@ -90,6 +119,7 @@ testthat::test_that("Spectre of operator check", {
     M <- diag(seq(0, 2, 2/Reductor))
     testthat::expect_message(SIM(M, fN, uN, eps = eps[1]))
 })
+
 
 # Clear -------------------------------------------------------------------
 
