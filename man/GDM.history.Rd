@@ -4,7 +4,7 @@
 \alias{GDM.history}
 \title{Title}
 \usage{
-GDM.history(A, f, u, eps = 0.001)
+GDM.history(A, f, u, eps = 0.001, iterations = 10000)
 }
 \arguments{
 \item{A}{- the original matrix of the operator equation (исходная матрица операторного уравнения)}

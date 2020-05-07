@@ -4,21 +4,21 @@
 \alias{GDM}
 \title{Title}
 \usage{
-GDM(A, f, u, eps = 0.001)
+GDM(A, f, u, eps = 0.001, iterations = 10000)
 }
 \arguments{
-\item{A}{- the original matrix of the operator equation (исходная матрица операторного уравнения)}
+\item{A}{- the original matrix of the operator equation - numeric or complex matrix (исходная матрица операторного уравнения - вещественная или комплексная)}
 
-\item{f}{- bias (вектор свободных членов)}
+\item{f}{- bias - numeric or complex vector (вектор свободных членов вещественный или комплексный)}
 
-\item{u}{- initial approximation of an unknown vector (начальное приближение неизвестного вектора)}
+\item{u}{- initial approximation of an unknown vector - numeric or complex vector (начальное приближение неизвестного вектора - вещественный или комплексный вектор)}
 
-\item{eps}{- accuracy of calculation of the desired vector (точность вычисления искомого вектора)}
+\item{eps}{- accuracy of calculation of the desired vector - numeric (точность вычисления искомого вектора - вещественная)}
+
+\item{iterations}{- the upper limit on the number of iterations when the method diverges (ограничение сверху на число итераций при расхождении метода)}
 }
 \value{
 u - unknown vector in some approximation (неизвестный вектор в некотором приближении)
-
-
 }
 \description{
 Title

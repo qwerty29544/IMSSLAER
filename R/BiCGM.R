@@ -6,7 +6,7 @@
 #' (Метод бисопряженных градиентов)
 #' @description Non-stationary iterative numerical method for solving SLAEs of the Krylov type. It is a generalization of the conjugate gradient method.
 #' (Нестационарный итерационный численный метод решения СЛАУ крыловского типа. Является обобщением метода сопряжённых градиентов.)
-#' @param A - the original matrix of the operator equation - numeric or complex matrix (исходная матрица операторного уравнения - вещественная или комплексная)
+#' @param A - the original matrix of the operator equation - numeric matrix only (исходная матрица операторного уравнения - вещественная только)
 #' @param f - bias - numeric or complex vector (вектор свободных членов вещественный или комплексный)
 #' @param u - initial approximation of an unknown vector - numeric or complex vector (начальное приближение неизвестного вектора - вещественный или комплексный вектор)
 #' @param eps - accuracy of calculation of the desired vector - numeric (точность вычисления искомого вектора - вещественная)
@@ -15,7 +15,11 @@
 #' @return u - unknown vector in some approximation (неизвестный вектор в некотором приближении)
 #' @export
 #'
-#' @examples
+#' @examples A <- diag(rnorm(5, 2), nrow = 5, ncol = 5)
+#' u <- rnorm(5, 12)
+#' f <- rnorm(5, 17)
+#' solve(A) %*% f - BiCGM(A, f, u, iterations = 10000)
+#' all.equal(solve(A) %*% f, BiCGM(A, f, u, iterations = 10000))
 BiCGM <- function(A, f, u, eps = 10e-04, iterations = 10000) {
     stopifnot(is.matrix(A), 
               is.numeric(A), 
@@ -60,7 +64,7 @@ BiCGM <- function(A, f, u, eps = 10e-04, iterations = 10000) {
 #' (Нестационарный итерационный численный метод решения СЛАУ крыловского типа. Является обобщением метода сопряжённых градиентов.)
 #' @details This method is necessary to preserve the history of sequential calculation of an unknown vector in order to visualize the convergence of the method 
 #' (Данный метод необходим для сохранения истории последовательного вычисления неизвестного вектора с целью визуализации сходимости метода)
-#' @param A - the original matrix of the operator equation - numeric or complex matrix (исходная матрица операторного уравнения - вещественная или комплексная)
+#' @param A - the original matrix of the operator equation - numeric matrix only (исходная матрица операторного уравнения - вещественная только)
 #' @param f - bias - numeric or complex vector (вектор свободных членов вещественный или комплексный)
 #' @param u - initial approximation of an unknown vector - numeric or complex vector (начальное приближение неизвестного вектора - вещественный или комплексный вектор)
 #' @param eps - accuracy of calculation of the desired vector - numeric (точность вычисления искомого вектора - вещественная)
@@ -73,7 +77,10 @@ BiCGM <- function(A, f, u, eps = 10e-04, iterations = 10000) {
 #' systime.iter - system time calculation (системное время вычисления); 
 #' @export
 #'
-#' @examples
+#' @examples A <- diag(rnorm(5, 2), nrow = 5, ncol = 5)
+#' u <- rnorm(5, 12)
+#' f <- rnorm(5, 17)
+#' print(BiCGM.history(A, f, u, iterations = 10000))
 BiCGM.history <- function(A, f, u, eps = 10e-04, iterations = 10000) {
     stopifnot(is.matrix(A), 
               is.numeric(A), 

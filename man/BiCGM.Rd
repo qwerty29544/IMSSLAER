@@ -8,7 +8,7 @@
 BiCGM(A, f, u, eps = 0.001, iterations = 10000)
 }
 \arguments{
-\item{A}{- the original matrix of the operator equation - numeric or complex matrix (исходная матрица операторного уравнения - вещественная или комплексная)}
+\item{A}{- the original matrix of the operator equation - numeric matrix only (исходная матрица операторного уравнения - вещественная только)}
 
 \item{f}{- bias - numeric or complex vector (вектор свободных членов вещественный или комплексный)}
 
@@ -24,4 +24,11 @@ u - unknown vector in some approximation (неизвестный вектор в
 \description{
 Non-stationary iterative numerical method for solving SLAEs of the Krylov type. It is a generalization of the conjugate gradient method.
 (Нестационарный итерационный численный метод решения СЛАУ крыловского типа. Является обобщением метода сопряжённых градиентов.)
+}
+\examples{
+A <- diag(rnorm(5, 2), nrow = 5, ncol = 5)
+u <- rnorm(5, 12)
+f <- rnorm(5, 17)
+solve(A) \%*\% f - BiCGM(A, f, u, iterations = 10000)
+all.equal(solve(A) \%*\% f, BiCGM(A, f, u, iterations = 10000))
 }
