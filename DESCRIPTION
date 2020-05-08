@@ -1,8 +1,8 @@
 Package: IMSSLAER
 Type: Package
 Title: Package for solving linear algebra equations with iterations
-Version: 0.1.0
-Author: person("Ivan", "Yurchenkov", email = "qwerty29544@gmail.com", role = c("auth", "cre"))
+Version: 0.1.1
+Author: person("Ivan", "Yurchenkov", email = "qwerty29544@gmail.com", role = c("auth", "creator"))
 Maintainer: Ivan Yurchenkov <qwerty29544@gmail.com>
 Description: This package was created to solve systems of linear algebraic equations by various iterative methods.
     In particular, a great deal of attention is paid to stationary iterative methods, such as the generalized simple iteration method or the Chebyshev iteration method.

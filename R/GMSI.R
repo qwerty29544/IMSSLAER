@@ -1,10 +1,5 @@
 # Вспомогательная функция для ортисовки графиков --------------------------
 
-#' Title
-#'
-#' @return
-#'
-#' @examples
 .getYmult <- function() {
     if (grDevices::dev.cur() == 1) {
         base::warning("No graphics device open.")
@@ -18,25 +13,8 @@
     return(ymult)
 }
 
-
 # Функция отрисовки окружности --------------------------------------------
 
-#' Title
-#'
-#' @param x 
-#' @param y 
-#' @param radius 
-#' @param nv 
-#' @param border 
-#' @param col 
-#' @param lty 
-#' @param density 
-#' @param angle 
-#' @param lwd 
-#'
-#' @return
-#'
-#' @examples
 .circle <- function(x, y, radius, nv = 100, border = NULL,
                     col = NA, lty = 1, density = NULL, angle = 45, lwd = 0.5) {
     ymult <- .getYmult()
@@ -56,16 +34,6 @@
 
 # Отрисовка комплексной плоскости -----------------------------------------
 
-#' Title
-#'
-#' @param lambs 
-#' @param mu 
-#' @param R 
-#' @param fileName 
-#'
-#' @return
-#'
-#' @examples
 .drawComplex <- function(lambs, mu, R, fileName = "complexPlot") {
     stopifnot(is.complex(lambs) || is.numeric(lambs))
     stopifnot(is.complex(mu) || is.numeric(mu))
@@ -100,15 +68,6 @@
 # оператора, что он лежит на серединном перпендикуляре к отрезку z1z2
 # и лежит на луче, исходящем из начала координат
 
-#' Title
-#'
-#' @param z1 - комплексное число, обозначающее начало отрезка спектра оператора на комплексной плоскости
-#' @param z2 - комплексное число, обозначающее конец отрезка спектра оператора на комплексной плоскости
-#'
-#' @return mu - центр окружности на комплексной плоскости, выпуклая оболочка спектра
-#' @export
-#'
-#' @examples
 .mu2 <- function(z1, z2) {
     stopifnot(is.numeric(z1) || is.complex(z1))
     stopifnot(is.numeric(z2) || is.complex(z2))
@@ -118,14 +77,7 @@
 
 # Нахождение радиуса такого круга -----------------------------------------
 
-#' Title
-#'
-#' @param z1 
-#' @param z2 
-#'
-#' @return
-#'
-#' @examples
+
 .R2 <- function(z1, z2) {
     stopifnot(is.numeric(z1) || is.complex(z1))
     stopifnot(is.numeric(z2) || is.complex(z2))
@@ -135,15 +87,7 @@
 
 # Нахождение центра окружности по 3 точкам --------------------------------
 
-#' Title
-#'
-#' @param z1 
-#' @param z2 
-#' @param z3 
-#'
-#' @return
-#'
-#' @examples
+
 .mu3 <- function(z1, z2, z3) {
     stopifnot(is.numeric(z1) || is.complex(z1))
     stopifnot(is.numeric(z2) || is.complex(z2))
@@ -154,14 +98,7 @@
 
 # Нахождение радиуса окружности по 3 точкам и центру ----------------------
 
-#' Title
-#'
-#' @param mu 
-#' @param z 
-#'
-#' @return
-#'
-#' @examples
+
 .R3 <- function(mu, z) {
     stopifnot(is.numeric(mu) || is.complex(mu))
     stopifnot(is.numeric(z) || is.complex(z))
@@ -171,16 +108,7 @@
 
 # Функция перебора точек спектра ------------------------------------------
 
-#' Title
-#'
-#' @param mu 
-#' @param R 
-#' @param n 
-#' @param lambs 
-#'
-#' @return
-#'
-#' @examples
+
 .FlagsCalc <- function(mu, R, n, lambs) {
     Flags <- matrix(FALSE, nrow = length(R), ncol = n + 1)
     for (j in 1:length(R)) {
@@ -193,6 +121,7 @@
 }
 
 # Нахождение мю по входным значениям краёв спектра оператора --------------
+
 
 #' Title
 #'
@@ -262,6 +191,7 @@ muFind <- function(lambs, draw = TRUE, path = "complexPlot") {
 
 
 # muFind.File -------------------------------------------------------------
+
 
 #' Title
 #'
@@ -339,6 +269,7 @@ muFind.File <- function(input.file = "complexNumbeRS", output.file = "results", 
 }
 # GMSI --------------------------------------------------------------------
 
+
 #' Title
 #'
 #' @param A 
@@ -379,6 +310,7 @@ GMSI <- function(A, f, u, mu, eps = 10e-4) {
 
 # GMSI.mu -----------------------------------------------------------------
 
+
 #' Title
 #'
 #' @param A 
@@ -415,6 +347,7 @@ GMSI.mu <- function(A, f, u, lambs, eps = 10e-4) {
 }
 
 # GMSI.mu.file -----------------------------------------------------------------
+
 
 #' Title
 #'

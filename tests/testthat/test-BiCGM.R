@@ -2,8 +2,8 @@
 
 set.seed(123)                   # set seed for random generator
 Reductor <- 10
-AN <- diag(seq(15.1, 199.9, 184.8/Reductor))   # Creating diag numeric matrix
-AC <- diag(seq(15.1, 199.9, 184.8/Reductor) + 1i * seq(1.1, 5.9, 4.8/Reductor))    # Creating diag complex matrix
+AN <- diag(seq(15.1, 199.9, 184.8 / Reductor))   # Creating diag numeric matrix
+AC <- diag(seq(15.1, 199.9, 184.8 / Reductor) + 1i * seq(1.1, 5.9, 4.8 / Reductor))    # Creating diag complex matrix
 fN <- rnorm(Reductor + 1, 6)
 fC <- rnorm(Reductor + 1, 5) + 1i * rnorm(Reductor + 1, 5)
 uN <- rnorm(Reductor + 1, 7)
