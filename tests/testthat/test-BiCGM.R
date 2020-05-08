@@ -24,20 +24,16 @@ testthat::test_that("Accuracy and numeric/complex type check", {
         result <- IMSSLAER::BiCGM(A = AN, f = fC, u = uN, eps = e)
         testthat::expect_true(abs((sqrt(t(AN %*% result - fC) %*% Conj(AN %*% result - fC)))/(sqrt(t(fC) %*% Conj(fC)))) < e)
         # C/N/N
-        result <- IMSSLAER::BiCGM(A = AC, f = fN, u = uN, eps = e)
-        testthat::expect_error(abs((sqrt(t(AC %*% result - fN) %*% Conj(AC %*% result - fN)))/(sqrt(t(fN) %*% Conj(fN)))) < e)
+        testthat::expect_error(IMSSLAER::BiCGM(A = AC, f = fN, u = uN, eps = e))
         # C/C/N
-        result <- IMSSLAER::BiCGM(A = AC, f = fC, u = uN, eps = e)
-        testthat::expect_error(abs((sqrt(t(AC %*% result - fC) %*% Conj(AC %*% result - fC)))/(sqrt(t(fC) %*% Conj(fC)))) < e)
+        testthat::expect_error(IMSSLAER::BiCGM(A = AC, f = fC, u = uN, eps = e))
         # C/N/C
-        result <- IMSSLAER::BiCGM(A = AC, f = fN, u = uC, eps = e)
-        testthat::expect_error(abs((sqrt(t(AC %*% result - fN) %*% Conj(AC %*% result - fN)))/(sqrt(t(fN) %*% Conj(fN)))) < e)
+        testthat::expect_error(IMSSLAER::BiCGM(A = AC, f = fN, u = uC, eps = e))
         # N/C/C
         result <- IMSSLAER::BiCGM(A = AN, f = fC, u = uC, eps = e)
         testthat::expect_true(abs((sqrt(t(AN %*% result - fC) %*% Conj(AN %*% result - fC)))/(sqrt(t(fC) %*% Conj(fC)))) < e)
         # C/C/C
-        result <- IMSSLAER::BiCGM(A = AC, f = fC, u = uC, eps = e)
-        testthat::expect_error(abs((sqrt(t(AC %*% result - fC) %*% Conj(AC %*% result - fC)))/(sqrt(t(fC) %*% Conj(fC)))) < e)
+        testthat::expect_error(IMSSLAER::BiCGM(A = AC, f = fC, u = uC, eps = e))
     }
 })
 

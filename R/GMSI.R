@@ -15,8 +15,8 @@
 
 # Функция отрисовки окружности --------------------------------------------
 
-.circle <- function(x, y, radius, nv = 100, border = NULL,
-                    col = NA, lty = 1, density = NULL, angle = 45, lwd = 0.5) {
+.circle <- function(x, y, radius, nv = 100, border = NULL, col = NA, 
+                    lty = 1, density = NULL, angle = 45, lwd = 0.5) {
     ymult <- .getYmult()
     angle.inc <- 2 * pi/nv
     angles <- base::seq(0, 2 * pi - angle.inc, by = angle.inc)
@@ -25,12 +25,12 @@
     for (circle in 1:base::length(radius)) {
         xv <- cos(angles) * radius[circle] + x
         yv <- sin(angles) * radius[circle] * ymult + y
-        graphics::polygon(xv, yv, border = border, col = col[circle], lty = lty,
+        graphics::polygon(xv, yv, border = border, col = col[circle], 
+                          lty = lty,
                           density = density, angle = angle, lwd = lwd)
     }
     invisible(list(x = xv, y = yv))
 }
-
 
 # Отрисовка комплексной плоскости -----------------------------------------
 
@@ -57,8 +57,10 @@
           y = c(Im(lambs[1]), Im(lambs[dimA])))
     abline(h = 0, lty = 1, lwd = 1.2)
     abline(v = 0, lty = 1, lwd = 1.2)
-    # Функция из библиотеки 'plotrix' для рисования окружности с центром и радиусом
-    .circle(x = Re(mu), y = Im(mu), radius = Re(R), border = "red", lwd = 1.2)
+    # Функция из библиотеки 'plotrix' для рисования 
+    # окружности с центром и радиусом
+    .circle(x = Re(mu), y = Im(mu), radius = Re(R), 
+            border = "red", lwd = 1.2)
     grid()
     grDevices::dev.off()
 }
@@ -71,7 +73,11 @@
 .mu2 <- function(z1, z2) {
     stopifnot(is.numeric(z1) || is.complex(z1))
     stopifnot(is.numeric(z2) || is.complex(z2))
-    return(((z1 + z2) / 2) + ((1i * Im(z1 * Conj(z2)) * (z2 - z1)) / (2 * (Mod(z1 * Conj(z2)) + Re(z1 * Conj(z2))))))
+    return(
+        ((z1 + z2) / 2) + 
+               ((1i * Im(z1 * Conj(z2)) * (z2 - z1)) 
+                / (2 * (Mod(z1 * Conj(z2)) + Re(z1 * Conj(z2)))))
+    )
 }
 
 
@@ -81,7 +87,11 @@
 .R2 <- function(z1, z2) {
     stopifnot(is.numeric(z1) || is.complex(z1))
     stopifnot(is.numeric(z2) || is.complex(z2))
-    return( sqrt((Mod(z1 - z2) * Mod(z1 - z2) * Mod(Conj(z1) * z2)) / (2 * (Mod(Conj(z1) * z2) + Re(Conj(z1) * z2)))))
+    return( 
+        sqrt((Mod(z1 - z2) * Mod(z1 - z2) 
+              * Mod(Conj(z1) * z2)) 
+             / (2 * (Mod(Conj(z1) * z2) + Re(Conj(z1) * z2))))
+        )
 }
 
 
@@ -92,7 +102,12 @@
     stopifnot(is.numeric(z1) || is.complex(z1))
     stopifnot(is.numeric(z2) || is.complex(z2))
     stopifnot(is.numeric(z3) || is.complex(z3))
-    return(1i * (Mod(z1)^2 * (z2 - z3) + Mod(z2)^2 * (z3 - z1) + Mod(z3)^2 * (z1 - z2)) / (2 * Im(z1 * Conj(z2) + z2 * Conj(z3) + z3 * Conj(z1))))
+    return(
+        1i * (Mod(z1)^2 * (z2 - z3) 
+              + Mod(z2)^2 * (z3 - z1) 
+              + Mod(z3)^2 * (z1 - z2)) / 
+            (2 * Im(z1 * Conj(z2) + z2 * Conj(z3) + z3 * Conj(z1)))
+        )
 }
 
 
@@ -113,7 +128,8 @@
     Flags <- matrix(FALSE, nrow = length(R), ncol = n + 1)
     for (j in 1:length(R)) {
         for (i in 1:n) {
-            Flags[j, i] <- ((abs(R[j]) > abs(mu[j] - lambs[i])) || (abs(R[j]) - abs(mu[j] - lambs[i]) == 0))
+            Flags[j, i] <- ((abs(R[j]) > abs(mu[j] - lambs[i])) || 
+                                (abs(R[j]) - abs(mu[j] - lambs[i]) == 0))
         }
         Flags[j, n + 1] <- abs(R[j]) < abs(mu[j])
     }
@@ -397,8 +413,11 @@ GMSI.mu.file <- function(A, f, u, input.file = "complexNumbeRS", out = F,
 
 #' Title
 #'
-#'@details This method is necessary to preserve the history of sequential calculation of an unknown vector in order to visualize the convergence of the method 
-#' (Данный метод необходим для сохранения истории последовательного вычисления неизвестного вектора с целью визуализации сходимости метода)
+#'@details This method is necessary to preserve the history of sequential 
+#'calculation of an unknown vector in order to visualize the convergence of 
+#'the method 
+#' (Данный метод необходим для сохранения истории последовательного 
+#' вычисления неизвестного вектора с целью визуализации сходимости метода)
 #' @param A 
 #' @param f 
 #' @param u 
