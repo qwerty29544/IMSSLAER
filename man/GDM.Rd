@@ -2,7 +2,8 @@
 % Please edit documentation in R/GDM.R
 \name{GDM}
 \alias{GDM}
-\title{Title}
+\title{Gradient Descent method [GDM]
+(метод градиентного спуска)}
 \usage{
 GDM(A, f, u, eps = 0.001, iterations = 10000)
 }
@@ -21,5 +22,12 @@ GDM(A, f, u, eps = 0.001, iterations = 10000)
 u - unknown vector in some approximation (неизвестный вектор в некотором приближении)
 }
 \description{
-Title
+The non-stationary iterative gradient descent method defined for both active and complex matrices. The cornerstone is the search for a minimum of a parabolic functional. A minimum of functionality will correspond to an unknown vector.
+(Нестационарный итерационный метод градиентного спуска, определённый как для действительных, так и для комплексных матриц. В основе метода лежит поиск минимума параболического функционала. Минимум функционала будет соответствовать неизвестному вектору.)
+}
+\examples{
+A <- matrix(rnorm(100) + 1i * rnorm(100), ncol = 10, nrow = 10)
+f <- rnorm(10) + 1i * rnorm(10)
+u <- rnorm(10)
+print(IMSSLAER::GDM(A, f, u))
 }

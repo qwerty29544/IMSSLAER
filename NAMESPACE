@@ -3,6 +3,8 @@
 export(.mu2)
 export(BiCGM)
 export(BiCGM.history)
+export(BiCGMStab)
+export(BiCGMStab.history)
 export(CGM)
 export(CGM.history)
 export(Chebishev)
