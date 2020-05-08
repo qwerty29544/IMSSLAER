@@ -2,35 +2,73 @@
 % Please edit documentation in R/CIM.R
 \name{Chebishev.history}
 \alias{Chebishev.history}
-\title{Title}
+\title{Chebishev iterative method [CIM] 
+(Чебышевский итерационный метод)}
 \usage{
-Chebishev.history(A, f, u, lambs, layers, eps = 0.001)
+Chebishev.history(A, f, u, lambs, layers = 5, eps = 0.001, iterations = 10000)
 }
 \arguments{
-\item{A}{}
+\item{A}{- the original matrix of the operator equation - numeric 
+only matrix (исходная матрица операторного уравнения - 
+вещественная)}
 
-\item{f}{}
+\item{f}{- bias - numeric or complex vector (вектор свободных членов 
+вещественный или комплексный)}
 
-\item{u}{}
+\item{u}{- initial approximation of an unknown vector - numeric 
+or complex vector (начальное приближение неизвестного вектора 
+- вещественный или комплексный вектор)}
 
-\item{lambs}{}
+\item{lambs}{- vector of numeric Operator's spectre: sigma(A) 
+is Numeric [Real], it's can be a vector of all or several lambs, 
+but there must be a min and max of eigen(A) (Вещественный вектор 
+спектра оператора. Ограничением метода является вещественность 
+спектра оператора, может быть вектором из всех, двух или одной 
+точки спектра, однако данный вектор должен содержать его минимум 
+и максимум для оценки спектрального диаметра)}
 
-\item{layers}{}
+\item{layers}{- the number of layers of the iterative method 
+determines the degree of accuracy of calculations (число слоёв 
+итерационного метода, определяет степень точности вычислений)}
 
-\item{eps}{}
+\item{eps}{- accuracy of calculation of the desired vector - numeric 
+(точность вычисления искомого вектора - вещественная)}
+
+\item{iterations}{- the upper limit on the number of iterations when 
+the method diverges (ограничение сверху на число итераций при 
+расхождении метода)}
 }
 \value{
 result - list: 
 num.iter - number of iterations (число итераций); 
-num.layers - number of layers used (число использованных слоёв); 
 var - unknown vector result (результат вычисления неизвестного вектора); 
-var.hist - history of computing an unknown vector (история вычисления неизвестного вектора); 
+var.hist - history of computing an unknown vector (история вычисления 
+неизвестного вектора); 
 systime.iter - system time calculation (системное время вычисления);
 }
 \description{
-Title
+The Chebyshev iterative method is a stationary 
+iterative method, a variation of the simple iteration method, 
+in which, before starting iterations, a vector of parameters 
+is determined based on a given number of iterative layers. 
+The larger the number of layers in the algorithm, the better 
+will be the convergence of the method.
+(Чебышевский итерационный метод представляет собой стационарный 
+итерационный метод, разновидность метода простой итерации, в 
+котором перед началом итераций определяется вектор параметров 
+исходя из заданного числа итерационных слоёв. 
+Чем больше число слоёв алгоритма, тем лучше будет сходимость метода.)
 }
 \details{
-This method is necessary to preserve the history of sequential calculation of an unknown vector in order to visualize the convergence of the method 
-(Данный метод необходим для сохранения истории последовательного вычисления неизвестного вектора с целью визуализации сходимости метода)
+This method is necessary to preserve the history of sequential 
+calculation of an unknown vector in order to visualize the 
+convergence of the method 
+(Данный метод необходим для сохранения истории последовательного 
+вычисления неизвестного вектора с целью визуализации сходимости метода)
+}
+\examples{
+A <- diag(seq(0.1, 1, 0.1), ncol = 10)
+f <- rnorm(10) + 1i * rnorm(10)
+u <- rnorm(10)
+print(Chebishev.history(A, f, u, lambs = diag(A), layers = 5, eps = 10e-08))
 }

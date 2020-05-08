@@ -28,6 +28,9 @@ systime.iter - system time calculation (системное время вычис
 Title
 }
 \details{
-This method is necessary to preserve the history of sequential calculation of an unknown vector in order to visualize the convergence of the method 
-(Данный метод необходим для сохранения истории последовательного вычисления неизвестного вектора с целью визуализации сходимости метода)
+This method is necessary to preserve the history of sequential 
+calculation of an unknown vector in order to visualize the convergence of 
+the method 
+(Данный метод необходим для сохранения истории последовательного 
+вычисления неизвестного вектора с целью визуализации сходимости метода)
 }
