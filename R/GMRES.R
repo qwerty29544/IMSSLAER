@@ -160,8 +160,20 @@ GMRES.history <- function(A, f, u, layers = 2, eps = 10e-04, iterations = 10000)
         }
         return(as.vector(cumsumR))
     }
+    LayerIterations <- function(x) {
+        x1 <- 3
+        if (x >= 3) {
+            for (i in 3:x) {
+                x2 <- x1 + 3 * (i - 1)
+                x1 <- x2
+            }
+        }
+        return(ifelse(x == 1, 0, ifelse(x == 2, 3, x2)))
+    }
     t1 <- Sys.time()
     i <- 0      # iteration num
+    iterate <- 0
+    iterate2 <- 0
     u.hist <- matrix(u, nrow = nrow(A))
     repeat {
         h <- matrix(0, ncol = layers + 1, nrow = length(u))
@@ -181,6 +193,8 @@ GMRES.history <- function(A, f, u, layers = 2, eps = 10e-04, iterations = 10000)
             u <- u - tau * as.vector(nu[, l])
             h[, (l + 1)] <- h[, l] - tau * (A %*% as.vector(nu[, l]))
         }
+        iterate <- iterate + 4 + LayerIterations(layers)
+        iterate2 <- c(iterate2, iterate)
         i <- i + 1
         u.hist <- cbind(u.hist, u)
         if (abs((sqrt(t(A %*% u - f) %*% Conj(A %*% u - f))) 
@@ -193,6 +207,6 @@ GMRES.history <- function(A, f, u, layers = 2, eps = 10e-04, iterations = 10000)
         }
     }
     t2 <- Sys.time()
-    return(list(num.iter = i, var = u, var.hist = u.hist, 
+    return(list(num.iter = iterate2, var = u, var.hist = u.hist, 
                 systime.iter = difftime(t2, t1, units = "secs")[[1]]))
 }

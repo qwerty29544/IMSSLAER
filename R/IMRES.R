@@ -98,7 +98,6 @@ IMRES <- function(A, f, u, eps = 10e-4, iterations = 10000) {
 #' M <- matrix(rnorm((Reductor + 1) ^ 2), nrow = Reductor + 1, ncol = Reductor + 1)
 #' print(IMRES.history(M, fC, uN, eps = 10e-6, iterations = 10000))
 IMRES.history <- function(A, f, u, eps = 10e-4, iterations = 10000) {
-    
     stopifnot(is.matrix(A), 
               is.numeric(A) || is.complex(A), 
               is.numeric(f) || is.complex(f), 
@@ -107,7 +106,8 @@ IMRES.history <- function(A, f, u, eps = 10e-4, iterations = 10000) {
               nrow(A) == ncol(A), ncol(A) == length(f), length(f) == length(u), 
               ncol(A) >= 2, 
               is.numeric(iterations), length(iterations) == 1, is.atomic(iterations))
-    
+    iterate <- 0
+    iterate2 <- 0
     h <- A %*% u - f
     if (abs((1 - (abs(t(h) %*%  Conj(A %*% h))^2 / ((t(h) %*% Conj(h)) * (t(A %*% h) %*% Conj(A %*% h)))))[1, 1]) < 0)
         stop("q >= 1, method is growing")
@@ -119,6 +119,8 @@ IMRES.history <- function(A, f, u, eps = 10e-4, iterations = 10000) {
         tau <- (t(h) %*% Conj(A %*% h)) / (t(A %*% h) %*% Conj(A %*% h))
         u <- u - tau[1,1] * h
         i <- i + 1
+        iterate <- iterate + 4
+        iterate2 <- c(iterate2, iterate)
         u.hist <- cbind(u.hist, u)
         if (abs((sqrt(t(A %*% u - f) %*% Conj(A %*% u - f))) / (sqrt(t(f) %*% Conj(f)))) < eps) break
         if (i > iterations) {
@@ -127,5 +129,5 @@ IMRES.history <- function(A, f, u, eps = 10e-4, iterations = 10000) {
         }
     }
     t2 <- Sys.time()
-    return(list(num.iter = i, var = u, var.hist = u.hist, systime.iter = difftime(t2, t1, units = "secs")[[1]]))
+    return(list(num.iter = iterate2, var = u, var.hist = u.hist, systime.iter = difftime(t2, t1, units = "secs")[[1]]))
 }

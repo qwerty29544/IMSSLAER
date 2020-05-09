@@ -616,12 +616,14 @@ GMSI.history <- function(A, f, u, mu, eps = 10e-4, iterations = 10000) {
               is.complex(mu) || is.numeric(mu))
     # Итерации
     i <- 0 # начало итераций
+    iterate2 <- 0
     u.hist <- matrix(u, nrow = ncol(A))
     
     t1 <- Sys.time()
     repeat {
         u <- u - (1/mu) * (A %*% u - f)
         i <- i + 1 # обновляем счетчик итераций
+        iterate2 <- c(iterate2, i)
         u.hist <- cbind(u.hist, u) # обновляем историю
         if (abs((sqrt(t(A %*% u - f) %*% Conj(A %*% u - f))) 
                 / (sqrt(t(f) %*% Conj(f))))[1, 1] < eps) break
@@ -633,7 +635,7 @@ GMSI.history <- function(A, f, u, mu, eps = 10e-4, iterations = 10000) {
         }
     }
     t2 <- Sys.time()
-    return(list(num.iter = i, var = u, var.hist = u.hist, 
+    return(list(num.iter = iterate2, var = u, var.hist = u.hist, 
                 systime.iter = difftime(t2, t1, units = "secs")[[1]]))
 }
 
@@ -698,12 +700,14 @@ GMSI.mu.history <- function(A, f, u, lambs, eps = 10e-4, iterations = 10000) {
               is.complex(lambs) || is.numeric(lambs))
     # Итерации
     i <- 0 # начало итераций
+    iterate2 <- 0
     u.hist <- matrix(u, nrow = ncol(A))
     t1 <- Sys.time()
     mu <- muFind(lambs = lambs, draw = F)[1]
     repeat {
         u <- u - (1/mu) * (A %*% u - f)
         i <- i + 1 # обновляем счетчик итераций
+        iterate2 <- c(iterate2, i)
         u.hist <- cbind(u.hist, u) # обновляем историю
         if (abs((sqrt(t(A %*% u - f) %*% Conj(A %*% u - f))) 
                 / (sqrt(t(f) %*% Conj(f))))[1, 1] < eps) break
@@ -715,7 +719,7 @@ GMSI.mu.history <- function(A, f, u, lambs, eps = 10e-4, iterations = 10000) {
         }
     }
     t2 <- Sys.time()
-    return(list(num.iter = i, var = u, var.hist = u.hist, 
+    return(list(num.iter = iterate2, var = u, var.hist = u.hist, 
                 systime.iter = difftime(t2, t1, units = "secs")[[1]]))
 }
 
@@ -787,6 +791,7 @@ GMSI.mu.file.history <- function(A, f, u, input.file = "complexNumbeRS",
               is.character(input.file), is.character(output.file), 
               is.character(plot.file), is.logical(draw), is.logical(out))
     i <- 0
+    iterate2 <- 0
     u.hist <- matrix(u, nrow = ncol(A))
     t1 <- Sys.time()
     mu <- muFind.File(input.file = input.file, 
@@ -796,6 +801,7 @@ GMSI.mu.file.history <- function(A, f, u, input.file = "complexNumbeRS",
     repeat {
         u <- u - (1/mu) * (A %*% u - f)
         i <- i + 1 # обновляем счетчик итераций
+        iterate2 <- c(iterate2, i)
         u.hist <- cbind(u.hist, u) # обновляем историю
         if (abs((sqrt(t(A %*% u - f) %*% Conj(A %*% u - f))) 
                 / (sqrt(t(f) %*% Conj(f))))[1, 1] < eps) break
@@ -807,6 +813,6 @@ GMSI.mu.file.history <- function(A, f, u, input.file = "complexNumbeRS",
         }
     }
     t2 <- Sys.time()
-    return(list(num.iter = i, var = u, var.hist = u.hist, 
+    return(list(num.iter = iterate2, var = u, var.hist = u.hist, 
                 systime.iter = difftime(t2, t1, units = "secs")[[1]]))
 }

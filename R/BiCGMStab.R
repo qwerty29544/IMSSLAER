@@ -95,6 +95,8 @@ BiCGMStab.history <- function(A, f, u, eps = 10e-04, iterations = 10000) {
               is.numeric(iterations), length(iterations) == 1, is.atomic(iterations))
     u.hist <- matrix(u, nrow = nrow(A))
     i <- 0
+    iterate <- 0
+    iterate2 <- 0
     r <- f - A %*% u
     rtild <- r
     rho <- alpha <- omega <- 1
@@ -112,6 +114,8 @@ BiCGMStab.history <- function(A, f, u, eps = 10e-04, iterations = 10000) {
         u.hist <- cbind(u.hist, u)
         r <- s - omega * t1
         i <- i + 1
+        iterate <- iterate + 2
+        iterate2 <- c(iterate2, iterate)
         if (abs((sqrt(t(A %*% u - f) %*% Conj(A %*% u - f))) / (sqrt(t(f) %*% Conj(f))))[1, 1] < eps) break
         if (i > iterations) {
             message("Iterations of the method may not come close to the final result / allowed number of iterations is exceeded")
@@ -119,6 +123,6 @@ BiCGMStab.history <- function(A, f, u, eps = 10e-04, iterations = 10000) {
         }
         rho <- rho1
     }
-    return(list(num.iter = i, var = u, var.hist = u.hist))
+    return(list(num.iter = iterate2, var = u, var.hist = u.hist))
     
 }

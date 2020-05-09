@@ -99,6 +99,8 @@ GDM.history <- function(A, f, u, eps = 10e-4, iterations = 10000) {
               is.numeric(iterations), length(iterations) == 1, is.atomic(iterations))
     if (is.numeric(A)) {
         i <- 0
+        iterate <- 0
+        iterate2 <- 0
         u.hist <- matrix(u, nrow = nrow(A))
         t1 <- Sys.time()
         repeat {
@@ -106,6 +108,8 @@ GDM.history <- function(A, f, u, eps = 10e-4, iterations = 10000) {
             u <- u - ((t(t(A) %*% r) %*% (t(A) %*% r))/(t(A %*% t(A) %*% r) %*% (A %*% t(A) %*% r)))[1,1] * (t(A) %*% r)
             u.hist <- cbind(u.hist, u)
             i <- i + 1
+            iterate <- iterate + 8
+            iterate2 <- c(iterate2, iterate)
             if (abs((sqrt(t(A %*% u - f) %*% Conj(A %*% u - f))) / (sqrt(t(f) %*% Conj(f))))[1,1] < eps) break
             if (i > iterations) {
                 message("Iterations of the method may not come close to the final result / allowed number of iterations is exceeded")
@@ -113,7 +117,7 @@ GDM.history <- function(A, f, u, eps = 10e-4, iterations = 10000) {
             }
         }
         t2 <- Sys.time()
-        return(list(num.iter = i, var = u, var.hist = u.hist, systime.iter = difftime(t2, t1, units = "secs")[[1]]))
+        return(list(num.iter = iterate2, var = u, var.hist = u.hist, systime.iter = difftime(t2, t1, units = "secs")[[1]]))
     } else if (is.complex(A)) {
         HA <- Re(A)
         HB <- Im(A)
@@ -122,14 +126,19 @@ GDM.history <- function(A, f, u, eps = 10e-4, iterations = 10000) {
         rm(HA)
         rm(HB)
         i <- 0
+        iterate <- 0
+        iterate2 <- 0
         u.hist <- matrix(u, nrow = nrow(A))
         t1 <- Sys.time()
         repeat {
             r <- Hv %*% u - f
-            u <- u - ((t(Hb %*% r) %*% Conj(Hb %*% r)) / (t(Hv %*% Hb %*% r) %*% Conj(Hv %*% Hb %*% r)))[1, 1] * 
-                (Hb %*% r)
+            u <- u - ((t(Hb %*% r) %*% Conj(Hb %*% r)) / 
+                          (t(Hv %*% Hb %*% r) %*% 
+                               Conj(Hv %*% Hb %*% r)))[1, 1] * (Hb %*% r)
             u.hist <- cbind(u.hist, u)
             i <- i + 1
+            iterate <- iterate + 8
+            iterate2 <- c(iterate2, iterate)
             if (abs((sqrt(t(A %*% u - f) %*% Conj(A %*% u - f))) / (sqrt(t(f) %*% Conj(f))))[1, 1] < eps) break
             if (i > iterations) {
                 message("Iterations of the method may not come close to the final result / allowed number of iterations is exceeded")
@@ -137,6 +146,6 @@ GDM.history <- function(A, f, u, eps = 10e-4, iterations = 10000) {
             }
         }
         t2 <- Sys.time()
-        return(list(num.iter = i, var = u, var.hist = u.hist, systime.iter = difftime(t2, t1, units = "secs")[[1]]))
+        return(list(num.iter = iterate2, var = u, var.hist = u.hist, systime.iter = difftime(t2, t1, units = "secs")[[1]]))
     }
 }

@@ -156,11 +156,14 @@ Chebishev.history <- function(A, f, u, lambs, layers = 5, eps = 10e-4, iteration
         ((max(lambs) - min(lambs))/2) * 
         cos(((2*(1:layers) - 1)*pi)/(2*layers))
     iterate <- 0
+    iterate2 <- 0
     u.hist <- matrix(u, ncol = 1, nrow = length(u))
     for (iter in 1:layers) {
         i <- 0
         repeat {
+            # одно умножение матрицы на вектор
             iterate <- iterate + 1
+            iterate2 <- c(iterate2, iterate)
             u <- u - (1/mu[iter]) * (A %*% u - f)
             u.hist <- cbind(u.hist, u)
             i <- i + 1
@@ -175,6 +178,6 @@ Chebishev.history <- function(A, f, u, lambs, layers = 5, eps = 10e-4, iteration
         }
     }
     t2 <- Sys.time()
-    return(list(num.iter = iterate, var = u, var.hist = u.hist, 
+    return(list(num.iter = iterate2, var = u, var.hist = u.hist, 
                 systime.iter = difftime(t2, t1, units = "secs")[[1]]))
 }

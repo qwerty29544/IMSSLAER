@@ -90,16 +90,16 @@ BiCGM.history <- function(A, f, u, eps = 10e-04, iterations = 10000) {
               nrow(A) == ncol(A), ncol(A) == length(f), length(f) == length(u), 
               ncol(A) >= 2, 
               is.numeric(iterations), length(iterations) == 1, is.atomic(iterations))
-    
+    iterate <- 0
+    iterate2 <- 0
     i <- 0
     u.hist <- matrix(u, nrow = nrow(A))
     t1 <- Sys.time()
-    
     r <- f - A %*% u
+    iterate <- iterate + 1
     p <- r
     z <- r
     s <- r
-    
     repeat {
         alpha <- ((t(p) %*% Conj(r)) / (t(s) %*% Conj(A %*% z)))[1, 1]
         u <- u + alpha * z
@@ -110,20 +110,19 @@ BiCGM.history <- function(A, f, u, eps = 10e-04, iterations = 10000) {
         beta <- ((t(p1) %*% Conj(r1)) / (t(p) %*% Conj(r)))[1, 1]
         z <- r1 + beta * z
         s <- p1 + beta * s
-    
+        iterate <- iterate + 3
+        iterate2 <- c(iterate2, iterate)
         if (abs((sqrt(t(A %*% u - f) %*% Conj(A %*% u - f))) / (sqrt(t(f) %*% Conj(f)))) < eps) break
         if (i > iterations) {
             message("Iterations of the method may not come close to the final result / allowed number of iterations is exceeded")
             break
         }
-        
         r <- r1
         p <- p1
         rm(r1)
         rm(p1)
     }
-    
     t2 <- Sys.time()
-    return(list(num.iter = i, var = u, var.hist = u.hist, systime.iter = difftime(t2, t1, units = "secs")[[1]]))
+    return(list(num.iter = iterate2, var = u, var.hist = u.hist, systime.iter = difftime(t2, t1, units = "secs")[[1]]))
 
 }

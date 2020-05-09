@@ -95,6 +95,7 @@ SIM.history <- function(A, f, u, eps = 10e-4, iterations = 10000) {
               nrow(A) == ncol(A), ncol(A) == length(f), length(f) == length(u), 
               ncol(A) >= 2, 
               is.numeric(iterations), length(iterations) == 1, is.atomic(iterations))
+    iterate <- 0
     dimA <- dim(A)[1]
     i <- 0
     u.hist <- matrix(u, nrow = dimA)
@@ -103,6 +104,7 @@ SIM.history <- function(A, f, u, eps = 10e-4, iterations = 10000) {
     repeat {
         u <- B %*% u + f
         i <- i + 1
+        iterate <- c(iterate, i)
         u.hist <- cbind(u.hist, u)
         if (abs((sqrt(t(A %*% u - f) %*% Conj(A %*% u - f))) / (sqrt(t(f) %*% Conj(f)))) < eps) break
         if (i > iterations) {
@@ -111,5 +113,5 @@ SIM.history <- function(A, f, u, eps = 10e-4, iterations = 10000) {
         }
     }
     t2 <- Sys.time()
-    return(list(num.iter = i, var = u, var.hist = u.hist, systime.iter = difftime(t2, t1, units = "secs")[[1]]))
+    return(list(num.iter = iterate, var = u, var.hist = u.hist, systime.iter = difftime(t2, t1, units = "secs")[[1]]))
 }
