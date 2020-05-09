@@ -2,24 +2,51 @@
 % Please edit documentation in R/GMSI.R
 \name{GMSI}
 \alias{GMSI}
-\title{Title}
+\title{Generalized method of simple iterations [GMSI]
+(Обощённый метод простой итерации)}
 \usage{
-GMSI(A, f, u, mu, eps = 0.001)
+GMSI(A, f, u, mu, eps = 0.001, iterations = 10000)
 }
 \arguments{
-\item{A}{}
+\item{A}{- the original matrix of the operator equation - 
+numeric or complex matrix (исходная матрица операторного уравнения 
+- вещественная или комплексная)}
 
-\item{f}{}
+\item{f}{- bias - numeric or complex vector (вектор 
+свободных членов вещественный или комплексный)}
 
-\item{u}{}
+\item{u}{- initial approximation of an unknown vector - 
+numeric or complex vector (начальное приближение неизвестного вектора 
+- вещественный или комплексный вектор)}
 
-\item{mu}{}
+\item{mu}{- center of a circle on a complex plane containing points 
+of the spectrum of the operator(центр окружности на комплексной 
+плоскости, содержащей точки спектра оператора)}
 
-\item{eps}{}
+\item{eps}{- accuracy of calculation of the desired vector - numeric 
+(точность вычисления искомого вектора - вещественная)}
+
+\item{iterations}{- the upper limit on the number of iterations when 
+the method diverges (ограничение сверху на число итераций при 
+расхождении метода)}
 }
 \value{
-
+u - unknown vector in some approximation 
+(неизвестный вектор в некотором приближении)
 }
 \description{
-Title
+- Stationary iterative method for solving operator 
+equations or systems of linear algebraic equations. The limitation 
+is the absence among the values of the spectrum of the operator, 
+the values of the mirror relative to the origin.
+(Стационарный итерационный метод для решения операторных уравнений 
+или систем линейных алгебраических уравнений. Ограничением ялвяется 
+отсутствие среди значений спектра оператора, значений зеркальных 
+относительно начала координат.)
+}
+\examples{
+A <- diag(rnorm(25, 50, 0.1) + 1i * rnorm(25, 50, 0.1))
+f <- rnorm(25) + 1i * rnorm(25)
+u <- rnorm(25)
+print(IMSSLAER::GMSI(A, f, u, mu = IMSSLAER::muFind(lambs = diag(A), draw = F)))
 }

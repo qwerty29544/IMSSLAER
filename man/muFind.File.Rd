@@ -2,7 +2,8 @@
 % Please edit documentation in R/GMSI.R
 \name{muFind.File}
 \alias{muFind.File}
-\title{Title}
+\title{Iterative parameter for GMSI iterations from file [muFind.File]
+(Нахождение итерационного параметра для обобщенного метода простой итерации)}
 \usage{
 muFind.File(
   input.file = "complexNumbeRS",
@@ -13,19 +14,44 @@ muFind.File(
 )
 }
 \arguments{
-\item{input.file}{}
+\item{input.file}{- file with input data for spectrum points 
+(файл с входными данными для точек спектра)}
 
-\item{output.file}{}
+\item{output.file}{- file with input data for the center of the circle 
+(файл с входными данными для центра окружности)}
 
-\item{out}{}
+\item{out}{- boolean variable, controls file output 
+(переменная логического типа, управляет выводом в файл)}
 
-\item{draw}{}
+\item{draw}{- boolean type variable that controls the drawing of 
+the complex plane of the spectrum of the operator (пременная 
+логического типа, управляет выводом рисунка комплексной плоскости 
+спектра оператора)}
 
-\item{plot.file}{}
+\item{plot.file}{- operator plane image file name
+(имя файла изображения комплексной плоскости оператора)}
 }
 \value{
-
+mu - the complex value of the operator center 
+(комплексное значение центра оператора);
+ouput.file - file with data of the center of the circle on the 
+complex plane (файл с данными центра окружности на комплексной плоскости);
+complex.plot - ".jpg" image file of the operator's spectrum point on 
+the complex plane and circle (файл изображения точке спектра оператора 
+на комплексной плоскости и окружности)
 }
 \description{
-Title
+An algorithm for finding an iterative parameter for 
+the generalized method of simple iteration based on information 
+about the values of the spectrum point of a linear operator or 
+on the basis of a priori knowledge about the location of the spectrum 
+of operator A. For geometric reasons, a circle of smallest radius is 
+constructed that does not contain the origin, which will contain all 
+points of the spectrum of the operator.
+(Алгоритм нахождения итерационного параметра для обобщенного метода 
+простой итерации на основе информации о значениях точке спектра линейного 
+оператора или на основе априорных знаний о расположении спектра 
+оператора A. Из геометрических соображений строится круг наименьшего 
+радиуса, не содержащий в себе начало координат, который будет содержать 
+в себе все точки спектра оператора.)
 }

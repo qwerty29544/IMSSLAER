@@ -2,20 +2,51 @@
 % Please edit documentation in R/GMSI.R
 \name{muFind}
 \alias{muFind}
-\title{Title}
+\title{Iterative parameter for GMSI iterations [muFind]
+(Нахождение итерационного параметра для обобщенного метода простой итерации)}
 \usage{
 muFind(lambs, draw = TRUE, path = "complexPlot")
 }
 \arguments{
-\item{lambs}{}
+\item{lambs}{- input data for spectrum points 
+(входные данные для точек спектра)}
 
-\item{draw}{}
+\item{draw}{- boolean type variable that controls the drawing of 
+the complex plane of the spectrum of the operator (пременная 
+логического типа, управляет выводом рисунка комплексной плоскости 
+спектра оператора)}
 
-\item{path}{}
+\item{path}{- operator plane image file name
+(имя файла изображения комплексной плоскости оператора)}
 }
 \value{
-
+mu - the complex value of the operator center 
+(комплексное значение центра оператора);
+complex.plot - ".jpg" image file of the operator's spectrum point on 
+the complex plane and circle (файл изображения точке спектра оператора 
+на комплексной плоскости и окружности)
 }
 \description{
-Title
+An algorithm for finding an iterative parameter for 
+the generalized method of simple iteration based on information 
+about the values of the spectrum point of a linear operator or 
+on the basis of a priori knowledge about the location of the spectrum 
+of operator A. For geometric reasons, a circle of smallest radius is 
+constructed that does not contain the origin, which will contain all 
+points of the spectrum of the operator.
+(Алгоритм нахождения итерационного параметра для обобщенного метода 
+простой итерации на основе информации о значениях точке спектра линейного 
+оператора или на основе априорных знаний о расположении спектра 
+оператора A. Из геометрических соображений строится круг наименьшего 
+радиуса, не содержащий в себе начало координат, который будет содержать 
+в себе все точки спектра оператора.)
+}
+\examples{
+A <- diag(seq(0.1, 99.1, 1))
+print(muFind(lambs = diag(A), draw = T))
+
+A <- diag(seq(-0.1, -99.1, -1))
+print(muFind(lambs = diag(A), draw = F))
+
+print(muFind(lambs = c(5 + 5i, 5 - 5i, 4)))
 }

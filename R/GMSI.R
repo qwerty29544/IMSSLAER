@@ -138,17 +138,44 @@
 
 # Нахождение мю по входным значениям краёв спектра оператора --------------
 
-
-#' Title
+#' Iterative parameter for GMSI iterations [muFind]
+#' (Нахождение итерационного параметра для обобщенного метода простой итерации)
+#' @description An algorithm for finding an iterative parameter for 
+#' the generalized method of simple iteration based on information 
+#' about the values of the spectrum point of a linear operator or 
+#' on the basis of a priori knowledge about the location of the spectrum 
+#' of operator A. For geometric reasons, a circle of smallest radius is 
+#' constructed that does not contain the origin, which will contain all 
+#' points of the spectrum of the operator.
+#' (Алгоритм нахождения итерационного параметра для обобщенного метода 
+#' простой итерации на основе информации о значениях точке спектра линейного 
+#' оператора или на основе априорных знаний о расположении спектра 
+#' оператора A. Из геометрических соображений строится круг наименьшего 
+#' радиуса, не содержащий в себе начало координат, который будет содержать 
+#' в себе все точки спектра оператора.)
+#' @param lambs - input data for spectrum points 
+#' (входные данные для точек спектра)
+#' @param draw - boolean type variable that controls the drawing of 
+#' the complex plane of the spectrum of the operator (пременная 
+#' логического типа, управляет выводом рисунка комплексной плоскости 
+#' спектра оператора)
+#' @param path - operator plane image file name
+#' (имя файла изображения комплексной плоскости оператора)
 #'
-#' @param lambs 
-#' @param draw 
-#' @param path 
-#'
-#' @return
+#' @return mu - the complex value of the operator center 
+#' (комплексное значение центра оператора);
+#' complex.plot - ".jpg" image file of the operator's spectrum point on 
+#' the complex plane and circle (файл изображения точке спектра оператора 
+#' на комплексной плоскости и окружности)
 #' @export
 #'
-#' @examples
+#' @examples A <- diag(seq(0.1, 99.1, 1))
+#' print(muFind(lambs = diag(A), draw = T))
+#' 
+#' A <- diag(seq(-0.1, -99.1, -1))
+#' print(muFind(lambs = diag(A), draw = F))
+#' 
+#' print(muFind(lambs = c(5 + 5i, 5 - 5i, 4)))
 muFind <- function(lambs, draw = TRUE, path = "complexPlot") {
     # Проверка типа переменной - вектора
     stopifnot(is.numeric(lambs) || is.complex(lambs))
@@ -164,16 +191,14 @@ muFind <- function(lambs, draw = TRUE, path = "complexPlot") {
         if (abs(mu) <= abs(R)) stop("Окружность оператора лежит на начале координат")
         muflash <- c(muflash, mu)
         Rflash <- c(Rflash, R)
-    }
-    # оказывается верным является выражение 5 < 5/0
-    if (n == 2) {
+    } else if (n == 2) {
+        # оказывается верным является выражение 5 < 5/0
         mu <- .mu2(lambs[1], lambs[2])
         R <- .R2(lambs[1], lambs[2])
         if (abs(mu) <= abs(R)) stop("Окружность оператора лежит на начале координат")
         muflash <- c(muflash, mu)
         Rflash <- c(Rflash, R)
-    }
-    if (n >= 3) {
+    } else if (n >= 3) {
         
         for (i in (1:(n - 1))) {
             for (j in ((i + 1):n)) {
@@ -198,6 +223,7 @@ muFind <- function(lambs, draw = TRUE, path = "complexPlot") {
                 }
             }
         }
+        
     }
     mu <- muflash[which.min(Rflash)]
     R <- min(Rflash)
@@ -208,22 +234,48 @@ muFind <- function(lambs, draw = TRUE, path = "complexPlot") {
 
 # muFind.File -------------------------------------------------------------
 
-
-#' Title
+#' Iterative parameter for GMSI iterations from file [muFind.File]
+#' (Нахождение итерационного параметра для обобщенного метода простой итерации)
+#' @description An algorithm for finding an iterative parameter for 
+#' the generalized method of simple iteration based on information 
+#' about the values of the spectrum point of a linear operator or 
+#' on the basis of a priori knowledge about the location of the spectrum 
+#' of operator A. For geometric reasons, a circle of smallest radius is 
+#' constructed that does not contain the origin, which will contain all 
+#' points of the spectrum of the operator.
+#' (Алгоритм нахождения итерационного параметра для обобщенного метода 
+#' простой итерации на основе информации о значениях точке спектра линейного 
+#' оператора или на основе априорных знаний о расположении спектра 
+#' оператора A. Из геометрических соображений строится круг наименьшего 
+#' радиуса, не содержащий в себе начало координат, который будет содержать 
+#' в себе все точки спектра оператора.)
+#' @param input.file - file with input data for spectrum points 
+#' (файл с входными данными для точек спектра)
+#' @param output.file - file with input data for the center of the circle 
+#' (файл с входными данными для центра окружности)
+#' @param out - boolean variable, controls file output 
+#' (переменная логического типа, управляет выводом в файл)
+#' @param draw - boolean type variable that controls the drawing of 
+#' the complex plane of the spectrum of the operator (пременная 
+#' логического типа, управляет выводом рисунка комплексной плоскости 
+#' спектра оператора)
+#' @param plot.file - operator plane image file name
+#' (имя файла изображения комплексной плоскости оператора)
 #'
-#' @param input.file 
-#' @param output.file 
-#' @param out 
-#' @param draw 
-#' @param plot.file 
-#'
-#' @return
+#' @return mu - the complex value of the operator center 
+#' (комплексное значение центра оператора);
+#' ouput.file - file with data of the center of the circle on the 
+#' complex plane (файл с данными центра окружности на комплексной плоскости);
+#' complex.plot - ".jpg" image file of the operator's spectrum point on 
+#' the complex plane and circle (файл изображения точке спектра оператора 
+#' на комплексной плоскости и окружности)
 #' @export
 #'
 #' @examples
 muFind.File <- function(input.file = "complexNumbeRS", output.file = "results", out = T,
                         draw = TRUE, plot.file = "complexPlot") {
-    stopifnot(is.logical(draw), is.character(input.file), is.character(output.file), is.character(plot.file),
+    stopifnot(is.logical(draw), is.character(input.file), 
+              is.character(output.file), is.character(plot.file),
               is.logical(out))
     # Считывание данных о точках многоугольника из текстового документа
     lambs <- as.complex(read.table(file = input.file, header = F)[[1]])
@@ -235,28 +287,31 @@ muFind.File <- function(input.file = "complexNumbeRS", output.file = "results", 
     Rflash <- numeric(0)
     muflash <- complex(0)
     if (is.numeric(lambs) || all(Im(lambs) == 0)) {
+        
         mu <- (max(Re(lambs)) + min(Re(lambs))) / 2 # считаем центр по двум крайним точкам
         R <- (max(Re(lambs)) - min(Re(lambs))) / 2 # считаем радиум круга по двум крайним точкам
         if (abs(mu) <= abs(R)) stop("Окружность оператора лежит на начале координат")
         muflash <- c(muflash, mu)
         Rflash <- c(Rflash, R)
-    }
-    # оказывается верным является выражение 5 < 5/0
-    if (n == 2) {
+    
+    } else if (n == 2) {
+        
+        # оказывается верным является выражение 5 < 5/0
         mu <- .mu2(lambs[1], lambs[2])
         R <- .R2(lambs[1], lambs[2])
         if (abs(mu) <= abs(R)) stop("Окружность оператора лежит на начале координат")
         muflash <- c(muflash, mu)
         Rflash <- c(Rflash, R)
-    }
-    if (n >= 3) {
         
+    } else if (n >= 3) {
+
         for (i in (1:(n - 1))) {
             for (j in ((i + 1):n)) {
                 mu <- .mu2(lambs[i], lambs[j])
                 R <- .R2(lambs[i], lambs[j])
                 if (abs(mu) <= abs(R)) next
-                if (any(round(abs(mu - lambs), digits = 8) > round(abs(R), digits = 8))) next
+                if (any(round(abs(mu - lambs), digits = 8) > 
+                        round(abs(R), digits = 8))) next
                 muflash <- c(muflash, mu)
                 Rflash <- c(Rflash, R)
             }
@@ -268,12 +323,14 @@ muFind.File <- function(input.file = "complexNumbeRS", output.file = "results", 
                     mu <- .mu3(lambs[i], lambs[j], lambs[k])
                     R <- .R3(mu, lambs[i])
                     if (abs(mu) <= abs(R)) next
-                    if (any(round(abs(mu - lambs), digits = 8) > round(abs(R), digits = 8))) next
+                    if (any(round(abs(mu - lambs), digits = 8) > 
+                            round(abs(R), digits = 8))) next
                     muflash <- c(muflash, mu)
                     Rflash <- c(Rflash, R)
                 }
             }
         }
+        
     }
     mu <- muflash[which.min(Rflash)]
     if (length(mu) == 0) stop("Нет подходящего центра")
@@ -285,125 +342,213 @@ muFind.File <- function(input.file = "complexNumbeRS", output.file = "results", 
 }
 # GMSI --------------------------------------------------------------------
 
-
-#' Title
+#' Generalized method of simple iterations [GMSI]
+#' (Обощённый метод простой итерации)
+#' @description - Stationary iterative method for solving operator 
+#' equations or systems of linear algebraic equations. The limitation 
+#' is the absence among the values of the spectrum of the operator, 
+#' the values of the mirror relative to the origin.
+#' (Стационарный итерационный метод для решения операторных уравнений 
+#' или систем линейных алгебраических уравнений. Ограничением ялвяется 
+#' отсутствие среди значений спектра оператора, значений зеркальных 
+#' относительно начала координат.)
+#' @param A - the original matrix of the operator equation - 
+#' numeric or complex matrix (исходная матрица операторного уравнения 
+#' - вещественная или комплексная)
+#' @param f - bias - numeric or complex vector (вектор 
+#' свободных членов вещественный или комплексный)
+#' @param u - initial approximation of an unknown vector - 
+#' numeric or complex vector (начальное приближение неизвестного вектора 
+#' - вещественный или комплексный вектор)
+#' @param mu - center of a circle on a complex plane containing points 
+#' of the spectrum of the operator(центр окружности на комплексной 
+#' плоскости, содержащей точки спектра оператора)
+#' @param eps - accuracy of calculation of the desired vector - numeric 
+#' (точность вычисления искомого вектора - вещественная)
+#' @param iterations - the upper limit on the number of iterations when 
+#' the method diverges (ограничение сверху на число итераций при 
+#' расхождении метода)
 #'
-#' @param A 
-#' @param f 
-#' @param u 
-#' @param mu 
-#' @param eps 
-#'
-#' @return
+#' @return u - unknown vector in some approximation 
+#' (неизвестный вектор в некотором приближении)
 #' @export
 #'
-#' @examples
-GMSI <- function(A, f, u, mu, eps = 10e-4) {
+#' @examples A <- diag(rnorm(25, 50, 0.1) + 1i * rnorm(25, 50, 0.1))
+#' f <- rnorm(25) + 1i * rnorm(25)
+#' u <- rnorm(25)
+#' print(IMSSLAER::GMSI(A, f, u, mu = IMSSLAER::muFind(lambs = diag(A), draw = F)))
+GMSI <- function(A, f, u, mu, eps = 10e-4, iterations = 10000) {
     stopifnot(is.matrix(A),
               is.numeric(A) || is.complex(A),
               is.numeric(f) || is.complex(f),
               is.numeric(u) || is.complex(u),
-              is.numeric(eps),
+              is.numeric(eps), length(eps) == 1, 
+              is.atomic(eps),
+              nrow(A) == ncol(A), ncol(A) == length(f), 
+              length(f) == length(u),
+              ncol(A) >= 2,
+              is.numeric(iterations), length(iterations) == 1, 
+              is.atomic(iterations),
               is.complex(mu) || is.numeric(mu))
-    # Получение размерности матрицы А
-    dimA <- dim(A)[1]
-    # Проверка на n >= 2
-    if (dimA[1] < 2) {
-        stop("Operator must have dim >= 2")
-    }
-    # Проверка на размерность матрицы оператора
-    if (dim(A)[1] != dim(A)[2]) {
-        stop("Operator must be quadratic")
-    }
+    i <- 0
     # Итерации
     repeat {
+        i <- i + 1
         u <- u - (1/mu) * (A %*% u - f)
-        if ((sqrt(abs(t(A %*% u - f) %*% (A %*% u - f)))) / (sqrt(abs(t(f) %*% f))) < eps) break
+        if (abs((sqrt(t(A %*% u - f) %*% Conj(A %*% u - f))) 
+                / (sqrt(t(f) %*% Conj(f))))[1, 1] < eps) break
+        if (i > iterations) {
+            message("Iterations of the method may not come close to 
+                    the final result / allowed number of iterations 
+                    is exceeded")
+            break
+        }
     }
     return(u)
 }
 
-
 # GMSI.mu -----------------------------------------------------------------
 
-
-#' Title
+#' Generalized method of simple iterations [GMSI]
+#' (Обощённый метод простой итерации)
+#' @description - Stationary iterative method for solving operator 
+#' equations or systems of linear algebraic equations. The limitation 
+#' is the absence among the values of the spectrum of the operator, 
+#' the values of the mirror relative to the origin.
+#' (Стационарный итерационный метод для решения операторных уравнений 
+#' или систем линейных алгебраических уравнений. Ограничением ялвяется 
+#' отсутствие среди значений спектра оператора, значений зеркальных 
+#' относительно начала координат.)
+#' @param A - the original matrix of the operator equation - 
+#' numeric or complex matrix (исходная матрица операторного уравнения 
+#' - вещественная или комплексная)
+#' @param f - bias - numeric or complex vector (вектор 
+#' свободных членов вещественный или комплексный)
+#' @param u - initial approximation of an unknown vector - 
+#' numeric or complex vector (начальное приближение неизвестного вектора 
+#' - вещественный или комплексный вектор)
+#' @param lambs - input data for spectrum points 
+#' (входные данные для точек спектра)
+#' @param eps - accuracy of calculation of the desired vector - numeric 
+#' (точность вычисления искомого вектора - вещественная)
+#' @param iterations - the upper limit on the number of iterations when 
+#' the method diverges (ограничение сверху на число итераций при 
+#' расхождении метода)
 #'
-#' @param A 
-#' @param f 
-#' @param u 
-#' @param lambs 
-#' @param eps 
-#'
-#' @return
+#' @return u - unknown vector in some approximation 
+#' (неизвестный вектор в некотором приближении)
 #' @export
 #'
-#' @examples
-GMSI.mu <- function(A, f, u, lambs, eps = 10e-4) {
+#' @examples A <- diag(rnorm(25, 50, 0.1) + 1i * rnorm(25, 50, 0.1))
+#' f <- rnorm(25) + 1i * rnorm(25)
+#' u <- rnorm(25)
+#' print(IMSSLAER::GMSI.mu(A, f, u, lambs = diag(A)))
+GMSI.mu <- function(A, f, u, lambs, eps = 10e-4, iterations = 10000) {
     stopifnot(is.matrix(A),
               is.numeric(A) || is.complex(A),
               is.numeric(f) || is.complex(f),
               is.numeric(u) || is.complex(u),
-              is.numeric(eps),
+              is.numeric(eps), length(eps) == 1, 
+              is.atomic(eps),
+              nrow(A) == ncol(A), ncol(A) == length(f), 
+              length(f) == length(u),
+              ncol(A) >= 2,
+              is.numeric(iterations), length(iterations) == 1, 
+              is.atomic(iterations),
               is.complex(lambs) || is.numeric(lambs))
-    stopifnot((nrow(A) == ncol(A)) & (ncol(A) == length(f)) & (length(f) == length(u)))
-    # Получение размерности матрицы А
-    dimA <- dim(A)[1]
-    # Проверка на n >= 2
-    if (dimA[1] < 2) {
-        stop("Operator must have dim >= 2")
-    }
     # Итерации
+    i <- 0
     mu <- muFind(lambs = lambs, draw = F)[1]
     repeat {
+        i <- i + 1
         u <- u - (1/mu) * (A %*% u - f)
-        if ((sqrt(abs(t(A %*% u - f) %*% (A %*% u - f)))) / (sqrt(abs(t(f) %*% f))) < eps) break
+        if (abs((sqrt(t(A %*% u - f) %*% Conj(A %*% u - f))) 
+                / (sqrt(t(f) %*% Conj(f))))[1, 1] < eps) break
+        if (i > iterations) {
+            message("Iterations of the method may not come close to 
+                    the final result / allowed number of iterations 
+                    is exceeded")
+            break
+        }
     }
     return(u)
 }
 
 # GMSI.mu.file -----------------------------------------------------------------
 
-
-#' Title
+#' Generalized method of simple iterations [GMSI]
+#' (Обощённый метод простой итерации)
+#' @description - Stationary iterative method for solving operator 
+#' equations or systems of linear algebraic equations. The limitation 
+#' is the absence among the values of the spectrum of the operator, 
+#' the values of the mirror relative to the origin.
+#' (Стационарный итерационный метод для решения операторных уравнений 
+#' или систем линейных алгебраических уравнений. Ограничением ялвяется 
+#' отсутствие среди значений спектра оператора, значений зеркальных 
+#' относительно начала координат.)
+#' @param A - the original matrix of the operator equation - 
+#' numeric or complex matrix (исходная матрица операторного уравнения 
+#' - вещественная или комплексная)
+#' @param f - bias - numeric or complex vector (вектор 
+#' свободных членов вещественный или комплексный)
+#' @param u - initial approximation of an unknown vector - 
+#' numeric or complex vector (начальное приближение неизвестного вектора 
+#' - вещественный или комплексный вектор)
+#' @param input.file - file with input data for spectrum points 
+#' (файл с входными данными для точек спектра)
+#' @param out - boolean variable, controls file output 
+#' (переменная логического типа, управляет выводом в файл)
+#' @param output.file - file with input data for the center of the circle 
+#' (файл с входными данными для центра окружности)
+#' @param draw - boolean type variable that controls the drawing of 
+#' the complex plane of the spectrum of the operator (пременная 
+#' логического типа, управляет выводом рисунка комплексной плоскости 
+#' спектра оператора)
+#' @param plot.file - operator plane image file name
+#' (имя файла изображения комплексной плоскости оператора) 
+#' @param eps - accuracy of calculation of the desired vector - numeric 
+#' (точность вычисления искомого вектора - вещественная)
+#' @param iterations - the upper limit on the number of iterations when 
+#' the method diverges (ограничение сверху на число итераций при 
+#' расхождении метода)
 #'
-#' @param A 
-#' @param f 
-#' @param u 
-#' @param input.file 
-#' @param out 
-#' @param output.file 
-#' @param draw 
-#' @param plot.file 
-#' @param eps 
-#'
-#' @return
+#' @return u - unknown vector in some approximation 
+#' (неизвестный вектор в некотором приближении)
 #' @export
 #'
 #' @examples
 GMSI.mu.file <- function(A, f, u, input.file = "complexNumbeRS", out = F,
-                         output.file = "results", draw = F, plot.file = "complexPlot", eps = 10e-4) {
+                         output.file = "results", draw = F, 
+                         plot.file = "complexPlot", eps = 10e-4,
+                         iterations = 10000) {
     stopifnot(is.matrix(A),
               is.numeric(A) || is.complex(A),
               is.numeric(f) || is.complex(f),
               is.numeric(u) || is.complex(u),
-              is.numeric(eps))
-    # Получение размерности матрицы А
-    dimA <- dim(A)[1]
-    # Проверка на n >= 2
-    if (dimA[1] < 2) {
-        stop("Operator must have dim >= 2")
-    }
-    # Проверка на размерность матрицы оператора
-    if (dim(A)[1] != dim(A)[2]) {
-        stop("Operator must be quadratic")
-    }
+              is.numeric(eps), length(eps) == 1, 
+              is.atomic(eps),
+              nrow(A) == ncol(A), ncol(A) == length(f), 
+              length(f) == length(u),
+              ncol(A) >= 2,
+              is.numeric(iterations), length(iterations) == 1, 
+              is.atomic(iterations),
+              is.character(input.file), is.character(output.file), 
+              is.character(plot.file), is.logical(draw), is.logical(out))
     # Итерации
+    i <- 0
     mu <- muFind.File(input.file = input.file, output.file = output.file, draw = draw,
                       plot.file = plot.file, out = out)[1]
-    repeat{
+    repeat {
+        i <- i + 1
         u <- u - (1/mu) * (A %*% u - f)
-        if ((sqrt(abs(t(A %*% u - f) %*% (A %*% u - f)))) / (sqrt(abs(t(f) %*% f))) < eps) break
+        if (abs((sqrt(t(A %*% u - f) %*% Conj(A %*% u - f))) 
+                / (sqrt(t(f) %*% Conj(f))))[1, 1] < eps) break
+        if (i > iterations) {
+            message("Iterations of the method may not come close to 
+                    the final result / allowed number of iterations 
+                    is exceeded")
+            break
+        }
     }
     return(u)
 }
@@ -411,167 +556,257 @@ GMSI.mu.file <- function(A, f, u, input.file = "complexNumbeRS", out = F,
 
 # История по GMSI ---------------------------------------------------------
 
-#' Title
-#'
-#'@details This method is necessary to preserve the history of sequential 
-#'calculation of an unknown vector in order to visualize the convergence of 
-#'the method 
+#' Generalized method of simple iterations [GMSI]
+#' (Обощённый метод простой итерации)
+#' @description - Stationary iterative method for solving operator 
+#' equations or systems of linear algebraic equations. The limitation 
+#' is the absence among the values of the spectrum of the operator, 
+#' the values of the mirror relative to the origin.
+#' (Стационарный итерационный метод для решения операторных уравнений 
+#' или систем линейных алгебраических уравнений. Ограничением ялвяется 
+#' отсутствие среди значений спектра оператора, значений зеркальных 
+#' относительно начала координат.)
+#' @details This method is necessary to preserve the history of 
+#' sequential calculation of an unknown vector in order to visualize 
+#' the convergence of the method 
 #' (Данный метод необходим для сохранения истории последовательного 
 #' вычисления неизвестного вектора с целью визуализации сходимости метода)
-#' @param A 
-#' @param f 
-#' @param u 
-#' @param mu 
-#' @param eps 
+#' @param A - the original matrix of the operator equation - 
+#' numeric or complex matrix (исходная матрица операторного уравнения 
+#' - вещественная или комплексная)
+#' @param f - bias - numeric or complex vector (вектор 
+#' свободных членов вещественный или комплексный)
+#' @param u - initial approximation of an unknown vector - 
+#' numeric or complex vector (начальное приближение неизвестного вектора 
+#' - вещественный или комплексный вектор)
+#' @param mu - center of a circle on a complex plane containing points 
+#' of the spectrum of the operator(центр окружности на комплексной плоскости, 
+#' содержащей точки спектра оператора)
+#' @param eps - accuracy of calculation of the desired vector - numeric 
+#' (точность вычисления искомого вектора - вещественная)
+#' @param iterations - the upper limit on the number of iterations when 
+#' the method diverges (ограничение сверху на число итераций при 
+#' расхождении метода)
 #'
 #' @return result - list: 
 #' num.iter - number of iterations (число итераций); 
 #' var - unknown vector result (результат вычисления неизвестного вектора); 
-#' var.hist - history of computing an unknown vector (история вычисления неизвестного вектора); 
+#' var.hist - history of computing an unknown vector (история вычисления 
+#' неизвестного вектора); 
 #' systime.iter - system time calculation (системное время вычисления); 
 #' @export
 #'
-#' @examples
-GMSI.history <- function(A, f, u, mu, eps = 10e-4) {
+#' @examples A <- diag(rnorm(25, 50, 0.1) + 1i * rnorm(25, 50, 0.1))
+#' f <- rnorm(25) + 1i * rnorm(25)
+#' u <- rnorm(25)
+#' print(IMSSLAER::GMSI.history(A, f, u, mu = IMSSLAER::muFind(lambs = diag(A), draw = F)))
+GMSI.history <- function(A, f, u, mu, eps = 10e-4, iterations = 10000) {
     stopifnot(is.matrix(A),
               is.numeric(A) || is.complex(A),
               is.numeric(f) || is.complex(f),
               is.numeric(u) || is.complex(u),
-              is.numeric(eps),
+              is.numeric(eps), length(eps) == 1, 
+              is.atomic(eps),
+              nrow(A) == ncol(A), ncol(A) == length(f), 
+              length(f) == length(u),
+              ncol(A) >= 2,
+              is.numeric(iterations), 
+              length(iterations) == 1, 
+              is.atomic(iterations),
               is.complex(mu) || is.numeric(mu))
-    # Получение размерности матрицы А
-    dimA <- dim(A)[1]
-    # Проверка на n >= 2
-    if (dimA[1] < 2) {
-        stop("Operator must have dim >= 2")
-    }
-    # Проверка на размерность матрицы оператора
-    if (dim(A)[1] != dim(A)[2]) {
-        stop("Operator must be quadratic")
-    }
     # Итерации
     i <- 0 # начало итераций
-    u.hist <- matrix(u, nrow = dimA)
+    u.hist <- matrix(u, nrow = ncol(A))
     
     t1 <- Sys.time()
     repeat {
         u <- u - (1/mu) * (A %*% u - f)
         i <- i + 1 # обновляем счетчик итераций
         u.hist <- cbind(u.hist, u) # обновляем историю
-        if ((sqrt(abs(t(A %*% u - f) %*% (A %*% u - f)))) / (sqrt(abs(t(f) %*% f))) < eps) break
+        if (abs((sqrt(t(A %*% u - f) %*% Conj(A %*% u - f))) 
+                / (sqrt(t(f) %*% Conj(f))))[1, 1] < eps) break
+        if (i > iterations) {
+            message("Iterations of the method may not come close to 
+                    the final result / allowed number of iterations 
+                    is exceeded")
+            break
+        }
     }
     t2 <- Sys.time()
-    return(list(num.iter = i, var = u, var.hist = u.hist, systime.iter = difftime(t2, t1, units = "secs")[[1]]))
+    return(list(num.iter = i, var = u, var.hist = u.hist, 
+                systime.iter = difftime(t2, t1, units = "secs")[[1]]))
 }
 
 
 # GMSI.mu.history ---------------------------------------------------------
 
-
-#' Title
-#'
-#' @details This method is necessary to preserve the history of sequential calculation of an unknown vector in order to visualize the convergence of the method 
-#' (Данный метод необходим для сохранения истории последовательного вычисления неизвестного вектора с целью визуализации сходимости метода)
-#' @param A 
-#' @param f 
-#' @param u 
-#' @param lambs 
-#' @param eps 
+#' Generalized method of simple iterations [GMSI]
+#' (Обощённый метод простой итерации)
+#' @description - Stationary iterative method for solving operator 
+#' equations or systems of linear algebraic equations. The limitation 
+#' is the absence among the values of the spectrum of the operator, 
+#' the values of the mirror relative to the origin.
+#' (Стационарный итерационный метод для решения операторных уравнений 
+#' или систем линейных алгебраических уравнений. Ограничением ялвяется 
+#' отсутствие среди значений спектра оператора, значений зеркальных 
+#' относительно начала координат.)
+#' @details This method is necessary to preserve the history of 
+#' sequential calculation of an unknown vector in order to visualize 
+#' the convergence of the method 
+#' (Данный метод необходим для сохранения истории последовательного 
+#' вычисления неизвестного вектора с целью визуализации сходимости метода)
+#' @param A - the original matrix of the operator equation - 
+#' numeric or complex matrix (исходная матрица операторного уравнения 
+#' - вещественная или комплексная)
+#' @param f - bias - numeric or complex vector (вектор 
+#' свободных членов вещественный или комплексный)
+#' @param u - initial approximation of an unknown vector - 
+#' numeric or complex vector (начальное приближение неизвестного вектора 
+#' - вещественный или комплексный вектор)
+#' @param lambs - input data for spectrum points 
+#' (входные данные для точек спектра)
+#' @param eps - accuracy of calculation of the desired vector - numeric 
+#' (точность вычисления искомого вектора - вещественная)
+#' @param iterations - the upper limit on the number of iterations when 
+#' the method diverges (ограничение сверху на число итераций при 
+#' расхождении метода)
 #'
 #' @return result - list: 
 #' num.iter - number of iterations (число итераций); 
 #' var - unknown vector result (результат вычисления неизвестного вектора); 
-#' var.hist - history of computing an unknown vector (история вычисления неизвестного вектора); 
+#' var.hist - history of computing an unknown vector (история 
+#' вычисления неизвестного вектора); 
 #' systime.iter - system time calculation (системное время вычисления); 
 #' @export
 #'
-#' @examples
-GMSI.mu.history <- function(A, f, u, lambs, eps = 10e-4) {
+#' @examples A <- diag(rnorm(25, 50, 0.1) + 1i * rnorm(25, 50, 0.1))
+#' f <- rnorm(25) + 1i * rnorm(25)
+#' u <- rnorm(25)
+#' print(IMSSLAER::GMSI.mu.history(A, f, u, lambs = diag(A)))
+GMSI.mu.history <- function(A, f, u, lambs, eps = 10e-4, iterations = 10000) {
     stopifnot(is.matrix(A),
               is.numeric(A) || is.complex(A),
               is.numeric(f) || is.complex(f),
               is.numeric(u) || is.complex(u),
-              is.numeric(eps),
+              is.numeric(eps), length(eps) == 1, 
+              is.atomic(eps),
+              nrow(A) == ncol(A), ncol(A) == length(f), 
+              length(f) == length(u),
+              ncol(A) >= 2,
+              is.numeric(iterations), length(iterations) == 1, 
+              is.atomic(iterations),
               is.complex(lambs) || is.numeric(lambs))
-    # Получение размерности матрицы А
-    dimA <- dim(A)[1]
-    # Проверка на n >= 2
-    if (dimA[1] < 2) {
-        stop("Operator must have dim >= 2")
-    }
-    # Проверка на размерность матрицы оператора
-    if (dim(A)[1] != dim(A)[2]) {
-        stop("Operator must be quadratic")
-    }
     # Итерации
     i <- 0 # начало итераций
-    u.hist <- matrix(u, nrow = dimA)
+    u.hist <- matrix(u, nrow = ncol(A))
     t1 <- Sys.time()
     mu <- muFind(lambs = lambs, draw = F)[1]
     repeat {
         u <- u - (1/mu) * (A %*% u - f)
         i <- i + 1 # обновляем счетчик итераций
         u.hist <- cbind(u.hist, u) # обновляем историю
-        if ((sqrt(abs(t(A %*% u - f) %*% (A %*% u - f)))) / (sqrt(abs(t(f) %*% f))) < eps) break
+        if (abs((sqrt(t(A %*% u - f) %*% Conj(A %*% u - f))) 
+                / (sqrt(t(f) %*% Conj(f))))[1, 1] < eps) break
+        if (i > iterations) {
+            message("Iterations of the method may not come close to 
+                    the final result / allowed number of iterations 
+                    is exceeded")
+            break
+        }
     }
     t2 <- Sys.time()
-    return(list(num.iter = i, var = u, var.hist = u.hist, systime.iter = difftime(t2, t1, units = "secs")[[1]]))
+    return(list(num.iter = i, var = u, var.hist = u.hist, 
+                systime.iter = difftime(t2, t1, units = "secs")[[1]]))
 }
 
 # GMSI.mu.file.history ----------------------------------------------------
 
-
-#' Title
-#' 
-#' @details This method is necessary to preserve the history of sequential calculation of an unknown vector in order to visualize the convergence of the method 
-#' (Данный метод необходим для сохранения истории последовательного вычисления неизвестного вектора с целью визуализации сходимости метода)
-#' @param A 
-#' @param f 
-#' @param u 
-#' @param input.file 
-#' @param out 
-#' @param output.file 
-#' @param draw 
-#' @param plot.file 
-#' @param eps 
+#' Generalized method of simple iterations [GMSI]
+#' (Обощённый метод простой итерации)
+#' @description - Stationary iterative method for solving operator 
+#' equations or systems of linear algebraic equations. The limitation 
+#' is the absence among the values of the spectrum of the operator, 
+#' the values of the mirror relative to the origin.
+#' (Стационарный итерационный метод для решения операторных уравнений 
+#' или систем линейных алгебраических уравнений. Ограничением ялвяется 
+#' отсутствие среди значений спектра оператора, значений зеркальных 
+#' относительно начала координат.)
+#' @details This method is necessary to preserve the history of 
+#' sequential calculation of an unknown vector in order to visualize 
+#' the convergence of the method 
+#' (Данный метод необходим для сохранения истории последовательного 
+#' вычисления неизвестного вектора с целью визуализации сходимости метода)
+#' @param A - the original matrix of the operator equation - 
+#' numeric or complex matrix (исходная матрица операторного уравнения 
+#' - вещественная или комплексная)
+#' @param f - bias - numeric or complex vector (вектор 
+#' свободных членов вещественный или комплексный)
+#' @param u - initial approximation of an unknown vector - 
+#' numeric or complex vector (начальное приближение неизвестного вектора 
+#' - вещественный или комплексный вектор)
+#' @param input.file - file with input data for spectrum points 
+#' (файл с входными данными для точек спектра)
+#' @param out - boolean variable, controls file output 
+#' (переменная логического типа, управляет выводом в файл)
+#' @param output.file - file with input data for the center of the circle 
+#' (файл с входными данными для центра окружности)
+#' @param draw - boolean type variable that controls the drawing of 
+#' the complex plane of the spectrum of the operator (пременная 
+#' логического типа, управляет выводом рисунка комплексной плоскости 
+#' спектра оператора)
+#' @param plot.file - operator plane image file name
+#' (имя файла изображения комплексной плоскости оператора) 
+#' @param eps - accuracy of calculation of the desired vector - numeric 
+#' (точность вычисления искомого вектора - вещественная)
+#' @param iterations - the upper limit on the number of iterations when 
+#' the method diverges (ограничение сверху на число итераций при 
+#' расхождении метода)
 #'
 #' @return result - list: 
 #' num.iter - number of iterations (число итераций); 
 #' var - unknown vector result (результат вычисления неизвестного вектора); 
-#' var.hist - history of computing an unknown vector (история вычисления неизвестного вектора); 
+#' var.hist - history of computing an unknown vector (история 
+#' вычисления неизвестного вектора); 
 #' systime.iter - system time calculation (системное время вычисления); 
 #' @export
 #'
 #' @examples
-GMSI.mu.file.history <- function(A, f, u, input.file = "complexNumbeRS", out = F,
-                                 output.file = "results", draw = F, plot.file = "complexPlot", eps = 10e-4) {
+GMSI.mu.file.history <- function(A, f, u, input.file = "complexNumbeRS", 
+                                 out = F, output.file = "results", 
+                                 draw = F, plot.file = "complexPlot", 
+                                 eps = 10e-4, iterations = 10000) {
     stopifnot(is.matrix(A),
               is.numeric(A) || is.complex(A),
               is.numeric(f) || is.complex(f),
               is.numeric(u) || is.complex(u),
-              is.numeric(eps))
-    # Получение размерности матрицы А
-    dimA <- dim(A)[1]
-    # Проверка на n >= 2
-    if (dimA[1] < 2) {
-        stop("Operator must have dim >= 2")
-    }
-    # Проверка на размерность матрицы оператора
-    if (dim(A)[1] != dim(A)[2]) {
-        stop("Operator must be quadratic")
-    }
-    # Итерации
-    i <- 0 # начало итераций
-    u.hist <- matrix(u, nrow = dimA)
+              is.numeric(eps), length(eps) == 1, is.atomic(eps),
+              nrow(A) == ncol(A), ncol(A) == length(f), 
+              length(f) == length(u),ncol(A) >= 2,
+              is.numeric(iterations), length(iterations) == 1, 
+              is.atomic(iterations),
+              is.character(input.file), is.character(output.file), 
+              is.character(plot.file), is.logical(draw), is.logical(out))
+    i <- 0
+    u.hist <- matrix(u, nrow = ncol(A))
     t1 <- Sys.time()
-    mu <- muFind.File(input.file = input.file, output.file = output.file, draw = draw,
+    mu <- muFind.File(input.file = input.file, 
+                      output.file = output.file, draw = draw,
                       plot.file = plot.file, out = out)[1]
+    # Итерации
     repeat {
         u <- u - (1/mu) * (A %*% u - f)
         i <- i + 1 # обновляем счетчик итераций
         u.hist <- cbind(u.hist, u) # обновляем историю
-        if ((sqrt(abs(t(A %*% u - f) %*% (A %*% u - f)))) / (sqrt(abs(t(f) %*% f))) < eps) break
+        if (abs((sqrt(t(A %*% u - f) %*% Conj(A %*% u - f))) 
+                / (sqrt(t(f) %*% Conj(f))))[1, 1] < eps) break
+        if (i > iterations) {
+            message("Iterations of the method may not come close to 
+                    the final result / allowed number of iterations 
+                    is exceeded")
+            break
+        }
     }
     t2 <- Sys.time()
-    return(list(num.iter = i, var = u, var.hist = u.hist, systime.iter = difftime(t2, t1, units = "secs")[[1]]))
+    return(list(num.iter = i, var = u, var.hist = u.hist, 
+                systime.iter = difftime(t2, t1, units = "secs")[[1]]))
 }

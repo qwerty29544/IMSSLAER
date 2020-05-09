@@ -1,7 +1,7 @@
 Package: IMSSLAER
 Type: Package
 Title: Package for solving linear algebra equations with iterations
-Version: 0.1.1
+Version: 1.0.1
 Author: person("Ivan", "Yurchenkov", email = "qwerty29544@gmail.com", role = c("auth", "creator"))
 Maintainer: Ivan Yurchenkov <qwerty29544@gmail.com>
 Description: This package was created to solve systems of linear algebraic equations by various iterative methods.
