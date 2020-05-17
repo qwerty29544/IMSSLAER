@@ -1,9 +1,10 @@
 # Setup -------------------------------------------------------------------
 
-set.seed(123)                   # set seed for random generator
+set.seed(123) 
 Reductor <- 10
-AN <- diag(seq(0.1, 0.9, 0.8/Reductor))   # Creating diag numeric matrix
-AC <- diag(seq(0.1, 0.9, 0.8/Reductor) + 1i * seq(0.1, 0.9, 0.8/Reductor))    # Creating diag complex matrix
+AN <- diag(seq(0.1, 0.9, 0.8/Reductor))
+AC <- diag(seq(0.1, 0.9, 0.8/Reductor) + 
+               1i * seq(0.1, 0.9, 0.8/Reductor))
 fN <- rnorm(Reductor + 1)
 fC <- rnorm(Reductor + 1) + 1i * rnorm(Reductor + 1)
 uN <- rnorm(Reductor + 1)
@@ -12,61 +13,64 @@ eps <- c(10e-3, 10e-4, 10e-5, 10e-6, 10e-7, 10e-8, 10e-9)
 
 # testing and checking ----------------------------------------------------
 
-# testthat::test_that("Accuracy and numeric/complex type check", {
-#     for (e in eps) {
-#         # N/N/N
-#         result <- SIM(A = AN, f = fN, u = uN, eps = e)
-#         testthat::expect_true(abs((sqrt(t(AN %*% result - fN) %*% (AN %*% result - fN)))/(sqrt(t(fN) %*% fN))) < e)
-#         # N/N/C
-#         result <- SIM(A = AN, f = fN, u = uC, eps = e)
-#         testthat::expect_true(abs((sqrt(t(AN %*% result - fN) %*% (AN %*% result - fN)))/(sqrt(t(fN) %*% fN))) < e)
-#         # N/C/N
-#         result <- SIM(A = AN, f = fC, u = uN, eps = e)
-#         testthat::expect_true(abs((sqrt(t(AN %*% result - fC) %*% (AN %*% result - fC)))/(sqrt(t(fC) %*% fC))) < e)
-#         # C/N/N
-#         result <- SIM(A = AC, f = fN, u = uN, eps = e)
-#         testthat::expect_true(abs((sqrt(t(AC %*% result - fN) %*% (AC %*% result - fN)))/(sqrt(t(fN) %*% fN))) < e)
-#         # C/C/N
-#         result <- SIM(A = AC, f = fC, u = uN, eps = e)
-#         testthat::expect_true(abs((sqrt(t(AC %*% result - fC) %*% (AC %*% result - fC)))/(sqrt(t(fC) %*% fC))) < e)
-#         # C/N/C
-#         result <- SIM(A = AC, f = fN, u = uC, eps = e)
-#         testthat::expect_true(abs((sqrt(t(AC %*% result - fN) %*% (AC %*% result - fN)))/(sqrt(t(fN) %*% fN))) < e)
-#         # N/C/C
-#         result <- SIM(A = AN, f = fC, u = uC, eps = e)
-#         testthat::expect_true(abs((sqrt(t(AN %*% result - fC) %*% (AN %*% result - fC)))/(sqrt(t(fC) %*% fC))) < e)
-#         # C/C/C
-#         result <- SIM(A = AC, f = fC, u = uC, eps = e)
-#         testthat::expect_true(abs((sqrt(t(AC %*% result - fC) %*% (AC %*% result - fC)))/(sqrt(t(fC) %*% fC))) < e)
-#     }
-# })
-
 testthat::test_that("Accuracy and numeric/complex type check", {
     for (e in eps) {
         # N/N/N
         result <- SIM(A = AN, f = fN, u = uN, eps = e)
-        testthat::expect_true(abs((sqrt(t(AN %*% result - fN) %*% Conj(AN %*% result - fN)))/(sqrt(t(fN) %*% Conj(fN)))) < e)
+        testthat::expect_true(
+            abs((sqrt(t(AN %*% result - fN) %*% 
+                          Conj(AN %*% result - fN))) / 
+                    (sqrt(t(fN) %*% Conj(fN)))) < e
+            )
         # N/N/C
         result <- SIM(A = AN, f = fN, u = uC, eps = e)
-        testthat::expect_true(abs((sqrt(t(AN %*% result - fN) %*% Conj(AN %*% result - fN)))/(sqrt(t(fN) %*% Conj(fN)))) < e)
+        testthat::expect_true(
+            abs((sqrt(t(AN %*% result - fN) %*% 
+                          Conj(AN %*% result - fN))) / 
+                    (sqrt(t(fN) %*% Conj(fN)))) < e
+            )
         # N/C/N
         result <- SIM(A = AN, f = fC, u = uN, eps = e)
-        testthat::expect_true(abs((sqrt(t(AN %*% result - fC) %*% Conj(AN %*% result - fC)))/(sqrt(t(fC) %*% Conj(fC)))) < e)
+        testthat::expect_true(
+            abs((sqrt(t(AN %*% result - fC) %*% 
+                          Conj(AN %*% result - fC))) / 
+                    (sqrt(t(fC) %*% Conj(fC)))) < e
+            )
         # C/N/N
         result <- SIM(A = AC, f = fN, u = uN, eps = e)
-        testthat::expect_true(abs((sqrt(t(AC %*% result - fN) %*% Conj(AC %*% result - fN)))/(sqrt(t(fN) %*% Conj(fN)))) < e)
+        testthat::expect_true(
+            abs((sqrt(t(AC %*% result - fN) %*% 
+                          Conj(AC %*% result - fN))) / 
+                    (sqrt(t(fN) %*% Conj(fN)))) < e
+            )
         # C/C/N
         result <- SIM(A = AC, f = fC, u = uN, eps = e)
-        testthat::expect_true(abs((sqrt(t(AC %*% result - fC) %*% Conj(AC %*% result - fC)))/(sqrt(t(fC) %*% Conj(fC)))) < e)
+        testthat::expect_true(
+            abs((sqrt(t(AC %*% result - fC) %*% 
+                          Conj(AC %*% result - fC))) / 
+                    (sqrt(t(fC) %*% Conj(fC)))) < e
+            )
         # C/N/C
         result <- SIM(A = AC, f = fN, u = uC, eps = e)
-        testthat::expect_true(abs((sqrt(t(AC %*% result - fN) %*% Conj(AC %*% result - fN)))/(sqrt(t(fN) %*% Conj(fN)))) < e)
+        testthat::expect_true(
+            abs((sqrt(t(AC %*% result - fN) %*% 
+                          Conj(AC %*% result - fN))) / 
+                    (sqrt(t(fN) %*% Conj(fN)))) < e
+            )
         # N/C/C
         result <- SIM(A = AN, f = fC, u = uC, eps = e)
-        testthat::expect_true(abs((sqrt(t(AN %*% result - fC) %*% Conj(AN %*% result - fC)))/(sqrt(t(fC) %*% Conj(fC)))) < e)
+        testthat::expect_true(
+            abs((sqrt(t(AN %*% result - fC) %*% 
+                          Conj(AN %*% result - fC))) / 
+                    (sqrt(t(fC) %*% Conj(fC)))) < e
+            )
         # C/C/C
         result <- SIM(A = AC, f = fC, u = uC, eps = e)
-        testthat::expect_true(abs((sqrt(t(AC %*% result - fC) %*% Conj(AC %*% result - fC)))/(sqrt(t(fC) %*% Conj(fC)))) < e)
+        testthat::expect_true(
+            abs((sqrt(t(AC %*% result - fC) %*% 
+                          Conj(AC %*% result - fC))) / 
+                    (sqrt(t(fC) %*% Conj(fC)))) < e
+            )
     }
 })
 
@@ -74,16 +78,40 @@ testthat::test_that("Lengths and DIMs check", {
     testthat::expect(SIM(A = AN, u = uN, f = fN, eps = eps[1]))
     for (e in eps) {
         for (i in 1:(Reductor + 1)) {
-            testthat::expect_error(SIM(A = AN, u = uN, f = fN[-i], eps = e))
-            testthat::expect_error(SIM(A = AN, u = uN[-i], f = fN[-i], eps = e))
-            testthat::expect_error(SIM(A = AN, u = uN[-i], f = fN, eps = e))
-            testthat::expect_error(SIM(A = AN[-i, ], u = uN[-i], f = fN, eps = e))
-            testthat::expect_error(SIM(A = AN[-i, ], u = uN, f = fN, eps = e))
-            testthat::expect_error(SIM(A = AN[-i, ], u = uN, f = fN[-i], eps = e))
-            testthat::expect_error(SIM(A = AN[-i, ][, -i], u = uN, f = fN[-i], eps = e))
-            testthat::expect_error(SIM(A = AN[-i, ][, -i], u = uN[-i], f = fN, eps = e))
-            testthat::expect_error(SIM(A = AN[-i, ], u = uN[-i], f = fN[-i], eps = e))
-            testthat::expect(SIM(A = AN[-i, ][, -i], u = uN[-i], f = fN[-i], eps = e))
+            testthat::expect_error(
+                SIM(A = AN, u = uN, f = fN[-i], eps = e)
+                )
+            testthat::expect_error(
+                SIM(A = AN, u = uN[-i], f = fN[-i], eps = e)
+                )
+            testthat::expect_error(
+                SIM(A = AN, u = uN[-i], f = fN, eps = e)
+                )
+            testthat::expect_error(
+                SIM(A = AN[-i, ], u = uN[-i], f = fN, eps = e)
+                )
+            testthat::expect_error(
+                SIM(A = AN[-i, ], u = uN, f = fN, eps = e)
+                )
+            testthat::expect_error(
+                SIM(A = AN[-i, ], u = uN, f = fN[-i], eps = e)
+                )
+            testthat::expect_error(
+                SIM(A = AN[-i, ][, -i], u = uN, f = fN[-i], 
+                    eps = e)
+                )
+            testthat::expect_error(
+                SIM(A = AN[-i, ][, -i], u = uN[-i], f = fN, 
+                    eps = e)
+                )
+            testthat::expect_error(
+                SIM(A = AN[-i, ], u = uN[-i], f = fN[-i], 
+                    eps = e)
+                )
+            testthat::expect(
+                SIM(A = AN[-i, ][, -i], u = uN[-i], f = fN[-i], 
+                    eps = e)
+                )
         }
     }
 })
@@ -124,4 +152,3 @@ testthat::test_that("Spectre of operator check", {
 # Clear -------------------------------------------------------------------
 
 rm(list = ls())
-

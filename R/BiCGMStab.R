@@ -1,23 +1,36 @@
-
 # Biconjugate gradient stabilized method, BiCGMStab -----------------------
-
-# https://ru.wikipedia.org/wiki/%D0%A1%D1%82%D0%B0%D0%B1%D0%B8%D0%BB%D0%B8%D0%B7%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D1%8B%D0%B9_%D0%BC%D0%B5%D1%82%D0%BE%D0%B4_%D0%B1%D0%B8%D1%81%D0%BE%D0%BF%D1%80%D1%8F%D0%B6%D1%91%D0%BD%D0%BD%D1%8B%D1%85_%D0%B3%D1%80%D0%B0%D0%B4%D0%B8%D0%B5%D0%BD%D1%82%D0%BE%D0%B2
-
 
 #' Biconjugate gradient method stabilized [BiCGMStab]
 #' (Метод бисопряженных градиентов стабилизированный)
-#' @description Iterative method for solving SLAE of the Krylov type. Developed by van der Vorst to solve systems with asymmetric matrices. It converges faster than the usual method of bis conjugate gradients, which is unstable, and therefore is used more often.
-#' (Нестационарный итерационный метод решения СЛАУ крыловского типа. Разработан Ван дэр Ворстом для решения систем с несимметричными матрицами. Сходится быстрее, чем обычный метод бисопряженных градиентов, который является неустойчивым, и поэтому применяется чаще.)
-#' @param A - the original matrix of the operator equation - numeric or complex matrix (исходная матрица операторного уравнения - вещественная или комплексная)
-#' @param f - bias - numeric or complex vector (вектор свободных членов вещественный или комплексный)
-#' @param u - initial approximation of an unknown vector - numeric or complex vector (начальное приближение неизвестного вектора - вещественный или комплексный вектор)
-#' @param eps - accuracy of calculation of the desired vector - numeric (точность вычисления искомого вектора - вещественная)
-#' @param iterations - the upper limit on the number of iterations when the method diverges (ограничение сверху на число итераций при расхождении метода)
+#' @description Iterative method for solving SLAE of the 
+#' Krylov type. Developed by van der Vorst to solve systems 
+#' with asymmetric matrices. It converges faster than the usual 
+#' method of bis conjugate gradients, which is unstable, and 
+#' therefore is used more often.
+#' (Нестационарный итерационный метод решения СЛАУ крыловского типа. 
+#' Разработан Ван дэр Ворстом для решения систем с несимметричными 
+#' матрицами. Сходится быстрее, чем обычный метод бисопряженных 
+#' градиентов, который является неустойчивым, и поэтому применяется чаще.)
+#' @param A - the original matrix of the operator equation - numeric 
+#' or complex matrix (исходная матрица операторного уравнения - 
+#' вещественная или комплексная)
+#' @param f - bias - numeric or complex vector (вектор свободных 
+#' членов вещественный или комплексный)
+#' @param u - initial approximation of an unknown vector - numeric 
+#' or complex vector (начальное приближение неизвестного вектора - 
+#' вещественный или комплексный вектор)
+#' @param eps - accuracy of calculation of the desired vector - 
+#' numeric (точность вычисления искомого вектора - вещественная)
+#' @param iterations - the upper limit on the number of iterations when 
+#' the method diverges (ограничение сверху на число итераций при 
+#' расхождении метода)
 #'
-#' @return u - unknown vector in some approximation (неизвестный вектор в некотором приближении)
+#' @return u - unknown vector in some approximation (неизвестный 
+#' вектор в некотором приближении)
 #' @export
 #'
-#' @examples A <- diag(rnorm(5, 2), nrow = 5, ncol = 5)
+#' @examples 
+#' A <- diag(rnorm(5, 2), nrow = 5, ncol = 5)
 #' u <- rnorm(5, 12)
 #' f <- rnorm(5, 17)
 #' solve(A) %*% f - BiCGMStab(A, f, u, iterations = 10000)
@@ -27,10 +40,11 @@ BiCGMStab <- function(A, f, u, eps = 10e-04, iterations = 10000) {
               is.numeric(A) || is.complex(A), 
               is.numeric(f) || is.complex(f), 
               is.numeric(u) || is.complex(u), 
-              is.numeric(eps), length(eps) == 1, is.atomic(eps), 
-              nrow(A) == ncol(A), ncol(A) == length(f), length(f) == length(u), 
-              ncol(A) >= 2, 
-              is.numeric(iterations), length(iterations) == 1, is.atomic(iterations))
+              is.numeric(eps), length(eps) == 1, 
+              is.atomic(eps), nrow(A) == ncol(A), 
+              ncol(A) == length(f), length(f) == length(u), 
+              ncol(A) >= 2, is.numeric(iterations), 
+              length(iterations) == 1, is.atomic(iterations))
     i <- 0
     r <- f - A %*% u
     rtild <- r
@@ -44,13 +58,17 @@ BiCGMStab <- function(A, f, u, eps = 10e-04, iterations = 10000) {
         alpha <- (rho1 / (Conj(t(rtild)) %*% v)[1, 1])
         s <- r - alpha * v
         t1 <- (A %*% s)
-        omega <- ((Conj(t(t1)) %*% s) / (Conj(t(t1)) %*% t1))[1, 1]
+        omega <- ((Conj(t(t1)) %*% s) / 
+                      (Conj(t(t1)) %*% t1))[1, 1]
         u <- u + omega * s + alpha * p
         r <- s - omega * t1
         i <- i + 1
-        if (abs((sqrt(t(A %*% u - f) %*% Conj(A %*% u - f))) / (sqrt(t(f) %*% Conj(f))))[1, 1] < eps) break
+        if (abs((sqrt(t(A %*% u - f) %*% Conj(A %*% u - f))) / 
+                (sqrt(t(f) %*% Conj(f))))[1, 1] < eps) break
         if (i > iterations) {
-            message("Iterations of the method may not come close to the final result / allowed number of iterations is exceeded")
+            message("Iterations of the method may not come close 
+                    to the final result / allowed number of 
+                    iterations is exceeded")
             break
         }
         rho <- rho1
@@ -64,23 +82,46 @@ BiCGMStab <- function(A, f, u, eps = 10e-04, iterations = 10000) {
 
 #' Biconjugate gradient method stabilized history [BiCGMStab]
 #' (Метод бисопряженных градиентов стабилизированный)
-#' @description Iterative method for solving SLAE of the Krylov type. Developed by van der Vorst to solve systems with asymmetric matrices. It converges faster than the usual method of bis conjugate gradients, which is unstable, and therefore is used more often.
-#' (Нестационарный итерационный метод решения СЛАУ крыловского типа. Разработан Ван дэр Ворстом для решения систем с несимметричными матрицами. Сходится быстрее, чем обычный метод бисопряженных градиентов, который является неустойчивым, и поэтому применяется чаще.)
-#' @details This method is necessary to preserve the history of sequential calculation of an unknown vector in order to visualize the convergence of the method 
-#' (Данный метод необходим для сохранения истории последовательного вычисления неизвестного вектора с целью визуализации сходимости метода)
-#' @param A - the original matrix of the operator equation - numeric or complex matrix (исходная матрица операторного уравнения - вещественная или комплексная)
-#' @param f - bias - numeric or complex vector (вектор свободных членов вещественный или комплексный)
-#' @param u - initial approximation of an unknown vector - numeric or complex vector (начальное приближение неизвестного вектора - вещественный или комплексный вектор)
-#' @param eps - accuracy of calculation of the desired vector - numeric (точность вычисления искомого вектора - вещественная)
-#' @param iterations - the upper limit on the number of iterations when the method diverges (ограничение сверху на число итераций при расхождении метода)
+#' @description Iterative method for solving SLAE of the Krylov 
+#' type. Developed by van der Vorst to solve systems with 
+#' asymmetric matrices. It converges faster than the usual 
+#' method of bis conjugate gradients, which is unstable, and 
+#' therefore is used more often.
+#' (Нестационарный итерационный метод решения СЛАУ крыловского 
+#' типа. Разработан Ван дэр Ворстом для решения систем с 
+#' несимметричными матрицами. Сходится быстрее, чем обычный метод 
+#' бисопряженных градиентов, который является неустойчивым, и 
+#' поэтому применяется чаще.)
+#' @details This method is necessary to preserve the history of 
+#' sequential calculation of an unknown vector in order to 
+#' visualize the convergence of the method 
+#' (Данный метод необходим для сохранения истории 
+#' последовательного вычисления неизвестного вектора с целью 
+#' визуализации сходимости метода)
+#' @param A - the original matrix of the operator equation - 
+#' numeric or complex matrix (исходная матрица операторного 
+#' уравнения - вещественная или комплексная)
+#' @param f - bias - numeric or complex vector (вектор свободных 
+#' членов вещественный или комплексный)
+#' @param u - initial approximation of an unknown vector - 
+#' numeric or complex vector (начальное приближение неизвестного 
+#' вектора - вещественный или комплексный вектор)
+#' @param eps - accuracy of calculation of the desired vector - 
+#' numeric (точность вычисления искомого вектора - вещественная)
+#' @param iterations - the upper limit on the number of iterations 
+#' when the method diverges (ограничение сверху на число итераций 
+#' при расхождении метода)
 #'
 #' @return result - list: 
 #' num.iter - number of iterations (число итераций); 
-#' var - unknown vector result (результат вычисления неизвестного вектора); 
-#' var.hist - history of computing an unknown vector (история вычисления неизвестного вектора); 
+#' var - unknown vector result (результат вычисления неизвестного 
+#' вектора); 
+#' var.hist - history of computing an unknown vector (история 
+#' вычисления неизвестного вектора); 
 #' @export
 #'
-#' @examples A <- diag(rnorm(5, 2), nrow = 5, ncol = 5)
+#' @examples 
+#' A <- diag(rnorm(5, 2), nrow = 5, ncol = 5)
 #' u <- rnorm(5, 12)
 #' f <- rnorm(5, 17)
 #' print(BiCGMStab.history(A, f, u, iterations = 10000))
@@ -89,10 +130,11 @@ BiCGMStab.history <- function(A, f, u, eps = 10e-04, iterations = 10000) {
               is.numeric(A) || is.complex(A), 
               is.numeric(f) || is.complex(f), 
               is.numeric(u) || is.complex(u), 
-              is.numeric(eps), length(eps) == 1, is.atomic(eps), 
-              nrow(A) == ncol(A), ncol(A) == length(f), length(f) == length(u), 
-              ncol(A) >= 2, 
-              is.numeric(iterations), length(iterations) == 1, is.atomic(iterations))
+              is.numeric(eps), length(eps) == 1, 
+              is.atomic(eps), nrow(A) == ncol(A), 
+              ncol(A) == length(f), length(f) == length(u), 
+              ncol(A) >= 2, is.numeric(iterations), 
+              length(iterations) == 1, is.atomic(iterations))
     u.hist <- matrix(u, nrow = nrow(A))
     i <- 0
     iterate <- 0
@@ -109,16 +151,20 @@ BiCGMStab.history <- function(A, f, u, eps = 10e-04, iterations = 10000) {
         alpha <- (rho1 / (Conj(t(rtild)) %*% v)[1, 1])
         s <- r - alpha * v
         t1 <- (A %*% s)
-        omega <- ((Conj(t(t1)) %*% s) / (Conj(t(t1)) %*% t1))[1, 1]
+        omega <- ((Conj(t(t1)) %*% s) / 
+                      (Conj(t(t1)) %*% t1))[1, 1]
         u <- u + omega * s + alpha * p
         u.hist <- cbind(u.hist, u)
         r <- s - omega * t1
         i <- i + 1
         iterate <- iterate + 2
         iterate2 <- c(iterate2, iterate)
-        if (abs((sqrt(t(A %*% u - f) %*% Conj(A %*% u - f))) / (sqrt(t(f) %*% Conj(f))))[1, 1] < eps) break
+        if (abs((sqrt(t(A %*% u - f) %*% Conj(A %*% u - f))) / 
+                (sqrt(t(f) %*% Conj(f))))[1, 1] < eps) break
         if (i > iterations) {
-            message("Iterations of the method may not come close to the final result / allowed number of iterations is exceeded")
+            message("Iterations of the method may not come 
+                    close to the final result / allowed number 
+                    of iterations is exceeded")
             break
         }
         rho <- rho1

@@ -21,7 +21,8 @@
 #' @param eps - accuracy of calculation of the desired vector - numeric 
 #' (точность вычисления искомого вектора - вещественная)
 #' @param iterations - the upper limit on the number of iterations when 
-#' the method diverges (ограничение сверху на число итераций при расхождении метода)
+#' the method diverges (ограничение сверху на число итераций при 
+#' расхождении метода)
 #'
 #' @return u - unknown vector in some approximation 
 #' (неизвестный вектор в некотором приближении)

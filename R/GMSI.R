@@ -211,15 +211,17 @@ muFind <- function(lambs, draw = TRUE, path = "complexPlot") {
             }
         }
         
-        for (i in (1:(n - 2))) {
-            for (j in ((i + 1):(n - 1))) {
-                for (k in ((j + 1):n)) {
-                    mu <- .mu3(lambs[i], lambs[j], lambs[k])
-                    R <- .R3(mu, lambs[i])
-                    if (abs(mu) <= abs(R)) next
-                    if (any(round(abs(mu - lambs), digits = 8) > round(abs(R), digits = 8))) next
-                    muflash <- c(muflash, mu)
-                    Rflash <- c(Rflash, R)
+        if (length(muflash) == 0) {
+            for (i in (1:(n - 2))) {
+                for (j in ((i + 1):(n - 1))) {
+                    for (k in ((j + 1):n)) {
+                        mu <- .mu3(lambs[i], lambs[j], lambs[k])
+                        R <- .R3(mu, lambs[i])
+                        if (abs(mu) <= abs(R)) next
+                        if (any(round(abs(mu - lambs), digits = 8) > round(abs(R), digits = 8))) next
+                        muflash <- c(muflash, mu)
+                        Rflash <- c(Rflash, R)
+                    }
                 }
             }
         }
@@ -317,16 +319,18 @@ muFind.File <- function(input.file = "complexNumbeRS", output.file = "results", 
             }
         }
         
-        for (i in (1:(n - 2))) {
-            for (j in ((i + 1):(n - 1))) {
-                for (k in ((j + 1):n)) {
-                    mu <- .mu3(lambs[i], lambs[j], lambs[k])
-                    R <- .R3(mu, lambs[i])
-                    if (abs(mu) <= abs(R)) next
-                    if (any(round(abs(mu - lambs), digits = 8) > 
-                            round(abs(R), digits = 8))) next
-                    muflash <- c(muflash, mu)
-                    Rflash <- c(Rflash, R)
+        if (length(muflash) == 0) {
+            for (i in (1:(n - 2))) {
+                for (j in ((i + 1):(n - 1))) {
+                    for (k in ((j + 1):n)) {
+                        mu <- .mu3(lambs[i], lambs[j], lambs[k])
+                        R <- .R3(mu, lambs[i])
+                        if (abs(mu) <= abs(R)) next
+                        if (any(round(abs(mu - lambs), digits = 8) > 
+                                round(abs(R), digits = 8))) next
+                        muflash <- c(muflash, mu)
+                        Rflash <- c(Rflash, R)
+                    }
                 }
             }
         }
