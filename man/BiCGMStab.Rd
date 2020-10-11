@@ -8,22 +8,38 @@
 BiCGMStab(A, f, u, eps = 0.001, iterations = 10000)
 }
 \arguments{
-\item{A}{- the original matrix of the operator equation - numeric or complex matrix (исходная матрица операторного уравнения - вещественная или комплексная)}
+\item{A}{- the original matrix of the operator equation - numeric 
+or complex matrix (исходная матрица операторного уравнения - 
+вещественная или комплексная)}
 
-\item{f}{- bias - numeric or complex vector (вектор свободных членов вещественный или комплексный)}
+\item{f}{- bias - numeric or complex vector (вектор свободных 
+членов вещественный или комплексный)}
 
-\item{u}{- initial approximation of an unknown vector - numeric or complex vector (начальное приближение неизвестного вектора - вещественный или комплексный вектор)}
+\item{u}{- initial approximation of an unknown vector - numeric 
+or complex vector (начальное приближение неизвестного вектора - 
+вещественный или комплексный вектор)}
 
-\item{eps}{- accuracy of calculation of the desired vector - numeric (точность вычисления искомого вектора - вещественная)}
+\item{eps}{- accuracy of calculation of the desired vector - 
+numeric (точность вычисления искомого вектора - вещественная)}
 
-\item{iterations}{- the upper limit on the number of iterations when the method diverges (ограничение сверху на число итераций при расхождении метода)}
+\item{iterations}{- the upper limit on the number of iterations when 
+the method diverges (ограничение сверху на число итераций при 
+расхождении метода)}
 }
 \value{
-u - unknown vector in some approximation (неизвестный вектор в некотором приближении)
+u - unknown vector in some approximation (неизвестный 
+вектор в некотором приближении)
 }
 \description{
-Iterative method for solving SLAE of the Krylov type. Developed by van der Vorst to solve systems with asymmetric matrices. It converges faster than the usual method of bis conjugate gradients, which is unstable, and therefore is used more often.
-(Нестационарный итерационный метод решения СЛАУ крыловского типа. Разработан Ван дэр Ворстом для решения систем с несимметричными матрицами. Сходится быстрее, чем обычный метод бисопряженных градиентов, который является неустойчивым, и поэтому применяется чаще.)
+Iterative method for solving SLAE of the 
+Krylov type. Developed by van der Vorst to solve systems 
+with asymmetric matrices. It converges faster than the usual 
+method of bis conjugate gradients, which is unstable, and 
+therefore is used more often.
+(Нестационарный итерационный метод решения СЛАУ крыловского типа. 
+Разработан Ван дэр Ворстом для решения систем с несимметричными 
+матрицами. Сходится быстрее, чем обычный метод бисопряженных 
+градиентов, который является неустойчивым, и поэтому применяется чаще.)
 }
 \examples{
 A <- diag(rnorm(5, 2), nrow = 5, ncol = 5)

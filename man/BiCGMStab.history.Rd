@@ -8,29 +8,51 @@
 BiCGMStab.history(A, f, u, eps = 0.001, iterations = 10000)
 }
 \arguments{
-\item{A}{- the original matrix of the operator equation - numeric or complex matrix (исходная матрица операторного уравнения - вещественная или комплексная)}
+\item{A}{- the original matrix of the operator equation - 
+numeric or complex matrix (исходная матрица операторного 
+уравнения - вещественная или комплексная)}
 
-\item{f}{- bias - numeric or complex vector (вектор свободных членов вещественный или комплексный)}
+\item{f}{- bias - numeric or complex vector (вектор свободных 
+членов вещественный или комплексный)}
 
-\item{u}{- initial approximation of an unknown vector - numeric or complex vector (начальное приближение неизвестного вектора - вещественный или комплексный вектор)}
+\item{u}{- initial approximation of an unknown vector - 
+numeric or complex vector (начальное приближение неизвестного 
+вектора - вещественный или комплексный вектор)}
 
-\item{eps}{- accuracy of calculation of the desired vector - numeric (точность вычисления искомого вектора - вещественная)}
+\item{eps}{- accuracy of calculation of the desired vector - 
+numeric (точность вычисления искомого вектора - вещественная)}
 
-\item{iterations}{- the upper limit on the number of iterations when the method diverges (ограничение сверху на число итераций при расхождении метода)}
+\item{iterations}{- the upper limit on the number of iterations 
+when the method diverges (ограничение сверху на число итераций 
+при расхождении метода)}
 }
 \value{
 result - list: 
 num.iter - number of iterations (число итераций); 
-var - unknown vector result (результат вычисления неизвестного вектора); 
-var.hist - history of computing an unknown vector (история вычисления неизвестного вектора);
+var - unknown vector result (результат вычисления неизвестного 
+вектора); 
+var.hist - history of computing an unknown vector (история 
+вычисления неизвестного вектора);
 }
 \description{
-Iterative method for solving SLAE of the Krylov type. Developed by van der Vorst to solve systems with asymmetric matrices. It converges faster than the usual method of bis conjugate gradients, which is unstable, and therefore is used more often.
-(Нестационарный итерационный метод решения СЛАУ крыловского типа. Разработан Ван дэр Ворстом для решения систем с несимметричными матрицами. Сходится быстрее, чем обычный метод бисопряженных градиентов, который является неустойчивым, и поэтому применяется чаще.)
+Iterative method for solving SLAE of the Krylov 
+type. Developed by van der Vorst to solve systems with 
+asymmetric matrices. It converges faster than the usual 
+method of bis conjugate gradients, which is unstable, and 
+therefore is used more often.
+(Нестационарный итерационный метод решения СЛАУ крыловского 
+типа. Разработан Ван дэр Ворстом для решения систем с 
+несимметричными матрицами. Сходится быстрее, чем обычный метод 
+бисопряженных градиентов, который является неустойчивым, и 
+поэтому применяется чаще.)
 }
 \details{
-This method is necessary to preserve the history of sequential calculation of an unknown vector in order to visualize the convergence of the method 
-(Данный метод необходим для сохранения истории последовательного вычисления неизвестного вектора с целью визуализации сходимости метода)
+This method is necessary to preserve the history of 
+sequential calculation of an unknown vector in order to 
+visualize the convergence of the method 
+(Данный метод необходим для сохранения истории 
+последовательного вычисления неизвестного вектора с целью 
+визуализации сходимости метода)
 }
 \examples{
 A <- diag(rnorm(5, 2), nrow = 5, ncol = 5)

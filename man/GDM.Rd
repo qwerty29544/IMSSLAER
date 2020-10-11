@@ -8,22 +8,39 @@
 GDM(A, f, u, eps = 0.001, iterations = 10000)
 }
 \arguments{
-\item{A}{- the original matrix of the operator equation - numeric or complex matrix (исходная матрица операторного уравнения - вещественная или комплексная)}
+\item{A}{- the original matrix of the operator equation 
+- numeric or complex matrix (исходная матрица операторного 
+уравнения - вещественная или комплексная)}
 
-\item{f}{- bias - numeric or complex vector (вектор свободных членов вещественный или комплексный)}
+\item{f}{- bias - numeric or complex vector (вектор 
+свободных членов вещественный или комплексный)}
 
-\item{u}{- initial approximation of an unknown vector - numeric or complex vector (начальное приближение неизвестного вектора - вещественный или комплексный вектор)}
+\item{u}{- initial approximation of an unknown vector 
+- numeric or complex vector (начальное приближение 
+неизвестного вектора - вещественный или комплексный вектор)}
 
-\item{eps}{- accuracy of calculation of the desired vector - numeric (точность вычисления искомого вектора - вещественная)}
+\item{eps}{- accuracy of calculation of the desired vector 
+- numeric (точность вычисления искомого вектора - вещественная)}
 
-\item{iterations}{- the upper limit on the number of iterations when the method diverges (ограничение сверху на число итераций при расхождении метода)}
+\item{iterations}{- the upper limit on the number of 
+iterations when the method diverges (ограничение сверху на 
+число итераций при расхождении метода)}
 }
 \value{
-u - unknown vector in some approximation (неизвестный вектор в некотором приближении)
+u - unknown vector in some approximation (неизвестный 
+вектор в некотором приближении)
 }
 \description{
-The non-stationary iterative gradient descent method defined for both active and complex matrices. The cornerstone is the search for a minimum of a parabolic functional. A minimum of functionality will correspond to an unknown vector.
-(Нестационарный итерационный метод градиентного спуска, определённый как для действительных, так и для комплексных матриц. В основе метода лежит поиск минимума параболического функционала. Минимум функционала будет соответствовать неизвестному вектору.)
+The non-stationary iterative gradient 
+descent method defined for both active and complex 
+matrices. The cornerstone is the search for a minimum 
+of a parabolic functional. A minimum of functionality 
+will correspond to an unknown vector.
+(Нестационарный итерационный метод градиентного спуска, 
+определённый как для действительных, так и для комплексных 
+матриц. В основе метода лежит поиск минимума параболического 
+функционала. Минимум функционала будет соответствовать 
+неизвестному вектору.)
 }
 \examples{
 A <- matrix(rnorm(100) + 1i * rnorm(100), ncol = 10, nrow = 10)

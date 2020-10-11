@@ -23,11 +23,18 @@ large_vec_norm <- function(vec, mode = "Gelder", p = 2) {
     return(max(vec))
 }
 
-circulante_matrix <- function(first_row) {
+circulante_matrix <- function(first_row, direction = "r") {
     len <- length(first_row)
     matrix1 <- matrix(nrow = len, ncol = len)
-    for (i in 1:len) {
-        matrix1[i,] <- first_row[(((1:len) - i) %% len) + 1]
+    if (direction == "l") { 
+        for (i in 1:len) {
+            matrix1[i,] <- first_row[(((1:len) + (len - 2 + i)) %% len) + 1]
+        }
+    } else {
+        for (i in 1:len) {
+            matrix1[i,] <- first_row[(((1:len) - i) %% len) + 1]
+        }
     }
+    
     return(matrix1)
 }

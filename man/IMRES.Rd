@@ -8,26 +8,50 @@
 IMRES(A, f, u, eps = 0.001, iterations = 10000)
 }
 \arguments{
-\item{A}{- the original matrix of the operator equation - numeric or complex matrix (исходная матрица операторного уравнения - вещественная или комплексная)}
+\item{A}{- the original matrix of the operator 
+equation - numeric or complex matrix (исходная 
+матрица операторного уравнения - вещественная 
+или комплексная)}
 
-\item{f}{- bias - numeric or complex vector (вектор свободных членов вещественный или комплексный)}
+\item{f}{- bias - numeric or complex vector 
+(вектор свободных членов вещественный или 
+комплексный)}
 
-\item{u}{- initial approximation of an unknown vector - numeric or complex vector (начальное приближение неизвестного вектора - вещественный или комплексный вектор)}
+\item{u}{- initial approximation of an unknown 
+vector - numeric or complex vector (начальное 
+приближение неизвестного вектора - вещественный 
+или комплексный вектор)}
 
-\item{eps}{- accuracy of calculation of the desired vector - numeric (точность вычисления искомого вектора - вещественная)}
+\item{eps}{- accuracy of calculation of the desired 
+vector - numeric (точность вычисления искомого 
+вектора - вещественная)}
 
-\item{iterations}{- the upper limit on the number of iterations when the method diverges (ограничение сверху на число итераций при расхождении метода)}
+\item{iterations}{- the upper limit on the number of 
+iterations when the method diverges (ограничение 
+сверху на число итераций при расхождении метода)}
 }
 \value{
-u - unknown vector in some approximation (неизвестный вектор в некотором приближении)
+u - unknown vector in some approximation 
+(неизвестный вектор в некотором приближении)
 }
 \description{
-Non-stationary iterative method for solving systems of linear algebraic equations. The essence of the method is to search at each iteration of the iterative parameter by the projection method. This method is a special case of the generalized minimal residual algorithm (GMRES) with the Krylov subspace of the first degree.
-(Нестационарный итерационный метод решения систем линейных алгебраических уравнений. Суть метода состоит в поиске на каждой итерации итерационного параметра проекционным методом. Данный метод является частным случаем обобщенного метода минимальных невязок с подпространством Крылова первой степени.)
+Non-stationary iterative method for 
+solving systems of linear algebraic equations. 
+The essence of the method is to search at each 
+iteration of the iterative parameter by the 
+projection method. This method is a special 
+case of the generalized minimal residual algorithm 
+(GMRES) with the Krylov subspace of the first degree.
+(Нестационарный итерационный метод решения систем 
+линейных алгебраических уравнений. Суть метода 
+состоит в поиске на каждой итерации итерационного 
+параметра проекционным методом. Данный метод является 
+частным случаем обобщенного метода минимальных 
+невязок с подпространством Крылова первой степени.)
 }
 \examples{
 Reductor <- 10
-AN <- diag(seq(0.1, 0.9, 0.8/Reductor))   # Creating diag numeric matrix
+AN <- diag(seq(0.1, 0.9, 0.8/Reductor))
 fN <- rnorm(Reductor + 1)
 uN <- rnorm(Reductor + 1)
 result <- IMRES(AN, fN, uN, eps = 10e-5)

@@ -8,34 +8,61 @@
 IMRES.history(A, f, u, eps = 0.001, iterations = 10000)
 }
 \arguments{
-\item{A}{- the original matrix of the operator equation - numeric or complex matrix (исходная матрица операторного уравнения - вещественная или комплексная)}
+\item{A}{- the original matrix of the operator equation 
+- numeric or complex matrix (исходная матрица 
+операторного уравнения - вещественная или комплексная)}
 
-\item{f}{- bias - numeric or complex vector (вектор свободных членов вещественный или комплексный)}
+\item{f}{- bias - numeric or complex vector (вектор 
+свободных членов вещественный или комплексный)}
 
-\item{u}{- initial approximation of an unknown vector - numeric or complex vector (начальное приближение неизвестного вектора - вещественный или комплексный вектор)}
+\item{u}{- initial approximation of an unknown vector 
+- numeric or complex vector (начальное приближение 
+неизвестного вектора - вещественный или комплексный вектор)}
 
-\item{eps}{- accuracy of calculation of the desired vector - numeric (точность вычисления искомого вектора - вещественная)}
+\item{eps}{- accuracy of calculation of the desired vector 
+- numeric (точность вычисления искомого вектора - 
+вещественная)}
 
-\item{iterations}{- the upper limit on the number of iterations when the method diverges (ограничение сверху на число итераций при расхождении метода)}
+\item{iterations}{- the upper limit on the number of 
+iterations when the method diverges (ограничение сверху 
+на число итераций при расхождении метода)}
 }
 \value{
 result - list: 
 num.iter - number of iterations (число итераций); 
-var - unknown vector result (результат вычисления неизвестного вектора); 
-var.hist - history of computing an unknown vector (история вычисления неизвестного вектора); 
-systime.iter - system time calculation (системное время вычисления);
+var - unknown vector result (результат вычисления 
+неизвестного вектора); 
+var.hist - history of computing an unknown vector 
+(история вычисления неизвестного вектора); 
+systime.iter - system time calculation (системное 
+время вычисления);
 }
 \description{
-Non-stationary method for solving systems of linear algebraic equations. The essence of the method is to search at each iteration of the iterative parameter by the projection method. This method is a special case of the generalized minimal residual algorithm (GMRES) with the Krylov subspace of the first degree.
-(Нестационарный метод решения систем линейных алгебраических уравнений. Суть метода состоит в поиске на каждой итерации итерационного параметра проекционным методом. Данный метод является частным случаем обобщенного метода минимальных невязок с подпространством Крылова первой степени.)
+Non-stationary method for solving systems 
+of linear algebraic equations. The essence of the 
+method is to search at each iteration of the iterative 
+parameter by the projection method. This method is a 
+special case of the generalized minimal residual 
+algorithm (GMRES) with the Krylov subspace of the 
+first degree.
+(Нестационарный метод решения систем линейных 
+алгебраических уравнений. Суть метода состоит в поиске 
+на каждой итерации итерационного параметра проекционным 
+методом. Данный метод является частным случаем обобщенного 
+метода минимальных невязок с подпространством Крылова 
+первой степени.)
 }
 \details{
-This method is necessary to preserve the history of sequential calculation of an unknown vector in order to visualize the convergence of the method 
-(Данный метод необходим для сохранения истории последовательного вычисления неизвестного вектора с целью визуализации сходимости метода)
+This method is necessary to preserve the 
+history of sequential calculation of an unknown vector 
+in order to visualize the convergence of the method 
+(Данный метод необходим для сохранения истории 
+последовательного вычисления неизвестного вектора 
+с целью визуализации сходимости метода)
 }
 \examples{
 Reductor <- 10
-AN <- diag(seq(0.1, 0.9, 0.8/Reductor))   # Creating diag numeric matrix
+AN <- diag(seq(0.1, 0.9, 0.8/Reductor))
 fN <- rnorm(Reductor + 1)
 uN <- rnorm(Reductor + 1)
 result <- IMRES.history(AN, fN, uN, eps = 10e-5)
