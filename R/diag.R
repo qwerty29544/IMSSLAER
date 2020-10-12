@@ -111,7 +111,7 @@ diag_mul_vec_torch <- function(diag_vec, vec) {
     } else {
         device <- "cpu:0"
     }
-    diag_vec <- torch::torch_tensor(diag_vec)$reshape(c(1, length(diag_vec)))$to(device)
+    diag_vec <- torch::torch_tensor(diag_vec)$reshape(c(1, length(diag_vec)))$to(device = device)
     vec <- torch::torch_tensor(vec)$to(device)
     return(as_array((diag_vec * vec)$to(device = "cpu:0")))
 }
@@ -133,8 +133,8 @@ diag_mul_diag_torch <- function(diag1_vec, diag2_vec, mode = "vec") {
     } else {
         device <- "cpu:0"
     }
-    diag1_vec <- torch::torch_tensor(diag1_vec)$reshape(c(1, length(diag1_vec)))$to(device)
-    diag2_vec <- torch::torch_tensor(diag2_vec)$reshape(c(1, length(diag2_vec)))$to(device)
+    diag1_vec <- torch::torch_tensor(diag1_vec)$reshape(c(1, length(diag1_vec)))$to(device = device)
+    diag2_vec <- torch::torch_tensor(diag2_vec)$reshape(c(1, length(diag2_vec)))$to(device = device)
     if (mode == "vec") return(as_array((diag1_vec * diag2_vec)$to(device = "cpu:0")))
     return(diag(as_array((diag1_vec * diag2_vec)$to(device = "cpu:0"))))
 }
@@ -156,7 +156,7 @@ diag_solve_torch <- function(diag_vec, mode = "vec") {
     } else {
         device <- "cpu:0"
     }
-    diag_vec <- torch::torch_tensor(diag_vec)$reshape(c(1, length(diag_vec)))$to(device)
+    diag_vec <- torch::torch_tensor(diag_vec)$reshape(c(1, length(diag_vec)))$to(device = device)
     if (mode == "vec") return(as_array((diag_vec^(-1))$to(device = "cpu:0")))
     return(diag(as_array((diag_vec^(-1))$to(device = "cpu:0"))))
 }
@@ -178,7 +178,7 @@ large_vec_norm_torch <- function(vec, mode = "Gelder", p = 2) {
     } else {
         device <- "cpu:0"
     }
-    vec <- torch::torch_tensor(vec)$reshape(c(1, length(vec)))$to(device)
+    vec <- torch::torch_tensor(vec)$reshape(c(1, length(vec)))$to(device = device)
     
     if (mode == "Gelder") return(as_array((sum(abs(vec)^p)^(1/p))$to(device = "cpu:0")))
     return(as_array(max(vec)$to(device = "cpu:0")))
