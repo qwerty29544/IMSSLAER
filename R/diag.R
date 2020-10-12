@@ -112,7 +112,7 @@ diag_mul_vec_torch <- function(diag_vec, vec) {
         device <- "cpu:0"
     }
     diag_vec <- torch::torch_tensor(diag_vec)$reshape(c(1, length(diag_vec)))$to(device = device)
-    vec <- torch::torch_tensor(vec)$to(device)
+    vec <- torch::torch_tensor(vec)$to(device = device)
     return(as_array((diag_vec * vec)$to(device = "cpu:0")))
 }
 
