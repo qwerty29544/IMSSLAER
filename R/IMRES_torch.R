@@ -1,5 +1,16 @@
 require(torch)
 
+#' Title
+#'
+#' @param A 
+#' @param f 
+#' @param u 
+#' @param eps 
+#'
+#' @return
+#' @export
+#'
+#' @examples
 IMRES_torch <- function(A, f, u, eps = 10e-4) {
     stopifnot(is.matrix(A), is.numeric(A) || is.complex(A), is.numeric(f), is.numeric(u), is.numeric(eps))
     if (dim(A)[1] < 2) stop("Linear operator has dim less than 2x2")
