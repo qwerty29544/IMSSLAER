@@ -1,7 +1,7 @@
 
 # Dependencies ------------------------------------------------------------
 
-library(torch)
+require(torch)
 
 # Diagonal matrices operations --------------------------------------------
 

@@ -1,4 +1,4 @@
-library(torch)
+require(torch)
 
 IMRES_torch <- function(A, f, u, eps = 10e-4) {
     stopifnot(is.matrix(A), is.numeric(A) || is.complex(A), is.numeric(f), is.numeric(u), is.numeric(eps))
