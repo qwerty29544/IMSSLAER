@@ -3,8 +3,19 @@
 
 # Out_of_trend ------------------------------------------------------------
 
+#' Out of trend Dynamics decomposition
+#'
+#' @param ts - vector of numeric data, charaterises the dynamic process
+#' @param delta - time delta for window kernel
+#' @param mode - type of kernel substitution
+#'
+#' @return
+#' @export
+#'
+#' @examples
 MariaRemark.out_of_trend <- function(ts, delta, 
                                      mode = c("AP", "GP_log", "GP_lin", "W", "HP")) {
+    mode <- mode[1]
     lents <- length(ts)
     if (mode == "GP_log") {
         return(
@@ -53,6 +64,15 @@ MariaRemark.out_of_trend <- function(ts, delta,
 
 
 
+#' Alter-Johns function
+#'
+#' @param ts - time series of dynamic system
+#' @param p - norm
+#'
+#' @return
+#' @export
+#'
+#' @examples
 MariaRemark.Alter_Johns <- function(ts, p = 1) {
     lents <- length(ts)
     a <- numeric(length = lents)
@@ -66,6 +86,17 @@ MariaRemark.Alter_Johns <- function(ts, p = 1) {
 
 # Shift_function ----------------------------------------------------------
 
+#' Alter-Johns general function (shift function)
+#'
+#' @param ts - time series of dynamic process
+#' @param delta_bounds - dt_min and dt_max of ts process
+#' @param mode - type of kernel substitution
+#' @param p - norm mode
+#'
+#' @return
+#' @export
+#'
+#' @examples
 MariaRemark.Shift_function <- function(ts, delta_bounds = c(1, 100), 
                                        mode = "AP", 
                                        p = 1) {
