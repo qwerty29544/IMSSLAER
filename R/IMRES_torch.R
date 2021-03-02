@@ -9,6 +9,7 @@ require(torch)
 #'
 #' @return
 #' @export
+#' @import torch
 #'
 #' @examples
 IMRES_torch <- function(A, f, u, eps = 10e-4) {

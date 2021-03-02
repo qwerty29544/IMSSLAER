@@ -7,6 +7,7 @@ Maintainer: Ivan Yurchenkov <qwerty29544@gmail.com>
 Description: This package was created to solve systems of linear algebraic equations by various iterative methods.
     In particular, a great deal of attention is paid to stationary iterative methods, such as the generalized simple iteration method or the Chebyshev iteration method.
     In addition to these methods, some other iterative methods of a non-stationary type are implemented, such as the method of minimal residuals or the gradient descent method.
+Imports: torch
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

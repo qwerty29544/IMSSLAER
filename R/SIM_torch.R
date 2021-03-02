@@ -6,6 +6,7 @@
 #' @param f 
 #' @param eps 
 #' @param iterations 
+#' @import torch
 #'
 #' @return
 #' @export
